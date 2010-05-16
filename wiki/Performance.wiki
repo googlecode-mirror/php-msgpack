@@ -1,0 +1,110 @@
+#summary performance page
+
+In this test, it measured the elapsed time of serializing and deserializing.
+
+If the elapsed time will be performed 10,000 times.
+
+= Functions =
+|| || *default* || *msgpack* ||
+|| *serialize* || _serialize()_ || _msgpack_serialzie()_ ||
+|| *unserialize* || _unserialize()_ || _msgpack_unserialize()_ ||
+
+= Performances =
+== Integer ==
+=== Value ===
+{{{
+$values = rand();
+}}}
+
+=== Speed (sec) ===
+|| || *default* || *msgpack* || _diff_ ||
+|| *serialize* || 0.588 || 0.585 || _-0.003_ ||
+|| *unserialize* || 0.538 || 0.352 || _-0.186_ ||
+
+=== Size (byte) ===
+|| *default* || *msgpack* || _diff_ ||
+|| 12 || 5 || _-7_ ||
+
+== Floating point number ==
+=== Value ===
+{{{
+$value = log(rand());
+}}}
+
+=== Speed (sec) ===
+|| || *default* || *msgpack* || _diff_ ||
+|| *serialize* || 2.402 || 0.604 || _-1.798_ ||
+|| *unserialize* || 1.945 || 0.368 || _-1.577_ ||
+
+=== Size (byte) ===
+|| default || msgpack || _diff_ ||
+|| 53 || 9 || _-44_ ||
+
+== String ==
+=== Value ===
+{{{
+$value = md5(rand());
+}}}
+
+=== Speed (sec) ===
+|| || *default* || *msgpack* || _diff_ ||
+|| *serialize* || 0.566 || 0.605 || _+0.039_ ||
+|| *unserialize* || 0.551 || 0.402 || _-0.149_ ||
+
+=== Size (byte) ===
+|| *default* || *msgpack* || _diff_ ||
+|| 40 || 35 || _-5_ ||
+
+== Array ==
+=== Value ===
+{{{
+$value = array(md5(rand()), md5(rand()), md5(rand()), md5(rand()), md5(rand()));
+}}}
+
+=== Speed (sec) ===
+|| || *default* || *msgpack* || _diff_ ||
+|| *serialize* || 1.367 || 1.325 || _-0.042_ ||
+|| *unserialize* || 1.661 || 1.586 || _-0.075_ ||
+
+=== Size (byte) ===
+|| *default* || *msgpack* || _diff_ ||
+|| 226 || 181 || _-45_ ||
+
+== Array (Hash) ==
+=== Value ===
+{{{
+$value[md5(rand()] = md5(rand());
+$value[md5(rand()] = md5(rand());
+$value[md5(rand()] = md5(rand());
+$value[md5(rand()] = md5(rand());
+$value[md5(rand()] = md5(rand());
+}}}
+
+=== Speed (sec) ===
+|| || *default* || *msgpack* || _diff_ ||
+|| *serialize* || 1.443 || 1.381 || _-0.062_ ||
+|| *unserialize* || 2.213 || 2.164 || _-0.049_ ||
+
+=== Size (byte) ===
+|| *default* || *msgpack* ||
+|| 406 || 351 || -55 ||
+
+== Object ==
+=== Value ===
+{{{
+$value = new stdClass;
+$value->param1 = rand();
+$value->param2 = md5(uniqid());
+$value->param3 = array(md5(uniqid()));
+$value->param4 = array(md5(uniqid()) => md5(uniqid()));
+$value->param5 = null;
+}}}
+
+=== Speed (sec) ===
+|| || *default* || *msgpack* || _diff_ ||
+|| *serialize* || 1.967 || 1.828 || _-0.139_ ||
+|| *unserialize* || 3.178 || 2.916 || _-0.262_ ||
+
+=== Size (byte) ===
+|| *default* || *msgpack* || _diff_ ||
+|| 274 || 203 || _-71_ ||
