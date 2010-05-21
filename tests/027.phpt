@@ -1,9 +1,6 @@
 --TEST--
 Check for serialization handler
 --SKIPIF--
-<?php
-echo "skip";
-?>
 --FILE--
 <?php
 if(!extension_loaded('msgpack')) {
@@ -23,13 +20,13 @@ function close() {
 function read($id) {
     global $output;
     $output .= "read" . PHP_EOL;
-    return pack('H*', '0000000214011103666f6f0601');
+    return pack('H*', '92a3666f6f01');
 }
 
 function write($id, $data) {
     global $output;
     $output .= "wrote: ";
-    $output .= substr(bin2hex($data), 8). PHP_EOL;
+    $output .= bin2hex($data). PHP_EOL;
     return true;
 }
 
@@ -66,4 +63,4 @@ echo $output;
 --EXPECT--
 bool(true)
 read
-wrote: 14021103666f6f06011104746573741106666f6f626172
+wrote: 94a3666f6f01a474657374a6666f6f626172

@@ -1,9 +1,8 @@
 --TEST--
 Check for serialization handler, ini-directive
 --SKIPIF--
-<?php
-echo "skip";
-?>
+--INI--
+session.serialize_handler=msgpack
 --FILE--
 <?php
 if(!extension_loaded('msgpack')) {
@@ -22,7 +21,7 @@ function close() {
 
 function read($id) {
     global $output;
-    return pack('H*', '0000000214011103666f6f0601');
+    return pack('H*', '92a3666f6f01');
 }
 
 function write($id, $data) {
@@ -51,4 +50,4 @@ echo $output;
 ?>
 --EXPECT--
 2
-14011103666f6f0602
+92a3666f6f02
