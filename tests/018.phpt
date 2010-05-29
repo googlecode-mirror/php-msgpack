@@ -15,6 +15,7 @@ function test($type, $variable, $test) {
 
     echo $type, PHP_EOL;
     echo bin2hex($serialized), PHP_EOL;
+    var_dump($unserialized);
     echo $test || $unserialized == $variable ? 'OK' : 'ERROR', PHP_EOL;
 }
 
@@ -60,10 +61,24 @@ $p = new Opj(1, 2);
 test('nonexisting', $o, true);
 test('wrong', $p, true);
 ?>
---EXPECT--
+--EXPECTF--
 nonexisting
 82a34f626aa34f626aa163c0
+object(Obj)#%d (3) {
+  ["a"]=>
+  NULL
+  ["b"]=>
+  NULL
+  ["c"]=>
+  NULL
+}
 OK
 wrong
 82a34f706aa34f706ac0
+object(Opj)#%d (2) {
+  ["a"]=>
+  NULL
+  ["b"]=>
+  NULL
+}
 OK

@@ -2,9 +2,6 @@
 Resource
 --SKIPIF--
 <?php
-if (!extension_loaded("msgpack")) {
-    echo "skip";
-}
 if (!function_exists("curl_init") && !class_exists("Sqlite3"))) {
     echo "skip";
 }
@@ -23,6 +20,7 @@ function test($type, $variable, $test) {
 
     echo $type, PHP_EOL;
     echo bin2hex($serialized), PHP_EOL;
+    var_dump($unserialized);
     echo $test || $unserialized === null ? 'OK' : 'FAIL', PHP_EOL;
 }
 
@@ -52,4 +50,5 @@ switch ($test) {
 --EXPECT--
 resource
 c0
+NULL
 OK

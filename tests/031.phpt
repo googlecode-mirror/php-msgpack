@@ -1,9 +1,6 @@
 --TEST--
 Object Serializable interface throws exceptions
 --SKIPIF--
-<?php
-echo "skip";
-?>
 --FILE--
 <?php
 if(!extension_loaded('msgpack')) {
@@ -13,6 +10,7 @@ if(!extension_loaded('msgpack')) {
 function test($variable) {
     $serialized = msgpack_serialize($variable);
     $unserialized = msgpack_unserialize($serialized);
+    var_dump($unserialized);
 }
 
 class Obj implements Serializable {
@@ -78,7 +76,7 @@ try {
 
     echo $e->getMessage(), PHP_EOL;
 }
-
+?>
 --EXPECT--
 a, a, c
 call serialize, no throw

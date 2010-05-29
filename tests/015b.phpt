@@ -47,7 +47,12 @@ echo ++$_SESSION['foo'], PHP_EOL;
 session_write_close();
 
 echo $output;
+var_dump($_SESSION);
 ?>
 --EXPECT--
 2
 92a3666f6f02
+array(1) {
+  ["foo"]=>
+  int(2)
+}

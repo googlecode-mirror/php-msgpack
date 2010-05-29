@@ -13,6 +13,7 @@ function test($type, $variable) {
 
     echo $type, PHP_EOL;
     echo bin2hex($serialized), PHP_EOL;
+    var_dump($unserialized);
     echo $unserialized === $variable ? 'OK' : 'ERROR', PHP_EOL;
 }
 
@@ -21,4 +22,5 @@ test('double: 123.456', 123.456);
 --EXPECT--
 double: 123.456
 cb405edd2f1a9fbe77
+float(123.456)
 OK

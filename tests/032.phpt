@@ -1,18 +1,18 @@
 --TEST--
 Object test, __sleep and __wakeup exceptions
 --SKIPIF--
-<?php
-if(!extension_loaded('msgpack')) {
-    echo "skip no msgpack";
-}
 --FILE--
 <?php
+if(!extension_loaded('msgpack')) {
+    dl('msgpack.' . PHP_SHLIB_SUFFIX);
+}
 
 error_reporting(0);
 
 function test($variable) {
     $serialized = msgpack_serialize($variable);
     $unserialized = msgpack_unserialize($serialized);
+    var_dump($unserialized);
 }
 
 class Obj {
@@ -65,6 +65,12 @@ try {
     echo $e->getMessage(), PHP_EOL;
 }
 ?>
---EXPECT--
+--EXPECTF--
 exception in __sleep 0
 exception in __wakeup 2
+object(Obj)#%d (2) {
+  ["a"]=>
+  int(0)
+  ["b"]=>
+  int(0)
+}
