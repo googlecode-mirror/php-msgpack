@@ -1,12 +1,11 @@
 --TEST--
 Unserialize invalid random data
 --SKIPIF--
-<?php
-if(!extension_loaded('msgpack')) {
-	echo "skip no msgpack";
-}
 --FILE--
 <?php 
+if(!extension_loaded('msgpack')) {
+    dl('msgpack.' . PHP_SHLIB_SUFFIX);
+}
 
 $datas = array(
 	87817,

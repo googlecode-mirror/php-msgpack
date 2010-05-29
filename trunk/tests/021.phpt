@@ -1,9 +1,6 @@
 --TEST--
 Object Serializable interface
 --SKIPIF--
-<?php
-echo "skip";
-?>
 --FILE--
 <?php
 if(!extension_loaded('msgpack')) {
@@ -16,6 +13,7 @@ function test($type, $variable, $test) {
 
     echo $type, PHP_EOL;
     echo bin2hex($serialized), PHP_EOL;
+    var_dump($unserialized);
     echo $test || $unserialized == $variable ? 'OK' : 'ERROR', PHP_EOL;
 }
 
@@ -42,7 +40,13 @@ $o = new Obj(1, 2);
 
 test('object', $o, false);
 ?>
---EXPECT--
+--EXPECTF--
 object
-17034f626a1d080000000100000002
+82a25300a34f626aa27300a80000000100000002
+object(Obj)#%d (2) {
+  ["a"]=>
+  int(1)
+  ["b"]=>
+  int(2)
+}
 OK

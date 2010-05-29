@@ -1,12 +1,11 @@
 --TEST--
 Object test, cyclic references
 --SKIPIF--
-<?php
-if(!extension_loaded('msgpack')) {
-    echo "skip no msgpack";
-}
 --FILE--
 <?php
+if(!extension_loaded('msgpack')) {
+    dl('msgpack.' . PHP_SHLIB_SUFFIX);
+}
 
 class Foo {
     public $parent;
@@ -42,6 +41,7 @@ foreach ($obj1->children as $k => $v) {
 
     echo gettype($obj_v), "  ", gettype($o_v), PHP_EOL;
 }
+?>
 --EXPECT--
 object  object
 object  object

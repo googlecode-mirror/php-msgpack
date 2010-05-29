@@ -13,6 +13,7 @@ function test($type, $variable) {
 
     echo $type, PHP_EOL;
     echo bin2hex($serialized), PHP_EOL;
+    var_dump($unserialized);
     echo $unserialized == $variable ? 'OK' : 'ERROR', PHP_EOL;
 }
 
@@ -23,10 +24,49 @@ test('array(array(1, 2, 3), arr...', array(array(1, 2, 3), array(4, 5, 6), array
 --EXPECT--
 empty array:
 90
+array(0) {
+}
 OK
 array(1, 2, 3)
 96000101020203
+array(3) {
+  [0]=>
+  int(1)
+  [1]=>
+  int(2)
+  [2]=>
+  int(3)
+}
 OK
 array(array(1, 2, 3), arr...
 96009600010102020301960004010502060296000701080209
+array(3) {
+  [0]=>
+  array(3) {
+    [0]=>
+    int(1)
+    [1]=>
+    int(2)
+    [2]=>
+    int(3)
+  }
+  [1]=>
+  array(3) {
+    [0]=>
+    int(4)
+    [1]=>
+    int(5)
+    [2]=>
+    int(6)
+  }
+  [2]=>
+  array(3) {
+    [0]=>
+    int(7)
+    [1]=>
+    int(8)
+    [2]=>
+    int(9)
+  }
+}
 OK

@@ -13,6 +13,7 @@ function test($type, $variable, $test) {
 
     echo $type, PHP_EOL;
     echo bin2hex($serialized), PHP_EOL;
+    var_dump($unserialized);
     echo $test || $unserialized == $variable ? 'OK' : 'ERROR', PHP_EOL;
 }
 
@@ -33,7 +34,15 @@ $o = new Obj(1, 2, 3);
 
 test('object', $o, false);
 ?>
---EXPECT--
+--EXPECTF--
 object
-84a85f5f636c61737300a34f626aa16101a4002a006202a6004f626a006303
+84a24300a34f626aa16101a4002a006202a6004f626a006303
+object(Obj)#%d (3) {
+  ["a"]=>
+  int(1)
+  ["b":protected]=>
+  int(2)
+  ["c":"Obj":private]=>
+  int(3)
+}
 OK

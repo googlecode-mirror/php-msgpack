@@ -13,6 +13,7 @@ function test($type, $variable, $test) {
 
     echo $type, PHP_EOL;
     echo bin2hex($serialized), PHP_EOL;
+    var_dump($unserialized);
     echo $test || $unserialized == $variable ? 'OK' : 'ERROR', PHP_EOL;
 }
 
@@ -31,4 +32,18 @@ test('array', $a, false);
 --EXPECT--
 array
 94a16194a162a163a164a165a16692a167a168
+array(2) {
+  ["a"]=>
+  array(2) {
+    ["b"]=>
+    string(1) "c"
+    ["d"]=>
+    string(1) "e"
+  }
+  ["f"]=>
+  array(1) {
+    ["g"]=>
+    string(1) "h"
+  }
+}
 OK

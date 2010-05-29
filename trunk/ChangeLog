@@ -1,9 +1,14 @@
 msgpack extension changelog
 
+Version 0.1.2
+-------------
+	* Add Serializable class support.
+	* Fixed arrays and objects reference.
+
 Version 0.1.1
 -------------
-	* Add session support
+	* Add session support.
 
 Version 0.1.0
 -------------
-	* Initial release
+	* Initial release.

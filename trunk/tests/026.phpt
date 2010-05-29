@@ -1,14 +1,12 @@
 --TEST--
 Cyclic array test
 --INI--
-report_memleaks=0
 --SKIPIF--
-<?php
-if(!extension_loaded('msgpack')) {
-    echo "skip no msgpack";
-}
 --FILE--
 <?php
+if(!extension_loaded('msgpack')) {
+    dl('msgpack.' . PHP_SHLIB_SUFFIX);
+}
 
 function test($type, $variable, $test) {
     $serialized = msgpack_serialize($variable);
@@ -16,6 +14,7 @@ function test($type, $variable, $test) {
 
     echo $type, PHP_EOL;
     echo bin2hex($serialized), PHP_EOL;
+    var_dump($unserialized);
     echo $test || $unserialized == $variable ? 'OK' : 'ERROR', PHP_EOL;
 }
 
@@ -40,7 +39,38 @@ var_dump($k);
 ?>
 --EXPECT--
 array
-94a16194a162a163a164a165a16694a16194a162a163a164a165a16681a65f5f7265660005
+94a16194a162a163a164a165a16694a16194a162a163a164a165a16681a2520005
+array(2) {
+  ["a"]=>
+  array(2) {
+    ["b"]=>
+    string(1) "c"
+    ["d"]=>
+    string(1) "e"
+  }
+  ["f"]=>
+  &array(2) {
+    ["a"]=>
+    array(2) {
+      ["b"]=>
+      string(1) "c"
+      ["d"]=>
+      string(1) "e"
+    }
+    ["f"]=>
+    &array(2) {
+      ["a"]=>
+      array(2) {
+        ["b"]=>
+        string(1) "c"
+        ["d"]=>
+        string(1) "e"
+      }
+      ["f"]=>
+      *RECURSION*
+    }
+  }
+}
 OK
 array(1) {
   ["foo"]=>
