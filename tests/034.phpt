@@ -20,6 +20,7 @@ $datas = array(
 );
 
 error_reporting(0);
+
 foreach ($datas as $data) {
 	$str = msgpack_serialize($data);
 	$len = strlen($str);

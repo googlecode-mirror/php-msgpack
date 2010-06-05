@@ -20,7 +20,7 @@ function close() {
 function read($id) {
     global $output;
     $output .= "read" . PHP_EOL;
-    return pack('H*', '92a3666f6f01');
+    return pack('H*', '81a3666f6f01');
 }
 
 function write($id, $data) {
@@ -64,7 +64,7 @@ var_dump($_SESSION);
 --EXPECT--
 bool(true)
 read
-wrote: 94a3666f6f01a474657374a6666f6f626172
+wrote: 82a3666f6f01a474657374a6666f6f626172
 array(2) {
   ["foo"]=>
   int(1)

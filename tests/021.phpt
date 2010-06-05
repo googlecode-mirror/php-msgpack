@@ -42,7 +42,7 @@ test('object', $o, false);
 ?>
 --EXPECTF--
 object
-82a25300a34f626aa27300a80000000100000002
+82c003a34f626aa80000000100000002
 object(Obj)#%d (2) {
   ["a"]=>
   int(1)

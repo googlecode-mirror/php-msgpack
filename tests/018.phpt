@@ -63,7 +63,7 @@ test('wrong', $p, true);
 ?>
 --EXPECTF--
 nonexisting
-82a34f626aa34f626aa163c0
+82c0a34f626aa163c0
 object(Obj)#%d (3) {
   ["a"]=>
   NULL
@@ -74,11 +74,6 @@ object(Obj)#%d (3) {
 }
 OK
 wrong
-82a34f706aa34f706ac0
-object(Opj)#%d (2) {
-  ["a"]=>
-  NULL
-  ["b"]=>
-  NULL
-}
+82c0a34f706ac0
+NULL
 OK

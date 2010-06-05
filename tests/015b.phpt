@@ -21,7 +21,7 @@ function close() {
 
 function read($id) {
     global $output;
-    return pack('H*', '92a3666f6f01');
+    return pack('H*', '81a3666f6f01');
 }
 
 function write($id, $data) {
@@ -51,7 +51,7 @@ var_dump($_SESSION);
 ?>
 --EXPECT--
 2
-92a3666f6f02
+81a3666f6f02
 array(1) {
   ["foo"]=>
   int(2)

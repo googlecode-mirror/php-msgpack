@@ -33,7 +33,7 @@ var_dump(msgpack_unserialize(msgpack_serialize($a)));
 
 --EXPECT--
 array($a, $a)
-94009200a3666f6f019200a3666f6f
+82008100a3666f6f018100a3666f6f
 array(2) {
   [0]=>
   array(1) {
@@ -48,7 +48,7 @@ array(2) {
 }
 OK
 array(&$a, &$a)
-94009200a3666f6f0181a2520002
+82008100a3666f6f0182c001c002
 array(2) {
   [0]=>
   &array(1) {
@@ -63,7 +63,7 @@ array(2) {
 }
 OK
 cyclic
-92009200920081a2520002
+81008100810082c001c002
 array(1) {
   [0]=>
   &array(1) {
