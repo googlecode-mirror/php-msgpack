@@ -34,7 +34,7 @@ function test() {
     return false;
 }
 
-mt_srand(0xface);
+mt_srand(0x4c05b583);
 for ($i = 0; $i < 100; ++$i) {
     if (!test()) break;
 }

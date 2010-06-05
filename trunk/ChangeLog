@@ -1,9 +1,14 @@
 msgpack extension changelog
 
+Version 0.1.3
+-------------
+	* Fix broken random data test.
+	* Change arrays and objects.
+
 Version 0.1.2
 -------------
 	* Add Serializable class support.
-	* Fixed arrays and objects reference.
+	* Fix arrays and objects reference.
 
 Version 0.1.1
 -------------

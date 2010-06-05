@@ -29,11 +29,11 @@ function __autoload($classname) {
     }
 }
 
-test('autoload', '83a85f5f636c61737300a34f626aa16101a16202', false);
+test('autoload', '83c0a34f626aa16101a16202', false);
 ?>
 --EXPECTF--
 autoload
-83a85f5f636c61737300a34f626aa16101a16202
+83c0a34f626aa16101a16202
 object(Obj)#%d (2) {
   ["a"]=>
   int(1)

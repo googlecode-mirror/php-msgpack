@@ -20,6 +20,7 @@ $datas = array(
 );
 
 error_reporting(0);
+
 foreach ($datas as $data) {
     $str = msgpack_serialize($data);
     $len = strlen($str);
@@ -27,9 +28,15 @@ foreach ($datas as $data) {
     // truncated
     for ($i = 0; $i < $len - 1; $i++) {
         $v = msgpack_unserialize(substr($str, 0, $i));
-        if (is_object($data) && $v !== null && $v == $data) {
+
+        if (is_object($data) || is_array($data)) {
+            if ($v !== null && $v != $data) {
+                echo "output at $i:\n";
+                var_dump($v);
+            }
+        } else if ($v !== null && $v == $data) {
             continue;
-        } elseif ($v !== null && $v !== $data) {
+        } else if ($v !== null && $v !== $data) {
             echo "output at $i:\n";
             var_dump($v);
             echo "vs.\n";
@@ -48,4 +55,52 @@ foreach ($datas as $data) {
     }
 }
 ?>
---EXPECT--
+--EXPECTF--
+output at 18:
+array(5) {
+  [0]=>
+  int(1)
+  [1]=>
+  int(2)
+  [2]=>
+  int(3)
+  ["testing"]=>
+  int(10)
+  [3]=>
+  NULL
+}
+output at 19:
+array(5) {
+  [0]=>
+  int(1)
+  [1]=>
+  int(2)
+  [2]=>
+  int(3)
+  ["testing"]=>
+  int(10)
+  [3]=>
+  NULL
+}
+output at 9:
+object(__PHP_Incomplete_Class)#%d (4) {
+  ["__PHP_Incomplete_Class_Name"]=>
+  string(0) ""
+  [115]=>
+  int(116)
+  [100]=>
+  int(67)
+  [108]=>
+  int(97)
+}
+output at 10:
+object(__PHP_Incomplete_Class)#%d (4) {
+  ["__PHP_Incomplete_Class_Name"]=>
+  string(0) ""
+  [115]=>
+  int(116)
+  [100]=>
+  int(67)
+  [108]=>
+  int(97)
+}

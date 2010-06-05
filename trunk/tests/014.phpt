@@ -34,7 +34,7 @@ test('object', $a, false);
 ?>
 --EXPECTF--
 object
-940083a24300a34f626aa16101a162020181a2520002
+820083c0a34f626aa16101a162020182c001c002
 array(2) {
   [0]=>
   &object(Obj)#%d (2) {

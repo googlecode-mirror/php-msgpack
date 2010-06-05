@@ -31,7 +31,7 @@ test('array', $a, false);
 ?>
 --EXPECT--
 array
-94a16194a162a163a164a165a16692a167a168
+82a16182a162a163a164a165a16681a167a168
 array(2) {
   ["a"]=>
   array(2) {

@@ -16,11 +16,11 @@ function test($type, $variable, $test) {
     var_dump($unserialized);
 }
 
-test('incom', '83a85f5f636c61737300a34f626aa16101a16202', false);
+test('incom', '83c0a34f626aa16101a16202', false);
 ?>
 --EXPECTF--
 incom
-83a85f5f636c61737300a34f626aa16101a16202
+83c0a34f626aa16101a16202
 object(__PHP_Incomplete_Class)#%d (3) {
   ["__PHP_Incomplete_Class_Name"]=>
   string(3) "Obj"
