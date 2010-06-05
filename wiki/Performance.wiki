@@ -19,8 +19,8 @@ $values = rand();
 
 === Speed (sec) ===
 || || *default* || *msgpack* ||
-|| *serialize* || 0.0616 _(100%)_ || 0.0609 _(98%)_ ||
-|| *unserialize* || 0.0557 _(100%)_ || 0.0372 _(67%)_ ||
+|| *serialize* || 0.059 _(100%)_ || 0.059 _(104%)_ ||
+|| *unserialize* || 0.054 _(100%)_ || 0.052 _(96%)_ ||
 
 === Size (byte) ===
 || *default* || *msgpack* ||
@@ -35,12 +35,12 @@ $value = log(rand());
 
 === Speed (sec) ===
 || || *default* || *msgpack* ||
-|| *serialize* || 0.306 _(100%)_ || 0.070 _(23%)_ ||
-|| *unserialize* || 0.219 _(100%)_ || 0.046 _(21%)_ ||
+|| *serialize* || 0.242 _(100%)_ || 0.059 _(24%)_ ||
+|| *unserialize* || 0.167 _(100%)_ || 0.051 _(31%)_ ||
 
 === Size (byte) ===
 || default || msgpack ||
-|| 54 _(100%)_ || 9 _(17%)_ ||
+|| 54 _(100%)_ || 9 _(16%)_ ||
 
 
 == String ==
@@ -51,12 +51,12 @@ $value = md5(rand());
 
 === Speed (sec) ===
 || || *default* || *msgpack* ||
-|| *serialize* || 0.0743 _(100%)_ || 0.0617 _(83%)_ ||
-|| *unserialize* || 0.0674 _(100%)_ || 0.0405 _(60%)_ ||
+|| *serialize* || 0.057 _(100%)_ || 0.059 _(104%)_ ||
+|| *unserialize* || 0.055 _(100%)_ || 0.055 _(100%)_ ||
 
 === Size (byte) ===
 || *default* || *msgpack* ||
-|| 40 _(100%)_ || 35 _(88%)_ ||
+|| 40 _(100%)_ || 35 _(87%)_ ||
 
 
 == Array ==
@@ -67,8 +67,8 @@ $value = array(md5(rand()), md5(rand()), md5(rand()), md5(rand()), md5(rand()));
 
 === Speed (sec) ===
 || || *default* || *msgpack* ||
-|| *serialize* || 0.140 _(100%)_ || 0.132 _(94%)_ ||
-|| *unserialize* || 0.167 _(100%)_ || 0.166 _(99%)_ ||
+|| *serialize* || 0.142 _(100%)_ || 0.128 _(90%)_ ||
+|| *unserialize* || 0.167 _(100%)_ || 0.148 _(89%)_ ||
 
 === Size (byte) ===
 || *default* || *msgpack* ||
@@ -87,8 +87,8 @@ $value[md5(rand())] = md5(rand());
 
 === Speed (sec) ===
 || || *default* || *msgpack* ||
-|| *serialize* || 0.181 _(100%)_ || 0.151 _(83%)_ ||
-|| *unserialize* || 0.242 _(100%)_ || 0.210 _(87%)_ ||
+|| *serialize* || 0.157 _(100%)_ || 0.146 _(93%)_ ||
+|| *unserialize* || 0.232 _(100%)_ || 0.205 _(88%)_ ||
 
 === Size (byte) ===
 || *default* || *msgpack* ||
@@ -108,9 +108,9 @@ $value->param5 = null;
 
 === Speed (sec) ===
 || || *default* || *msgpack* ||
-|| *serialize* || 0.190 _(100%)_ || 0.210 _(111%)_ ||
-|| *unserialize* || 0.313 _(100%)_ || 0.352 _(112%)_ ||
+|| *serialize* || 0.190 _(100%)_ || 0.183 _(96%)_ ||
+|| *unserialize* || 0.309 _(100%)_ || 0.283 _(92%)_ ||
 
 === Size (byte) ===
 || *default* || *msgpack* ||
-|| 275 _(100%)_ || 197 _(72%)_ ||
+|| 275 _(100%)_ || 195 _(71%)_ ||
