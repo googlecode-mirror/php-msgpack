@@ -2,7 +2,7 @@
 #ifndef PHP_MSGPACK_H
 #define PHP_MSGPACK_H
 
-#define MSGPACK_VERSION "0.1.3"
+#define MSGPACK_VERSION "0.1.4"
 
 #include "ext/standard/php_smart_str.h"
 

@@ -22,6 +22,13 @@ enum msgpack_serialize_type
     MSGPACK_SERIALIZE_TYPE_CUSTOM_OBJECT,
 };
 
+#if (PHP_MAJOR_VERSION == 5 && PHP_MINOR_VERSION < 3)
+#   define Z_ISREF_P(pz)         PZVAL_IS_REF(pz)
+#   define Z_ADDREF_PP(ppz)      ZVAL_ADDREF(*(ppz))
+#   define Z_SET_ISREF_PP(ppz)   (*(ppz))->is_ref = 1
+#   define Z_UNSET_ISREF_PP(ppz) (*(ppz))->is_ref = 0
+#endif
+
 static PHP_FUNCTION(msgpack_serialize);
 static PHP_FUNCTION(msgpack_unserialize);
 
@@ -769,55 +776,55 @@ inline static int msgpack_unserialize_zval(
             case CS_HEADER:
                 switch (*p)
                 {
-                    case 0x00 ... 0x7f: // Positive Fixnum
+                    case 0x00 ... 0x7f: /* Positive Fixnum */
                         msgpack_var_push(var_hash, return_value);
                         ZVAL_LONG(*return_value, *(uint8_t*)p);
                         goto _finish;
-                    case 0xe0 ... 0xff: // Negative Fixnum
+                    case 0xe0 ... 0xff: /* Negative Fixnum */
                         msgpack_var_push(var_hash, return_value);
                         ZVAL_LONG(*return_value, *(int8_t*)p);
                         goto _finish;
-                    case 0xc0 ... 0xdf: // Variable
+                    case 0xc0 ... 0xdf: /* Variable */
                         switch (*p)
                         {
-                            case 0xc0:  // nil
+                            case 0xc0:  /* nil */
                                 msgpack_var_push(var_hash, return_value);
                                 ZVAL_NULL(*return_value);
                                 goto _finish;
-                            case 0xc2:  // false
+                            case 0xc2:  /* false */
                                 msgpack_var_push(var_hash, return_value);
                                 ZVAL_BOOL(*return_value, 0);
                                 goto _finish;
-                            case 0xc3:  // true
+                            case 0xc3:  /* true */
                                 msgpack_var_push(var_hash, return_value);
                                 ZVAL_BOOL(*return_value, 1);
                                 goto _finish;
-                            case 0xca:  // float
-                            case 0xcb:  // double
-                            case 0xcc:  // unsigned int  8
-                            case 0xcd:  // unsigned int 16
-                            case 0xce:  // unsigned int 32
-                            case 0xcf:  // unsigned int 64
-                            case 0xd0:  // signed int  8
-                            case 0xd1:  // signed int 16
-                            case 0xd2:  // signed int 32
-                            case 0xd3:  // signed int 64
+                            case 0xca:  /* float */
+                            case 0xcb:  /* double */
+                            case 0xcc:  /* unsigned int  8 */
+                            case 0xcd:  /* unsigned int 16 */
+                            case 0xce:  /* unsigned int 32 */
+                            case 0xcf:  /* unsigned int 64 */
+                            case 0xd0:  /* signed int  8 */
+                            case 0xd1:  /* signed int 16 */
+                            case 0xd2:  /* signed int 32 */
+                            case 0xd3:  /* signed int 64 */
                                 trail = 1 << (((unsigned int)*p) & 0x03);
                                 cs = ((unsigned int)*p & 0x1f);
                                 goto _fixed_trail_again;
-                            case 0xda:  // raw 16
-                            case 0xdb:  // raw 32
-                            case 0xdc:  // array 16
-                            case 0xdd:  // array 32
-                            case 0xde:  // map 16
-                            case 0xdf:  // map 32
+                            case 0xda:  /* raw 16 */
+                            case 0xdb:  /* raw 32 */
+                            case 0xdc:  /* array 16 */
+                            case 0xdd:  /* array 32 */
+                            case 0xde:  /* map 16 */
+                            case 0xdf:  /* map 32 */
                                 trail = 2 << (((unsigned int)*p) & 0x01);
                                 cs = ((unsigned int)*p & 0x1f);
                                 goto _fixed_trail_again;
                             default:
                                 goto _failed;
                         }
-                    case 0xa0 ... 0xbf: // FixRaw
+                    case 0xa0 ... 0xbf: /* FixRaw */
                         trail = ((unsigned int)*p & 0x1f);
                         if (trail == 0)
                         {
@@ -825,7 +832,7 @@ inline static int msgpack_unserialize_zval(
                         }
                         cs = ACS_RAW_VALUE;
                         goto _fixed_trail_again;
-                    case 0x90 ... 0x9f: // FixArray
+                    case 0x90 ... 0x9f: /* FixArray */
                     {
                         size_t read = 0;
                         ct = (((unsigned int)*p) & 0x0f);
@@ -842,7 +849,7 @@ inline static int msgpack_unserialize_zval(
                         --p;
                         goto _finish;
                     }
-                    case 0x80 ... 0x8f: // FixMap
+                    case 0x80 ... 0x8f: /* FixMap */
                     {
                         size_t read = 0;
                         ct = (((unsigned int)*p) & 0x0f);
@@ -1168,10 +1175,8 @@ inline static int msgpack_unserialize_object(
         {
             switch (Z_LVAL_P(val))
             {
-                //case 1:
                 case MSGPACK_SERIALIZE_TYPE_REFERENCE:
                 {
-                    //zend_error(E_WARNING, "object-1");
                     zval **rval;
 
                     zval_ptr_dtor(&key);
@@ -1243,12 +1248,9 @@ inline static int msgpack_unserialize_object(
 
                     return ret;
                 }
-                //case 2:
                 case MSGPACK_SERIALIZE_TYPE_OBJECT:
                 {
                     zval **rval;
-
-                    //zend_error(E_WARNING, "object-2");
 
                     zval_ptr_dtor(&key);
                     zval_ptr_dtor(&val);
@@ -1323,9 +1325,7 @@ inline static int msgpack_unserialize_object(
 
                     return ret;
                 }
-                //case 3:
                 case MSGPACK_SERIALIZE_TYPE_CUSTOM_OBJECT:
-                    //zend_error(E_WARNING, "object-3");
                     custom_object = 1;
 
                     zval_ptr_dtor(&val);
@@ -1388,7 +1388,7 @@ inline static int msgpack_unserialize_object(
         p += read;
         len -= read;
 
-        //update
+        /* update */
         switch (Z_TYPE_P(key))
         {
             case IS_LONG:
@@ -1639,7 +1639,6 @@ inline static int msgpack_unserialize_object(
     return ret;
 }
 
-
 PHP_MSGPACK_API void php_msgpack_serialize(smart_str *buf, zval *val TSRMLS_DC)
 {
     php_serialize_data_t var_hash;
@@ -1674,15 +1673,11 @@ PHP_MSGPACK_API void php_msgpack_unserialize(
         case MSGPACK_UNPACK_PARSE_ERROR:
             zend_error(E_WARNING,
                        "[msgpack] (php_msgpack_unserialize) Parse error");
-            zval_ptr_dtor(&return_value);
-            RETVAL_NULL();
             break;
         case MSGPACK_UNPACK_CONTINUE:
             zend_error(E_WARNING,
                        "[msgpack] (php_msgpack_unserialize) "
                        "Insufficient data for unserializeng");
-            zval_ptr_dtor(&return_value);
-            RETVAL_NULL();
             break;
         case MSGPACK_UNPACK_EXTRA_BYTES:
             zend_error(E_WARNING,
@@ -1693,8 +1688,6 @@ PHP_MSGPACK_API void php_msgpack_unserialize(
         default:
             zend_error(E_WARNING,
                        "[msgpack] (php_msgpack_unserialize) Unknown result");
-            zval_ptr_dtor(&return_value);
-            RETVAL_NULL();
             break;
     }
 

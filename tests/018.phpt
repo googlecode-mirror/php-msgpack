@@ -75,5 +75,10 @@ object(Obj)#%d (3) {
 OK
 wrong
 82c0a34f706ac0
-NULL
+object(Opj)#%d (2) {
+  ["a"]=>
+  NULL
+  ["b"]=>
+  NULL
+}
 OK

@@ -100,188 +100,188 @@ write: 83a36f6c6484c0a3466f6fa700466f6f00643184c0a3426172a2643182c002c001a700426
 array(3) {
   ["old"]=>
   object(Foo)#3 (3) {
-    ["d1":"Foo":private]=>
+    [%r"?d1"?:("Foo":)?private"?%r]=>
     object(Bar)#4 (3) {
       ["d1"]=>
       object(Foo)#3 (3) {
-        ["d1":"Foo":private]=>
+        [%r"?d1"?:("Foo":)?private"?%r]=>
         object(Bar)#4 (3) {
           ["d1"]=>
           *RECURSION*
-          ["d2":"Bar":private]=>
+          [%r"?d2"?:("Bar":)?private"?%r]=>
           *RECURSION*
-          ["d3":protected]=>
+          [%r"?d3"?:protected"?%r]=>
           *RECURSION*
         }
-        ["d2":protected]=>
+        [%r"?d2"?:protected"?%r]=>
         object(Bar)#4 (3) {
           ["d1"]=>
           *RECURSION*
-          ["d2":"Bar":private]=>
+          [%r"?d2"?:("Bar":)?private"?%r]=>
           *RECURSION*
-          ["d3":protected]=>
+          [%r"?d3"?:protected"?%r]=>
           *RECURSION*
         }
         ["d3"]=>
         object(Bar)#4 (3) {
           ["d1"]=>
           *RECURSION*
-          ["d2":"Bar":private]=>
+          [%r"?d2"?:("Bar":)?private"?%r]=>
           *RECURSION*
-          ["d3":protected]=>
+          [%r"?d3"?:protected"?%r]=>
           *RECURSION*
         }
       }
-      ["d2":"Bar":private]=>
+      [%r"?d2"?:("Bar":)?private"?%r]=>
       object(Foo)#3 (3) {
-        ["d1":"Foo":private]=>
+        [%r"?d1"?:("Foo":)?private"?%r]=>
         object(Bar)#4 (3) {
           ["d1"]=>
           *RECURSION*
-          ["d2":"Bar":private]=>
+          [%r"?d2"?:("Bar":)?private"?%r]=>
           *RECURSION*
-          ["d3":protected]=>
+          [%r"?d3"?:protected"?%r]=>
           *RECURSION*
         }
-        ["d2":protected]=>
+        [%r"?d2"?:protected"?%r]=>
         object(Bar)#4 (3) {
           ["d1"]=>
           *RECURSION*
-          ["d2":"Bar":private]=>
+          [%r"?d2"?:("Bar":)?private"?%r]=>
           *RECURSION*
-          ["d3":protected]=>
+          [%r"?d3"?:protected"?%r]=>
           *RECURSION*
         }
         ["d3"]=>
         object(Bar)#4 (3) {
           ["d1"]=>
           *RECURSION*
-          ["d2":"Bar":private]=>
+          [%r"?d2"?:("Bar":)?private"?%r]=>
           *RECURSION*
-          ["d3":protected]=>
+          [%r"?d3"?:protected"?%r]=>
           *RECURSION*
         }
       }
-      ["d3":protected]=>
+      [%r"?d3"?:protected"?%r]=>
       object(Foo)#3 (3) {
-        ["d1":"Foo":private]=>
+        [%r"?d1"?:("Foo":)?private"?%r]=>
         object(Bar)#4 (3) {
           ["d1"]=>
           *RECURSION*
-          ["d2":"Bar":private]=>
+          [%r"?d2"?:("Bar":)?private"?%r]=>
           *RECURSION*
-          ["d3":protected]=>
+          [%r"?d3"?:protected"?%r]=>
           *RECURSION*
         }
-        ["d2":protected]=>
+        [%r"?d2"?:protected"?%r]=>
         object(Bar)#4 (3) {
           ["d1"]=>
           *RECURSION*
-          ["d2":"Bar":private]=>
+          [%r"?d2"?:("Bar":)?private"?%r]=>
           *RECURSION*
-          ["d3":protected]=>
+          [%r"?d3"?:protected"?%r]=>
           *RECURSION*
         }
         ["d3"]=>
         object(Bar)#4 (3) {
           ["d1"]=>
           *RECURSION*
-          ["d2":"Bar":private]=>
+          [%r"?d2"?:("Bar":)?private"?%r]=>
           *RECURSION*
-          ["d3":protected]=>
+          [%r"?d3"?:protected"?%r]=>
           *RECURSION*
         }
       }
     }
-    ["d2":protected]=>
+    [%r"?d2"?:protected"?%r]=>
     object(Bar)#4 (3) {
       ["d1"]=>
       object(Foo)#3 (3) {
-        ["d1":"Foo":private]=>
+        [%r"?d1"?:("Foo":)?private"?%r]=>
         object(Bar)#4 (3) {
           ["d1"]=>
           *RECURSION*
-          ["d2":"Bar":private]=>
+          [%r"?d2"?:("Bar":)?private"?%r]=>
           *RECURSION*
-          ["d3":protected]=>
+          [%r"?d3"?:protected"?%r]=>
           *RECURSION*
         }
-        ["d2":protected]=>
+        [%r"?d2"?:protected"?%r]=>
         object(Bar)#4 (3) {
           ["d1"]=>
           *RECURSION*
-          ["d2":"Bar":private]=>
+          [%r"?d2"?:("Bar":)?private"?%r]=>
           *RECURSION*
-          ["d3":protected]=>
+          [%r"?d3"?:protected"?%r]=>
           *RECURSION*
         }
         ["d3"]=>
         object(Bar)#4 (3) {
           ["d1"]=>
           *RECURSION*
-          ["d2":"Bar":private]=>
+          [%r"?d2"?:("Bar":)?private"?%r]=>
           *RECURSION*
-          ["d3":protected]=>
+          [%r"?d3"?:protected"?%r]=>
           *RECURSION*
         }
       }
-      ["d2":"Bar":private]=>
+      [%r"?d2"?:("Bar":)?private"?%r]=>
       object(Foo)#3 (3) {
-        ["d1":"Foo":private]=>
+        [%r"?d1"?:("Foo":)?private"?%r]=>
         object(Bar)#4 (3) {
           ["d1"]=>
           *RECURSION*
-          ["d2":"Bar":private]=>
+          [%r"?d2"?:("Bar":)?private"?%r]=>
           *RECURSION*
-          ["d3":protected]=>
+          [%r"?d3"?:protected"?%r]=>
           *RECURSION*
         }
-        ["d2":protected]=>
+        [%r"?d2"?:protected"?%r]=>
         object(Bar)#4 (3) {
           ["d1"]=>
           *RECURSION*
-          ["d2":"Bar":private]=>
+          [%r"?d2"?:("Bar":)?private"?%r]=>
           *RECURSION*
-          ["d3":protected]=>
+          [%r"?d3"?:protected"?%r]=>
           *RECURSION*
         }
         ["d3"]=>
         object(Bar)#4 (3) {
           ["d1"]=>
           *RECURSION*
-          ["d2":"Bar":private]=>
+          [%r"?d2"?:("Bar":)?private"?%r]=>
           *RECURSION*
-          ["d3":protected]=>
+          [%r"?d3"?:protected"?%r]=>
           *RECURSION*
         }
       }
-      ["d3":protected]=>
+      [%r"?d3"?:protected"?%r]=>
       object(Foo)#3 (3) {
-        ["d1":"Foo":private]=>
+        [%r"?d1"?:("Foo":)?private"?%r]=>
         object(Bar)#4 (3) {
           ["d1"]=>
           *RECURSION*
-          ["d2":"Bar":private]=>
+          [%r"?d2"?:("Bar":)?private"?%r]=>
           *RECURSION*
-          ["d3":protected]=>
+          [%r"?d3"?:protected"?%r]=>
           *RECURSION*
         }
-        ["d2":protected]=>
+        [%r"?d2"?:protected"?%r]=>
         object(Bar)#4 (3) {
           ["d1"]=>
           *RECURSION*
-          ["d2":"Bar":private]=>
+          [%r"?d2"?:("Bar":)?private"?%r]=>
           *RECURSION*
-          ["d3":protected]=>
+          [%r"?d3"?:protected"?%r]=>
           *RECURSION*
         }
         ["d3"]=>
         object(Bar)#4 (3) {
           ["d1"]=>
           *RECURSION*
-          ["d2":"Bar":private]=>
+          [%r"?d2"?:("Bar":)?private"?%r]=>
           *RECURSION*
-          ["d3":protected]=>
+          [%r"?d3"?:protected"?%r]=>
           *RECURSION*
         }
       }
@@ -290,91 +290,91 @@ array(3) {
     object(Bar)#4 (3) {
       ["d1"]=>
       object(Foo)#3 (3) {
-        ["d1":"Foo":private]=>
+        [%r"?d1"?:("Foo":)?private"?%r]=>
         object(Bar)#4 (3) {
           ["d1"]=>
           *RECURSION*
-          ["d2":"Bar":private]=>
+          [%r"?d2"?:("Bar":)?private"?%r]=>
           *RECURSION*
-          ["d3":protected]=>
+          [%r"?d3"?:protected"?%r]=>
           *RECURSION*
         }
-        ["d2":protected]=>
+        [%r"?d2"?:protected"?%r]=>
         object(Bar)#4 (3) {
           ["d1"]=>
           *RECURSION*
-          ["d2":"Bar":private]=>
+          [%r"?d2"?:("Bar":)?private"?%r]=>
           *RECURSION*
-          ["d3":protected]=>
+          [%r"?d3"?:protected"?%r]=>
           *RECURSION*
         }
         ["d3"]=>
         object(Bar)#4 (3) {
           ["d1"]=>
           *RECURSION*
-          ["d2":"Bar":private]=>
+          [%r"?d2"?:("Bar":)?private"?%r]=>
           *RECURSION*
-          ["d3":protected]=>
+          [%r"?d3"?:protected"?%r]=>
           *RECURSION*
         }
       }
-      ["d2":"Bar":private]=>
+      [%r"?d2"?:("Bar":)?private"?%r]=>
       object(Foo)#3 (3) {
-        ["d1":"Foo":private]=>
+        [%r"?d1"?:("Foo":)?private"?%r]=>
         object(Bar)#4 (3) {
           ["d1"]=>
           *RECURSION*
-          ["d2":"Bar":private]=>
+          [%r"?d2"?:("Bar":)?private"?%r]=>
           *RECURSION*
-          ["d3":protected]=>
+          [%r"?d3"?:protected"?%r]=>
           *RECURSION*
         }
-        ["d2":protected]=>
+        [%r"?d2"?:protected"?%r]=>
         object(Bar)#4 (3) {
           ["d1"]=>
           *RECURSION*
-          ["d2":"Bar":private]=>
+          [%r"?d2"?:("Bar":)?private"?%r]=>
           *RECURSION*
-          ["d3":protected]=>
+          [%r"?d3"?:protected"?%r]=>
           *RECURSION*
         }
         ["d3"]=>
         object(Bar)#4 (3) {
           ["d1"]=>
           *RECURSION*
-          ["d2":"Bar":private]=>
+          [%r"?d2"?:("Bar":)?private"?%r]=>
           *RECURSION*
-          ["d3":protected]=>
+          [%r"?d3"?:protected"?%r]=>
           *RECURSION*
         }
       }
-      ["d3":protected]=>
+      [%r"?d3"?:protected"?%r]=>
       object(Foo)#3 (3) {
-        ["d1":"Foo":private]=>
+        [%r"?d1"?:("Foo":)?private"?%r]=>
         object(Bar)#4 (3) {
           ["d1"]=>
           *RECURSION*
-          ["d2":"Bar":private]=>
+          [%r"?d2"?:("Bar":)?private"?%r]=>
           *RECURSION*
-          ["d3":protected]=>
+          [%r"?d3"?:protected"?%r]=>
           *RECURSION*
         }
-        ["d2":protected]=>
+        [%r"?d2"?:protected"?%r]=>
         object(Bar)#4 (3) {
           ["d1"]=>
           *RECURSION*
-          ["d2":"Bar":private]=>
+          [%r"?d2"?:("Bar":)?private"?%r]=>
           *RECURSION*
-          ["d3":protected]=>
+          [%r"?d3"?:protected"?%r]=>
           *RECURSION*
         }
         ["d3"]=>
         object(Bar)#4 (3) {
           ["d1"]=>
           *RECURSION*
-          ["d2":"Bar":private]=>
+          [%r"?d2"?:("Bar":)?private"?%r]=>
           *RECURSION*
-          ["d3":protected]=>
+          [%r"?d3"?:protected"?%r]=>
           *RECURSION*
         }
       }
@@ -386,61 +386,61 @@ array(3) {
   object(Bar)#5 (3) {
     ["d1"]=>
     object(Foo)#6 (3) {
-      ["d1":"Foo":private]=>
+      [%r"?d1"?:("Foo":)?private"?%r]=>
       object(Bar)#5 (3) {
         ["d1"]=>
         object(Foo)#6 (3) {
-          ["d1":"Foo":private]=>
+          [%r"?d1"?:("Foo":)?private"?%r]=>
           *RECURSION*
-          ["d2":protected]=>
-          *RECURSION*
-          ["d3"]=>
-          *RECURSION*
-        }
-        ["d2":"Bar":private]=>
-        object(Foo)#6 (3) {
-          ["d1":"Foo":private]=>
-          *RECURSION*
-          ["d2":protected]=>
+          [%r"?d2"?:protected"?%r]=>
           *RECURSION*
           ["d3"]=>
           *RECURSION*
         }
-        ["d3":protected]=>
+        [%r"?d2"?:("Bar":)?private"?%r]=>
         object(Foo)#6 (3) {
-          ["d1":"Foo":private]=>
+          [%r"?d1"?:("Foo":)?private"?%r]=>
           *RECURSION*
-          ["d2":protected]=>
+          [%r"?d2"?:protected"?%r]=>
+          *RECURSION*
+          ["d3"]=>
+          *RECURSION*
+        }
+        [%r"?d3"?:protected"?%r]=>
+        object(Foo)#6 (3) {
+          [%r"?d1"?:("Foo":)?private"?%r]=>
+          *RECURSION*
+          [%r"?d2"?:protected"?%r]=>
           *RECURSION*
           ["d3"]=>
           *RECURSION*
         }
       }
-      ["d2":protected]=>
+      [%r"?d2"?:protected"?%r]=>
       object(Bar)#5 (3) {
         ["d1"]=>
         object(Foo)#6 (3) {
-          ["d1":"Foo":private]=>
+          [%r"?d1"?:("Foo":)?private"?%r]=>
           *RECURSION*
-          ["d2":protected]=>
-          *RECURSION*
-          ["d3"]=>
-          *RECURSION*
-        }
-        ["d2":"Bar":private]=>
-        object(Foo)#6 (3) {
-          ["d1":"Foo":private]=>
-          *RECURSION*
-          ["d2":protected]=>
+          [%r"?d2"?:protected"?%r]=>
           *RECURSION*
           ["d3"]=>
           *RECURSION*
         }
-        ["d3":protected]=>
+        [%r"?d2"?:("Bar":)?private"?%r]=>
         object(Foo)#6 (3) {
-          ["d1":"Foo":private]=>
+          [%r"?d1"?:("Foo":)?private"?%r]=>
           *RECURSION*
-          ["d2":protected]=>
+          [%r"?d2"?:protected"?%r]=>
+          *RECURSION*
+          ["d3"]=>
+          *RECURSION*
+        }
+        [%r"?d3"?:protected"?%r]=>
+        object(Foo)#6 (3) {
+          [%r"?d1"?:("Foo":)?private"?%r]=>
+          *RECURSION*
+          [%r"?d2"?:protected"?%r]=>
           *RECURSION*
           ["d3"]=>
           *RECURSION*
@@ -450,90 +450,90 @@ array(3) {
       object(Bar)#5 (3) {
         ["d1"]=>
         object(Foo)#6 (3) {
-          ["d1":"Foo":private]=>
+          [%r"?d1"?:("Foo":)?private"?%r]=>
           *RECURSION*
-          ["d2":protected]=>
-          *RECURSION*
-          ["d3"]=>
-          *RECURSION*
-        }
-        ["d2":"Bar":private]=>
-        object(Foo)#6 (3) {
-          ["d1":"Foo":private]=>
-          *RECURSION*
-          ["d2":protected]=>
+          [%r"?d2"?:protected"?%r]=>
           *RECURSION*
           ["d3"]=>
           *RECURSION*
         }
-        ["d3":protected]=>
+        [%r"?d2"?:("Bar":)?private"?%r]=>
         object(Foo)#6 (3) {
-          ["d1":"Foo":private]=>
+          [%r"?d1"?:("Foo":)?private"?%r]=>
           *RECURSION*
-          ["d2":protected]=>
+          [%r"?d2"?:protected"?%r]=>
+          *RECURSION*
+          ["d3"]=>
+          *RECURSION*
+        }
+        [%r"?d3"?:protected"?%r]=>
+        object(Foo)#6 (3) {
+          [%r"?d1"?:("Foo":)?private"?%r]=>
+          *RECURSION*
+          [%r"?d2"?:protected"?%r]=>
           *RECURSION*
           ["d3"]=>
           *RECURSION*
         }
       }
     }
-    ["d2":"Bar":private]=>
+    [%r"?d2"?:("Bar":)?private"?%r]=>
     object(Foo)#6 (3) {
-      ["d1":"Foo":private]=>
+      [%r"?d1"?:("Foo":)?private"?%r]=>
       object(Bar)#5 (3) {
         ["d1"]=>
         object(Foo)#6 (3) {
-          ["d1":"Foo":private]=>
+          [%r"?d1"?:("Foo":)?private"?%r]=>
           *RECURSION*
-          ["d2":protected]=>
-          *RECURSION*
-          ["d3"]=>
-          *RECURSION*
-        }
-        ["d2":"Bar":private]=>
-        object(Foo)#6 (3) {
-          ["d1":"Foo":private]=>
-          *RECURSION*
-          ["d2":protected]=>
+          [%r"?d2"?:protected"?%r]=>
           *RECURSION*
           ["d3"]=>
           *RECURSION*
         }
-        ["d3":protected]=>
+        [%r"?d2"?:("Bar":)?private"?%r]=>
         object(Foo)#6 (3) {
-          ["d1":"Foo":private]=>
+          [%r"?d1"?:("Foo":)?private"?%r]=>
           *RECURSION*
-          ["d2":protected]=>
+          [%r"?d2"?:protected"?%r]=>
+          *RECURSION*
+          ["d3"]=>
+          *RECURSION*
+        }
+        [%r"?d3"?:protected"?%r]=>
+        object(Foo)#6 (3) {
+          [%r"?d1"?:("Foo":)?private"?%r]=>
+          *RECURSION*
+          [%r"?d2"?:protected"?%r]=>
           *RECURSION*
           ["d3"]=>
           *RECURSION*
         }
       }
-      ["d2":protected]=>
+      [%r"?d2"?:protected"?%r]=>
       object(Bar)#5 (3) {
         ["d1"]=>
         object(Foo)#6 (3) {
-          ["d1":"Foo":private]=>
+          [%r"?d1"?:("Foo":)?private"?%r]=>
           *RECURSION*
-          ["d2":protected]=>
-          *RECURSION*
-          ["d3"]=>
-          *RECURSION*
-        }
-        ["d2":"Bar":private]=>
-        object(Foo)#6 (3) {
-          ["d1":"Foo":private]=>
-          *RECURSION*
-          ["d2":protected]=>
+          [%r"?d2"?:protected"?%r]=>
           *RECURSION*
           ["d3"]=>
           *RECURSION*
         }
-        ["d3":protected]=>
+        [%r"?d2"?:("Bar":)?private"?%r]=>
         object(Foo)#6 (3) {
-          ["d1":"Foo":private]=>
+          [%r"?d1"?:("Foo":)?private"?%r]=>
           *RECURSION*
-          ["d2":protected]=>
+          [%r"?d2"?:protected"?%r]=>
+          *RECURSION*
+          ["d3"]=>
+          *RECURSION*
+        }
+        [%r"?d3"?:protected"?%r]=>
+        object(Foo)#6 (3) {
+          [%r"?d1"?:("Foo":)?private"?%r]=>
+          *RECURSION*
+          [%r"?d2"?:protected"?%r]=>
           *RECURSION*
           ["d3"]=>
           *RECURSION*
@@ -543,90 +543,90 @@ array(3) {
       object(Bar)#5 (3) {
         ["d1"]=>
         object(Foo)#6 (3) {
-          ["d1":"Foo":private]=>
+          [%r"?d1"?:("Foo":)?private"?%r]=>
           *RECURSION*
-          ["d2":protected]=>
-          *RECURSION*
-          ["d3"]=>
-          *RECURSION*
-        }
-        ["d2":"Bar":private]=>
-        object(Foo)#6 (3) {
-          ["d1":"Foo":private]=>
-          *RECURSION*
-          ["d2":protected]=>
+          [%r"?d2"?:protected"?%r]=>
           *RECURSION*
           ["d3"]=>
           *RECURSION*
         }
-        ["d3":protected]=>
+        [%r"?d2"?:("Bar":)?private"?%r]=>
         object(Foo)#6 (3) {
-          ["d1":"Foo":private]=>
+          [%r"?d1"?:("Foo":)?private"?%r]=>
           *RECURSION*
-          ["d2":protected]=>
+          [%r"?d2"?:protected"?%r]=>
+          *RECURSION*
+          ["d3"]=>
+          *RECURSION*
+        }
+        [%r"?d3"?:protected"?%r]=>
+        object(Foo)#6 (3) {
+          [%r"?d1"?:("Foo":)?private"?%r]=>
+          *RECURSION*
+          [%r"?d2"?:protected"?%r]=>
           *RECURSION*
           ["d3"]=>
           *RECURSION*
         }
       }
     }
-    ["d3":protected]=>
+    [%r"?d3"?:protected"?%r]=>
     object(Foo)#6 (3) {
-      ["d1":"Foo":private]=>
+      [%r"?d1"?:("Foo":)?private"?%r]=>
       object(Bar)#5 (3) {
         ["d1"]=>
         object(Foo)#6 (3) {
-          ["d1":"Foo":private]=>
+          [%r"?d1"?:("Foo":)?private"?%r]=>
           *RECURSION*
-          ["d2":protected]=>
-          *RECURSION*
-          ["d3"]=>
-          *RECURSION*
-        }
-        ["d2":"Bar":private]=>
-        object(Foo)#6 (3) {
-          ["d1":"Foo":private]=>
-          *RECURSION*
-          ["d2":protected]=>
+          [%r"?d2"?:protected"?%r]=>
           *RECURSION*
           ["d3"]=>
           *RECURSION*
         }
-        ["d3":protected]=>
+        [%r"?d2"?:("Bar":)?private"?%r]=>
         object(Foo)#6 (3) {
-          ["d1":"Foo":private]=>
+          [%r"?d1"?:("Foo":)?private"?%r]=>
           *RECURSION*
-          ["d2":protected]=>
+          [%r"?d2"?:protected"?%r]=>
+          *RECURSION*
+          ["d3"]=>
+          *RECURSION*
+        }
+        [%r"?d3"?:protected"?%r]=>
+        object(Foo)#6 (3) {
+          [%r"?d1"?:("Foo":)?private"?%r]=>
+          *RECURSION*
+          [%r"?d2"?:protected"?%r]=>
           *RECURSION*
           ["d3"]=>
           *RECURSION*
         }
       }
-      ["d2":protected]=>
+      [%r"?d2"?:protected"?%r]=>
       object(Bar)#5 (3) {
         ["d1"]=>
         object(Foo)#6 (3) {
-          ["d1":"Foo":private]=>
+          [%r"?d1"?:("Foo":)?private"?%r]=>
           *RECURSION*
-          ["d2":protected]=>
-          *RECURSION*
-          ["d3"]=>
-          *RECURSION*
-        }
-        ["d2":"Bar":private]=>
-        object(Foo)#6 (3) {
-          ["d1":"Foo":private]=>
-          *RECURSION*
-          ["d2":protected]=>
+          [%r"?d2"?:protected"?%r]=>
           *RECURSION*
           ["d3"]=>
           *RECURSION*
         }
-        ["d3":protected]=>
+        [%r"?d2"?:("Bar":)?private"?%r]=>
         object(Foo)#6 (3) {
-          ["d1":"Foo":private]=>
+          [%r"?d1"?:("Foo":)?private"?%r]=>
           *RECURSION*
-          ["d2":protected]=>
+          [%r"?d2"?:protected"?%r]=>
+          *RECURSION*
+          ["d3"]=>
+          *RECURSION*
+        }
+        [%r"?d3"?:protected"?%r]=>
+        object(Foo)#6 (3) {
+          [%r"?d1"?:("Foo":)?private"?%r]=>
+          *RECURSION*
+          [%r"?d2"?:protected"?%r]=>
           *RECURSION*
           ["d3"]=>
           *RECURSION*
@@ -636,27 +636,27 @@ array(3) {
       object(Bar)#5 (3) {
         ["d1"]=>
         object(Foo)#6 (3) {
-          ["d1":"Foo":private]=>
+          [%r"?d1"?:("Foo":)?private"?%r]=>
           *RECURSION*
-          ["d2":protected]=>
-          *RECURSION*
-          ["d3"]=>
-          *RECURSION*
-        }
-        ["d2":"Bar":private]=>
-        object(Foo)#6 (3) {
-          ["d1":"Foo":private]=>
-          *RECURSION*
-          ["d2":protected]=>
+          [%r"?d2"?:protected"?%r]=>
           *RECURSION*
           ["d3"]=>
           *RECURSION*
         }
-        ["d3":protected]=>
+        [%r"?d2"?:("Bar":)?private"?%r]=>
         object(Foo)#6 (3) {
-          ["d1":"Foo":private]=>
+          [%r"?d1"?:("Foo":)?private"?%r]=>
           *RECURSION*
-          ["d2":protected]=>
+          [%r"?d2"?:protected"?%r]=>
+          *RECURSION*
+          ["d3"]=>
+          *RECURSION*
+        }
+        [%r"?d3"?:protected"?%r]=>
+        object(Foo)#6 (3) {
+          [%r"?d1"?:("Foo":)?private"?%r]=>
+          *RECURSION*
+          [%r"?d2"?:protected"?%r]=>
           *RECURSION*
           ["d3"]=>
           *RECURSION*
