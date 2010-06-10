@@ -85,17 +85,17 @@ objectrec
 object(Obj2)#%d (7) {
   ["aa"]=>
   NULL
-  ["bb":protected]=>
+  [%r"?bb"?:protected"?%r]=>
   NULL
-  ["cc":"Obj2":private]=>
+  [%r"?cc"?:("Obj2":)?private"?%r]=>
   NULL
-  ["obj":"Obj2":private]=>
+  [%r"?obj"?:("Obj2":)?private"?%r]=>
   object(Obj)#%d (3) {
     ["a"]=>
     int(1)
-    ["b":protected]=>
+    [%r"?b"?:protected"?%r]=>
     int(2)
-    ["c":"Obj":private]=>
+    [%r"?c"?:("Obj":)?private"?%r]=>
     int(3)
   }
   ["a"]=>
@@ -109,42 +109,42 @@ OK
 objectrecarr
 82c0a44f626a33aa004f626a33006f626a73840084c0a34f626aa16100a4002a006200a6004f626a0063040184c0a34f626aa16100a4002a006201a6004f626a0063040284c0a34f626aa16100a4002a006202a6004f626a0063040384c0a34f626aa16100a4002a006203a6004f626a006304
 object(Obj3)#%d (1) {
-  ["objs":"Obj3":private]=>
+  [%r"?objs"?:("Obj3":)?private"?%r]=>
   array(4) {
     [0]=>
     object(Obj)#%d (3) {
       ["a"]=>
       int(0)
-      ["b":protected]=>
+      [%r"?b"?:protected"?%r]=>
       int(0)
-      ["c":"Obj":private]=>
+      [%r"?c"?:("Obj":)?private"?%r]=>
       int(4)
     }
     [1]=>
     object(Obj)#%d (3) {
       ["a"]=>
       int(0)
-      ["b":protected]=>
+      [%r"?b"?:protected"?%r]=>
       int(1)
-      ["c":"Obj":private]=>
+      [%r"?c"?:("Obj":)?private"?%r]=>
       int(4)
     }
     [2]=>
     object(Obj)#%d (3) {
       ["a"]=>
       int(0)
-      ["b":protected]=>
+      [%r"?b"?:protected"?%r]=>
       int(2)
-      ["c":"Obj":private]=>
+      [%r"?c"?:("Obj":)?private"?%r]=>
       int(4)
     }
     [3]=>
     object(Obj)#%d (3) {
       ["a"]=>
       int(0)
-      ["b":protected]=>
+      [%r"?b"?:protected"?%r]=>
       int(3)
-      ["c":"Obj":private]=>
+      [%r"?c"?:("Obj":)?private"?%r]=>
       int(4)
     }
   }
@@ -153,13 +153,13 @@ OK
 objectselfrec
 83c0a44f626a34a7004f626a34006164a9004f626a34006f626a82c002c001
 object(Obj4)#%d (2) {
-  ["a":"Obj4":private]=>
+  [%r"?a"?:("Obj4":)?private"?%r]=>
   int(100)
-  ["obj":"Obj4":private]=>
+  [%r"?obj"?:("Obj4":)?private"?%r]=>
   object(Obj4)#%d (2) {
-    ["a":"Obj4":private]=>
+    [%r"?a"?:("Obj4":)?private"?%r]=>
     int(100)
-    ["obj":"Obj4":private]=>
+    [%r"?obj"?:("Obj4":)?private"?%r]=>
     *RECURSION*
   }
 }

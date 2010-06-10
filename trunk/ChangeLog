@@ -1,5 +1,10 @@
 msgpack extension changelog
 
+Version 0.1.4
+-------------
+	* Fix stdClass unserialize.
+	* Support PHP 5.2.x version.
+
 Version 0.1.3
 -------------
 	* Fix broken random data test.

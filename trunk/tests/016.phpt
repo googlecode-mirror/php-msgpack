@@ -50,9 +50,9 @@ object
 object(Obj)#%d (4) {
   ["a"]=>
   int(1)
-  ["b":protected]=>
+  [%r"?b"?:protected"?%r]=>
   int(2)
-  ["c":"Obj":private]=>
+  [%r"?c"?:("Obj":)?private"?%r]=>
   int(3)
   ["d"]=>
   NULL
