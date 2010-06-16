@@ -18,6 +18,10 @@
     smart_str_appendl(user, (const void*)buf, len)
 #include "msgpack/pack_template.h"
 
+#if (PHP_MAJOR_VERSION == 5 && PHP_MINOR_VERSION < 3)
+#   define Z_ISREF_P(pz) PZVAL_IS_REF(pz)
+#endif
+
 inline static int msgpack_var_add(
     HashTable *var_hash, zval *var, void *var_old TSRMLS_DC)
 {
@@ -418,7 +422,7 @@ inline static void msgpack_serialize_object(
         class_name, name_len, incomplete_class TSRMLS_CC);
 }
 
-PHP_MSGPACK_API void msgpack_serialize_zval(
+void msgpack_serialize_zval(
     smart_str *buf, zval *val, HashTable *var_hash TSRMLS_DC)
 {
     ulong *var_already;

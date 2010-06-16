@@ -11,7 +11,7 @@ enum msgpack_serialize_type
     MSGPACK_SERIALIZE_TYPE_CUSTOM_OBJECT,
 };
 
-PHP_MSGPACK_API void msgpack_serialize_zval(
+void msgpack_serialize_zval(
     smart_str *buf, zval *val, HashTable *var_hash TSRMLS_DC);
 
 #endif

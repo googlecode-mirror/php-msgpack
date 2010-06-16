@@ -12,6 +12,12 @@
 
 #define VAR_ENTRIES_MAX 1024
 
+#if (PHP_MAJOR_VERSION == 5 && PHP_MINOR_VERSION < 3)
+#   define Z_ADDREF_PP(ppz)      ZVAL_ADDREF(*(ppz))
+#   define Z_SET_ISREF_PP(ppz)   (*(ppz))->is_ref = 1
+#   define Z_UNSET_ISREF_PP(ppz) (*(ppz))->is_ref = 0
+#endif
+
 typedef struct
 {
     zval *data[VAR_ENTRIES_MAX];
@@ -179,7 +185,6 @@ inline static int msgpack_unserialize_object_type(
         *return_value = *rval;
 
         Z_ADDREF_PP(return_value);
-        Z_SET_ISREF_PP(return_value);
 
         if (is_ref)
         {
@@ -548,7 +553,7 @@ inline static int msgpack_unserialize_object(
     return ret;
 }
 
-PHP_MSGPACK_API int msgpack_unserialize_zval(
+int msgpack_unserialize_zval(
     zval **return_value, msgpack_unserialize_data *mpsd,
     php_unserialize_data_t *var_hash TSRMLS_DC)
 {

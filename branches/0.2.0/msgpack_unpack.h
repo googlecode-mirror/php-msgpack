@@ -19,7 +19,7 @@ typedef struct
     size_t offset;
 } msgpack_unserialize_data;
 
-PHP_MSGPACK_API int msgpack_unserialize_zval(
+int msgpack_unserialize_zval(
     zval **return_value, msgpack_unserialize_data *mpsd,
     php_unserialize_data_t *var_hash TSRMLS_DC);
 
