@@ -2,7 +2,7 @@
 #ifndef PHP_MSGPACK_H
 #define PHP_MSGPACK_H
 
-#define MSGPACK_VERSION "0.1.4"
+#define MSGPACK_VERSION "0.2.0"
 
 #include "ext/standard/php_smart_str.h"
 
@@ -25,6 +25,13 @@ extern zend_module_entry msgpack_module_entry;
 #define MSGPACK_G(v) TSRMG(msgpack_globals_id, zend_msgpack_globals *, v)
 #else
 #define MSGPACK_G(v) (msgpack_globals.v)
+#endif
+
+#if (PHP_MAJOR_VERSION == 5 && PHP_MINOR_VERSION < 3)
+#   define Z_ISREF_P(pz)         PZVAL_IS_REF(pz)
+#   define Z_ADDREF_PP(ppz)      ZVAL_ADDREF(*(ppz))
+#   define Z_SET_ISREF_PP(ppz)   (*(ppz))->is_ref = 1
+#   define Z_UNSET_ISREF_PP(ppz) (*(ppz))->is_ref = 0
 #endif
 
 PHP_MSGPACK_API void php_msgpack_serialize(

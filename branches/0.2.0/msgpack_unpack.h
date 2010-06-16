@@ -2,7 +2,7 @@
 #ifndef MSGPACL_UNPACK_H
 #define MSGPACL_UNPACK_H
 
-#include "msgpack/unpack_define.h"
+#include "ext/standard/php_var.h"
 
 typedef enum
 {
@@ -12,12 +12,8 @@ typedef enum
     MSGPACK_UNPACK_PARSE_ERROR = -1,
 } msgpack_unpack_return;
 
-#define VAR_ENTRIES_MAX 1024
-
-typedef struct {
-    zval *data[VAR_ENTRIES_MAX];
-    long used_slots;
-    void *next;
-} var_entries;
+PHP_MSGPACK_API int msgpack_unserialize_zval(
+    zval **return_value, const unsigned char *data,
+    size_t len, size_t *off, php_unserialize_data_t *var_hash TSRMLS_DC);
 
 #endif

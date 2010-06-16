@@ -4,19 +4,14 @@
 
 #include "ext/standard/php_smart_str.h"
 
-#include "msgpack/pack_define.h"
+enum msgpack_serialize_type
+{
+    MSGPACK_SERIALIZE_TYPE_REFERENCE =  1,
+    MSGPACK_SERIALIZE_TYPE_OBJECT,
+    MSGPACK_SERIALIZE_TYPE_CUSTOM_OBJECT,
+};
 
-#define msgpack_pack_inline_func(name) \
-    static inline void msgpack_pack ## name
-
-#define msgpack_pack_inline_func_cint(name) \
-    static inline void msgpack_pack ## name
-
-#define msgpack_pack_user smart_str*
-
-#define msgpack_pack_append_buffer(user, buf, len) \
-    smart_str_appendl(user, (const void*)buf, len)
-
-#include "msgpack/pack_template.h"
+PHP_MSGPACK_API void msgpack_serialize_zval(
+    smart_str *buf, zval *val, HashTable *var_hash TSRMLS_DC);
 
 #endif
