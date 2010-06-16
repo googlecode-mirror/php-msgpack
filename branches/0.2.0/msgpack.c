@@ -102,7 +102,6 @@ PS_SERIALIZER_DECODE_FUNC(msgpack)
 {
     php_unserialize_data_t var_hash;
     int ret;
-    size_t off = 0;
     HashTable *tmp_hash;
     HashPosition tmp_hash_pos;
     char *key_str;
@@ -110,14 +109,17 @@ PS_SERIALIZER_DECODE_FUNC(msgpack)
     uint key_len;
     zval *tmp;
     zval **data;
+    msgpack_unserialize_data mpsd;
 
     PHP_VAR_UNSERIALIZE_INIT(var_hash);
 
-    ALLOC_INIT_ZVAL(tmp);
+    MAKE_STD_ZVAL(tmp);
 
-    ret = msgpack_unserialize_zval(
-        &tmp, (const unsigned char *)val, vallen,
-        &off, &var_hash TSRMLS_CC);
+    mpsd.data = (unsigned char *)val;;
+    mpsd.length = vallen;
+    mpsd.offset = 0;
+
+    ret = msgpack_unserialize_zval(&tmp, &mpsd, &var_hash TSRMLS_CC);
 
     switch (ret)
     {
@@ -174,8 +176,8 @@ PHP_MSGPACK_API void php_msgpack_unserialize(
     zval *return_value, char *str, size_t str_len TSRMLS_DC)
 {
     int ret;
-    size_t off = 0;
     php_unserialize_data_t var_hash;
+    msgpack_unserialize_data mpsd;
 
     if (str_len <= 0)
     {
@@ -184,9 +186,11 @@ PHP_MSGPACK_API void php_msgpack_unserialize(
 
     PHP_VAR_UNSERIALIZE_INIT(var_hash);
 
-    ret = msgpack_unserialize_zval(
-        &return_value, (const unsigned char *)str, str_len,
-        &off, &var_hash TSRMLS_CC);
+    mpsd.data = (unsigned char *)str;
+    mpsd.length = str_len;
+    mpsd.offset = 0;
+
+    ret = msgpack_unserialize_zval(&return_value, &mpsd, &var_hash TSRMLS_CC);
 
     switch (ret)
     {

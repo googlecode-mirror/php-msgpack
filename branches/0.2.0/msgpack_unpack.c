@@ -1,5 +1,4 @@
 
-
 #include "php.h"
 #include "php_ini.h"
 #include "ext/standard/php_incomplete_class.h"
@@ -84,12 +83,10 @@ inline static int msgpack_var_access(
     return SUCCESS;
 }
 
-
 inline static int msgpack_unserialize_array(
-    zval **return_value, const unsigned char* data, size_t len,
-    size_t *off, ulong ct, php_unserialize_data_t *var_hash TSRMLS_DC)
+    zval **return_value, msgpack_unserialize_data *mpsd,
+    ulong ct, php_unserialize_data_t *var_hash TSRMLS_DC)
 {
-    const unsigned char* p = (unsigned char*)data + *off;
     ulong i;
     HashTable *ht;
 
@@ -101,16 +98,12 @@ inline static int msgpack_unserialize_array(
 
     for (i = 0; i < ct; i++)
     {
-        size_t read = 0;
         zval *val;
 
         /* value */
-        read = 0;
         ALLOC_INIT_ZVAL(val);
 
-        if (len <= 0 ||
-            msgpack_unserialize_zval(
-                &val, p, len, &read, var_hash TSRMLS_CC) < 0)
+        if (msgpack_unserialize_zval(&val, mpsd, var_hash TSRMLS_CC) < 0)
         {
             zend_error(E_WARNING,
                        "[msgpack] (msgpack_unserialize_array) Invalid value");
@@ -120,33 +113,101 @@ inline static int msgpack_unserialize_array(
             return MSGPACK_UNPACK_PARSE_ERROR;
         }
 
-        p += read;
-        len -= read;
-
         /* update */
         zend_hash_index_update(ht, i, &val, sizeof(zval *), NULL);
     }
 
-    *off = p - (const unsigned char*)data;
-
     return MSGPACK_UNPACK_SUCCESS;
 }
 
-inline static int msgpack_unserialize_object(
-    zval **return_value, const unsigned char* data, size_t len,
-    size_t *off, ulong ct, php_unserialize_data_t *var_hash TSRMLS_DC)
+inline static int msgpack_unserialize_object_type(
+    zval **return_value, msgpack_unserialize_data *mpsd,
+    php_unserialize_data_t *var_hash, zend_bool is_ref TSRMLS_DC)
 {
-    const unsigned char* p = (unsigned char*)data;
+    int ret = MSGPACK_UNPACK_SUCCESS;
+    zval *key, *val, **rval;
 
+    ALLOC_INIT_ZVAL(key);
+
+    if (msgpack_unserialize_zval(&key, mpsd, NULL TSRMLS_CC) < 0)
+    {
+        zval_ptr_dtor(&key);
+
+        ZVAL_BOOL(*return_value, 0);
+
+        return MSGPACK_UNPACK_PARSE_ERROR;
+    }
+
+    ALLOC_INIT_ZVAL(val);
+
+    if (is_ref)
+    {
+        ret = msgpack_unserialize_zval(&val, mpsd, NULL TSRMLS_CC);
+    }
+    else
+    {
+        ret = msgpack_unserialize_zval(&val, mpsd, var_hash TSRMLS_CC);
+    }
+
+    if (ret < 0)
+    {
+        zval_ptr_dtor(&val);
+        zval_ptr_dtor(&key);
+
+        ZVAL_BOOL(*return_value, 0);
+
+        return MSGPACK_UNPACK_PARSE_ERROR;
+    }
+
+    if (!var_hash ||
+        msgpack_var_access(var_hash, Z_LVAL_P(val) - 1, &rval) != SUCCESS)
+    {
+        zend_error(E_WARNING,
+                   "[msgpack] (msgpack_unserialize_object_key) "
+                   "Invalid references value: %ld",
+                   Z_LVAL_P(val) - 1);
+
+        ret = MSGPACK_UNPACK_CONTINUE;
+    }
+    else
+    {
+        if (*return_value != NULL)
+        {
+            zval_ptr_dtor(return_value);
+        }
+
+        *return_value = *rval;
+
+        Z_ADDREF_PP(return_value);
+        Z_SET_ISREF_PP(return_value);
+
+        if (is_ref)
+        {
+            Z_SET_ISREF_PP(return_value);
+        }
+        else
+        {
+            Z_UNSET_ISREF_PP(return_value);
+        }
+    }
+
+    zval_ptr_dtor(&key);
+    zval_ptr_dtor(&val);
+
+    return ret;
+}
+
+inline static int msgpack_unserialize_object(
+    zval **return_value, msgpack_unserialize_data *mpsd,
+    ulong ct, php_unserialize_data_t *var_hash TSRMLS_DC)
+{
     int ret = MSGPACK_UNPACK_SUCCESS;
 
     zend_class_entry *ce, **pce;
     bool incomplete_class = false;
-    zval f, *h = NULL;
     zval *user_func, *retval_ptr, **args[1], *arg_func_name;
     HashTable *ht;
 
-    size_t read = 0;
     zval *key, *val;
 
     int object = 1;
@@ -155,8 +216,7 @@ inline static int msgpack_unserialize_object(
     /* Get class */
     ALLOC_INIT_ZVAL(key);
 
-    if (len <= 0 ||
-        msgpack_unserialize_zval(&key, p, len, &read, NULL TSRMLS_CC) < 0)
+    if (msgpack_unserialize_zval(&key, mpsd, NULL TSRMLS_CC) < 0)
     {
         zend_error(E_WARNING,
                    "[msgpack] (msgpack_unserialize_object) Invalid sign key");
@@ -168,19 +228,13 @@ inline static int msgpack_unserialize_object(
         return MSGPACK_UNPACK_PARSE_ERROR;
     }
 
-    p += read;
-    len -= read;
-
     ct--;
 
     if (Z_TYPE_P(key) == IS_NULL)
     {
-        read = 0;
         ALLOC_INIT_ZVAL(val);
 
-        if (len <= 0 ||
-            msgpack_unserialize_zval(
-                &val, p, len, &read, NULL TSRMLS_CC) < 0)
+        if (msgpack_unserialize_zval(&val, mpsd, NULL TSRMLS_CC) < 0)
         {
             zend_error(
                 E_WARNING,
@@ -194,174 +248,34 @@ inline static int msgpack_unserialize_object(
             return MSGPACK_UNPACK_PARSE_ERROR;
         }
 
-        p += read;
-        len -= read;
-
         if (Z_TYPE_P(val) == IS_LONG)
         {
             switch (Z_LVAL_P(val))
             {
                 case MSGPACK_SERIALIZE_TYPE_REFERENCE:
-                {
-                    zval **rval;
+                    ret = msgpack_unserialize_object_type(
+                        return_value, mpsd, var_hash, 1 TSRMLS_CC);
 
                     zval_ptr_dtor(&key);
                     zval_ptr_dtor(&val);
-
-                    read = 0;
-                    ALLOC_INIT_ZVAL(key);
-
-                    if (len <= 0 ||
-                        msgpack_unserialize_zval(
-                            &key, p, len, &read, NULL TSRMLS_CC) < 0)
-                    {
-                        zval_ptr_dtor(&key);
-
-                        ZVAL_BOOL(*return_value, 0);
-
-                        return MSGPACK_UNPACK_PARSE_ERROR;
-                    }
-
-                    p += read;
-                    len -= read;
-
-                    read = 0;
-                    ALLOC_INIT_ZVAL(val);
-
-                    if (len <= 0 ||
-                        msgpack_unserialize_zval(
-                            &val, p, len, &read, NULL TSRMLS_CC) < 0)
-                    {
-                        zval_ptr_dtor(&val);
-                        zval_ptr_dtor(&key);
-
-                        ZVAL_BOOL(*return_value, 0);
-
-                        return MSGPACK_UNPACK_PARSE_ERROR;
-                    }
-
-                    p += read;
-                    len -= read;
-
-                    if (!var_hash ||
-                        msgpack_var_access(
-                            var_hash, Z_LVAL_P(val) - 1, &rval) != SUCCESS)
-                    {
-                        zend_error(E_WARNING,
-                                   "[msgpack] (msgpack_unserialize_object) "
-                                   "Invalid references value: %ld",
-                                   Z_LVAL_P(val) - 1);
-
-                        ret = MSGPACK_UNPACK_CONTINUE;
-                    }
-                    else
-                    {
-                        if (*return_value != NULL)
-                        {
-                            zval_ptr_dtor(return_value);
-                        }
-
-                        *return_value = *rval;
-
-                        Z_ADDREF_PP(return_value);
-                        Z_SET_ISREF_PP(return_value);
-                    }
-
-                    zval_ptr_dtor(&key);
-                    zval_ptr_dtor(&val);
-
-                    *off = p - (const unsigned char*)data;
 
                     return ret;
-                }
                 case MSGPACK_SERIALIZE_TYPE_OBJECT:
-                {
-                    zval **rval;
+                    ret = msgpack_unserialize_object_type(
+                        return_value, mpsd, var_hash, 0 TSRMLS_CC);
 
                     zval_ptr_dtor(&key);
                     zval_ptr_dtor(&val);
-
-                    read = 0;
-                    ALLOC_INIT_ZVAL(key);
-
-                    if (len <= 0 ||
-                        msgpack_unserialize_zval(
-                            &key, p, len, &read, NULL TSRMLS_CC) < 0)
-                    {
-                        zval_ptr_dtor(&key);
-
-                        ZVAL_BOOL(*return_value, 0);
-
-                        return MSGPACK_UNPACK_PARSE_ERROR;
-                    }
-
-                    p += read;
-                    len -= read;
-
-                    read = 0;
-                    ALLOC_INIT_ZVAL(val);
-
-                    if (len <= 0 ||
-                        msgpack_unserialize_zval(
-                            &val, p, len, &read, var_hash TSRMLS_CC) < 0)
-                    {
-                        zval_ptr_dtor(&val);
-                        zval_ptr_dtor(&key);
-
-                        ZVAL_BOOL(*return_value, 0);
-
-                        return MSGPACK_UNPACK_PARSE_ERROR;
-                    }
-
-                    p += read;
-                    len -= read;
-
-                    if (!var_hash ||
-                        msgpack_var_access(
-                            var_hash, Z_LVAL_P(val) - 1, &rval) != SUCCESS)
-                    {
-                        zend_error(E_WARNING,
-                                   "[msgpack] (msgpack_unserialize_object) "
-                                   "Invalid references value: %ld",
-                                   Z_LVAL_P(val) - 1);
-
-                        ret = MSGPACK_UNPACK_CONTINUE;
-                    }
-                    else
-                    {
-                        if (*return_value != *rval)
-                        {
-                            if (*return_value != NULL)
-                            {
-                                zval_ptr_dtor(return_value);
-                            }
-
-                            *return_value = *rval;
-
-                            Z_ADDREF_PP(return_value);
-
-                            Z_UNSET_ISREF_PP(return_value);
-                        }
-                    }
-
-                    zval_ptr_dtor(&key);
-                    zval_ptr_dtor(&val);
-
-                    *off = p - (const unsigned char*)data;
 
                     return ret;
-                }
                 case MSGPACK_SERIALIZE_TYPE_CUSTOM_OBJECT:
                     custom_object = 1;
 
                     zval_ptr_dtor(&val);
 
-                    read = 0;
                     ALLOC_INIT_ZVAL(val);
 
-                    if (len <= 0 ||
-                        msgpack_unserialize_zval(
-                            &val, p, len, &read, NULL TSRMLS_CC) < 0)
+                    if (msgpack_unserialize_zval(&val, mpsd, NULL TSRMLS_CC) < 0)
                     {
                         zval_ptr_dtor(&key);
                         zval_ptr_dtor(&val);
@@ -370,9 +284,6 @@ inline static int msgpack_unserialize_object(
 
                         return MSGPACK_UNPACK_PARSE_ERROR;
                     }
-
-                    p += read;
-                    len -= read;
                     break;
                 default:
                     zval_ptr_dtor(&key);
@@ -394,12 +305,9 @@ inline static int msgpack_unserialize_object(
 
         ht = HASH_OF(*return_value);
 
-        read = 0;
         ALLOC_INIT_ZVAL(val);
 
-        if (len <= 0 ||
-            msgpack_unserialize_zval(
-                &val, p, len, &read, var_hash TSRMLS_CC) < 0)
+        if (msgpack_unserialize_zval(&val, mpsd, var_hash TSRMLS_CC) < 0)
         {
             zend_error(
                 E_WARNING,
@@ -410,9 +318,6 @@ inline static int msgpack_unserialize_object(
 
             return MSGPACK_UNPACK_PARSE_ERROR;
         }
-
-        p += read;
-        len -= read;
 
         /* update */
         switch (Z_TYPE_P(key))
@@ -439,8 +344,6 @@ inline static int msgpack_unserialize_object(
     if (object)
     {
         convert_to_string(val);
-
-        *off = p - (const unsigned char*)data;
 
         do {
             /* Try to find class directly */
@@ -548,20 +451,14 @@ inline static int msgpack_unserialize_object(
             }
 
             /* value */
-            read = 0;
             ALLOC_INIT_ZVAL(rval);
 
-            if (len <= 0 ||
-                msgpack_unserialize_zval(
-                    &rval, p, len, &read, var_hash TSRMLS_CC) < 0)
+            if (msgpack_unserialize_zval(&rval, mpsd, var_hash TSRMLS_CC) < 0)
             {
                 zval_ptr_dtor(&rval);
 
                 return MSGPACK_UNPACK_PARSE_ERROR;
             }
-
-            p += read;
-            len -= read;
 
             ce->unserialize(
                 return_value, ce,
@@ -570,8 +467,6 @@ inline static int msgpack_unserialize_object(
 
             zval_ptr_dtor(&key);
             zval_ptr_dtor(&rval);
-
-            *off = p - (const unsigned char*)data;
 
             return ret;
         }
@@ -582,31 +477,22 @@ inline static int msgpack_unserialize_object(
     /* object property */
     while (ct-- > 0)
     {
-        size_t read = 0;
         zval *rval;
 
         /* key */
         ALLOC_INIT_ZVAL(key);
 
-        if (len <= 0 ||
-            msgpack_unserialize_zval(
-                &key, p, len, &read, NULL TSRMLS_CC) < 0)
+        if (msgpack_unserialize_zval(&key, mpsd, NULL TSRMLS_CC) < 0)
         {
             zval_ptr_dtor(&key);
 
             return MSGPACK_UNPACK_PARSE_ERROR;
         }
 
-        p += read;
-        len -= read;
-
         /* value */
-        read = 0;
         ALLOC_INIT_ZVAL(rval);
 
-        if (len <= 0 ||
-            msgpack_unserialize_zval(
-                &rval, p, len, &read, var_hash TSRMLS_CC) < 0)
+        if (msgpack_unserialize_zval(&rval, mpsd, var_hash TSRMLS_CC) < 0)
         {
             zval_ptr_dtor(&rval);
             zval_ptr_dtor(&key);
@@ -614,9 +500,6 @@ inline static int msgpack_unserialize_object(
             return MSGPACK_UNPACK_PARSE_ERROR;
 
         }
-
-        p += read;
-        len -= read;
 
         /* update */
         switch (Z_TYPE_P(key))
@@ -645,6 +528,8 @@ inline static int msgpack_unserialize_object(
         zend_hash_exists(&Z_OBJCE_PP(return_value)->function_table,
                          "__wakeup", sizeof("__wakeup")))
     {
+        zval f, *h = NULL;
+
         INIT_PZVAL(&f);
         ZVAL_STRINGL(&f, "__wakeup", sizeof("__wakeup") - 1, 0);
         call_user_function_ex(
@@ -660,17 +545,15 @@ inline static int msgpack_unserialize_object(
         }
     }
 
-    *off = p - (const unsigned char*)data;
-
     return ret;
 }
 
 PHP_MSGPACK_API int msgpack_unserialize_zval(
-    zval **return_value, const unsigned char* data,
-    size_t len, size_t* off, php_unserialize_data_t *var_hash TSRMLS_DC)
+    zval **return_value, msgpack_unserialize_data *mpsd,
+    php_unserialize_data_t *var_hash TSRMLS_DC)
 {
-    const unsigned char* p = (unsigned char*)data + *off;
-    const unsigned char* const pe = (unsigned char*)data + len;
+    const unsigned char* data = mpsd->data;
+    const unsigned char* const pe = mpsd->data + mpsd->length;
     const void* n = NULL;
 
     unsigned int trail = 0;
@@ -679,7 +562,67 @@ PHP_MSGPACK_API int msgpack_unserialize_zval(
     int ret;
     unsigned int ct;
 
-    if (p == pe)
+#define next_cs(p) ((unsigned int)*p & 0x1f)
+
+#define finish_zval_long(val_) \
+    msgpack_var_push(var_hash, return_value); \
+    ZVAL_LONG(*return_value, val_); \
+    goto _finish
+
+#define finish_zval_null() \
+    msgpack_var_push(var_hash, return_value); \
+    ZVAL_NULL(*return_value); \
+    goto _finish
+
+#define finish_zval_bool(val_) \
+    msgpack_var_push(var_hash, return_value); \
+    ZVAL_BOOL(*return_value, val_); \
+    goto _finish
+
+#define finish_zval_double(val_) \
+    msgpack_var_push(var_hash, return_value); \
+    ZVAL_DOUBLE(*return_value, val_); \
+    goto _finish
+
+#define finish_zval_string(val_, len_) \
+    msgpack_var_push(var_hash, return_value); \
+    if (len_ == 0) { ZVAL_STRINGL(*return_value, "", 0, 1); } \
+    else { ZVAL_STRINGL(*return_value, val_, len_, 1); } \
+    goto _finish
+
+#define finish_zval_array(count_) \
+    ct = count_; \
+    cs = CS_HEADER; \
+    ++(mpsd->data); \
+    mpsd->length = (pe - mpsd->data); \
+    if (msgpack_unserialize_array(return_value, mpsd, ct, var_hash TSRMLS_CC) < 0) { goto _failed; } \
+    goto _finish_end
+
+#define finish_zval_object(count_) \
+    ct = count_; \
+    cs = CS_HEADER; \
+    ++(mpsd->data); \
+    mpsd->length = (pe - mpsd->data); \
+    if (msgpack_unserialize_object(return_value, mpsd, ct, var_hash TSRMLS_CC) < 0) { goto _failed; } \
+    goto _finish_end
+
+#define again_fixed_trail(_cs, trail_len) \
+    trail = trail_len; \
+    cs = _cs; \
+    goto _fixed_trail_again
+
+#define again_fixed_trail_if_zero(_cs, trail_len, ifzero) \
+    trail = trail_len; \
+    if(trail == 0) { goto ifzero; } \
+    cs = _cs; \
+    goto _fixed_trail_again
+
+    if (mpsd->length <= 0)
+    {
+        goto _failed;
+    }
+
+    if (mpsd->data == pe)
     {
         goto _out;
     }
@@ -688,31 +631,21 @@ PHP_MSGPACK_API int msgpack_unserialize_zval(
         switch (cs)
         {
             case CS_HEADER:
-                switch (*p)
+                switch (*(mpsd->data))
                 {
                     case 0x00 ... 0x7f: /* Positive Fixnum */
-                        msgpack_var_push(var_hash, return_value);
-                        ZVAL_LONG(*return_value, *(uint8_t*)p);
-                        goto _finish;
+                        finish_zval_long(*(uint8_t*)mpsd->data);
                     case 0xe0 ... 0xff: /* Negative Fixnum */
-                        msgpack_var_push(var_hash, return_value);
-                        ZVAL_LONG(*return_value, *(int8_t*)p);
-                        goto _finish;
+                        finish_zval_long(*(int8_t*)mpsd->data);
                     case 0xc0 ... 0xdf: /* Variable */
-                        switch (*p)
+                        switch (*(mpsd->data))
                         {
                             case 0xc0:  /* nil */
-                                msgpack_var_push(var_hash, return_value);
-                                ZVAL_NULL(*return_value);
-                                goto _finish;
+                                finish_zval_null();
                             case 0xc2:  /* false */
-                                msgpack_var_push(var_hash, return_value);
-                                ZVAL_BOOL(*return_value, 0);
-                                goto _finish;
+                                finish_zval_bool(0);
                             case 0xc3:  /* true */
-                                msgpack_var_push(var_hash, return_value);
-                                ZVAL_BOOL(*return_value, 1);
-                                goto _finish;
+                                finish_zval_bool(1);
                             case 0xca:  /* float */
                             case 0xcb:  /* double */
                             case 0xcc:  /* unsigned int  8 */
@@ -723,234 +656,105 @@ PHP_MSGPACK_API int msgpack_unserialize_zval(
                             case 0xd1:  /* signed int 16 */
                             case 0xd2:  /* signed int 32 */
                             case 0xd3:  /* signed int 64 */
-                                trail = 1 << (((unsigned int)*p) & 0x03);
-                                cs = ((unsigned int)*p & 0x1f);
-                                goto _fixed_trail_again;
+                                again_fixed_trail(
+                                    next_cs(mpsd->data),
+                                    1 << (((unsigned int)*(mpsd->data)) & 0x03));
                             case 0xda:  /* raw 16 */
                             case 0xdb:  /* raw 32 */
                             case 0xdc:  /* array 16 */
                             case 0xdd:  /* array 32 */
                             case 0xde:  /* map 16 */
                             case 0xdf:  /* map 32 */
-                                trail = 2 << (((unsigned int)*p) & 0x01);
-                                cs = ((unsigned int)*p & 0x1f);
-                                goto _fixed_trail_again;
+                                again_fixed_trail(
+                                    next_cs(mpsd->data),
+                                    2 << (((unsigned int)*(mpsd->data)) & 0x01));
                             default:
                                 goto _failed;
                         }
                     case 0xa0 ... 0xbf: /* FixRaw */
-                        trail = ((unsigned int)*p & 0x1f);
-                        if (trail == 0)
-                        {
-                            goto _raw_zero;
-                        }
-                        cs = ACS_RAW_VALUE;
-                        goto _fixed_trail_again;
+                        again_fixed_trail_if_zero(
+                            ACS_RAW_VALUE, (unsigned int)*(mpsd->data) & 0x1f,
+                            _raw_zero);
                     case 0x90 ... 0x9f: /* FixArray */
-                    {
-                        size_t read = 0;
-                        ct = (((unsigned int)*p) & 0x0f);
-                        cs = CS_HEADER;
-                        ++p;
-                        ret = msgpack_unserialize_array(
-                            return_value, p, pe - p, &read,
-                            ct, var_hash TSRMLS_CC);
-                        p += read;
-                        if (ret < 0)
-                        {
-                            goto _failed;
-                        }
-                        --p;
-                        goto _finish;
-                    }
+                        finish_zval_array(((unsigned int)*(mpsd->data)) & 0x0f);
                     case 0x80 ... 0x8f: /* FixMap */
-                    {
-                        size_t read = 0;
-                        ct = (((unsigned int)*p) & 0x0f);
-                        cs = CS_HEADER;
-                        ++p;
-                        ret = msgpack_unserialize_object(
-                            return_value, p, pe - p, &read,
-                            ct, var_hash TSRMLS_CC);
-                        p += read;
-                        if (ret < 0)
-                        {
-                            goto _failed;
-                        }
-                        --p;
-                        goto _finish;
-                    }
+                        finish_zval_object(((unsigned int)*(mpsd->data)) & 0x0f);
                     default:
                         goto _failed;
                 }
 _fixed_trail_again:
-                ++p;
+                ++(mpsd->data);
             default:
-                if ((size_t)(pe - p) < trail)
+                if ((size_t)(pe - (mpsd->data)) < trail)
                 {
                     goto _out;
                 }
-                n = p;
-                p += trail - 1;
+                n = (mpsd->data);
+                mpsd->data += trail - 1;
                 switch (cs)
                 {
                     case CS_FLOAT:
                     {
                         union { uint32_t i; float f; } mem;
                         mem.i = _msgpack_load32(uint32_t, n);
-                        msgpack_var_push(var_hash, return_value);
-                        ZVAL_DOUBLE(*return_value, mem.f);
-                        goto _finish;
+                        finish_zval_double(mem.f);
                     }
                     case CS_DOUBLE:
                     {
                         union { uint64_t i; double f; } mem;
                         mem.i = _msgpack_load64(uint64_t, n);
-                        msgpack_var_push(var_hash, return_value);
-                        ZVAL_DOUBLE(*return_value, mem.f);
-                        goto _finish;
+                        finish_zval_double(mem.f);
                     }
                     case CS_UINT_8:
-                        msgpack_var_push(var_hash, return_value);
-                        ZVAL_LONG(*return_value, *(uint8_t*)n);
-                        goto _finish;
+                        finish_zval_long(*(uint8_t*)n);
                     case CS_UINT_16:
-                        msgpack_var_push(var_hash, return_value);
-                        ZVAL_LONG(*return_value, _msgpack_load16(uint16_t, n));
-                        goto _finish;
+                        finish_zval_long(_msgpack_load16(uint16_t, n));
                     case CS_UINT_32:
-                        msgpack_var_push(var_hash, return_value);
-                        ZVAL_LONG(*return_value, _msgpack_load32(uint32_t, n));
-                        goto _finish;
+                        finish_zval_long(_msgpack_load32(uint32_t, n));
                     case CS_UINT_64:
-                        msgpack_var_push(var_hash, return_value);
-                        ZVAL_LONG(*return_value, _msgpack_load64(uint64_t, n));
-                        goto _finish;
+                        finish_zval_long(_msgpack_load64(uint64_t, n));
                     case CS_INT_8:
-                        msgpack_var_push(var_hash, return_value);
-                        ZVAL_LONG(*return_value, *(int8_t*)n);
-                        goto _finish;
+                        finish_zval_long(*(int8_t*)n);
                     case CS_INT_16:
-                        msgpack_var_push(var_hash, return_value);
-                        ZVAL_LONG(*return_value, _msgpack_load16(int16_t, n));
-                        goto _finish;
+                        finish_zval_long(_msgpack_load16(int16_t, n));
                     case CS_INT_32:
-                        msgpack_var_push(var_hash, return_value);
-                        ZVAL_LONG(*return_value, _msgpack_load32(int32_t, n));
-                        goto _finish;
+                        finish_zval_long(_msgpack_load32(int32_t, n));
                     case CS_INT_64:
-                        msgpack_var_push(var_hash, return_value);
-                        ZVAL_LONG(*return_value, _msgpack_load64(int64_t, n));
-                        goto _finish;
+                        finish_zval_long(_msgpack_load64(int64_t, n));
                     case CS_RAW_16:
-                        trail = _msgpack_load16(uint16_t, n);
-                        if (trail == 0) {
-                            goto _raw_zero;
-                        }
-                        cs = ACS_RAW_VALUE;
-                        goto _fixed_trail_again;
+                        again_fixed_trail_if_zero(
+                            ACS_RAW_VALUE, _msgpack_load16(uint16_t, n),
+                            _raw_zero);
                     case CS_RAW_32:
-                        trail = _msgpack_load32(uint32_t, n);
-                        if (trail == 0) {
-                            goto _raw_zero;
-                        }
-                        cs = ACS_RAW_VALUE;
-                        goto _fixed_trail_again;
+                        again_fixed_trail_if_zero(
+                            ACS_RAW_VALUE, _msgpack_load32(uint32_t, n),
+                            _raw_zero);
                     case ACS_RAW_VALUE:
 _raw_zero:
-                        msgpack_var_push(var_hash, return_value);
-                        if (trail == 0)
-                        {
-                            ZVAL_STRINGL(*return_value, "", 0, 1);
-                        }
-                        else
-                        {
-                            ZVAL_STRINGL(*return_value, n, trail, 1);
-                        }
-                        goto _finish;
+                        finish_zval_string(n, trail);
                     case CS_ARRAY_16:
-                    {
-                        size_t read = 0;
-                        ct = _msgpack_load16(uint16_t, n);
-                        cs = CS_HEADER;
-                        ++p;
-                        ret = msgpack_unserialize_array(
-                            return_value, p, pe - p, &read,
-                            ct, var_hash TSRMLS_CC);
-                        p += read;
-                        if (ret < 0)
-                        {
-                            goto _failed;
-                        }
-                        --p;
-                        goto _finish;
-                    }
+                        finish_zval_array(_msgpack_load16(uint16_t, n));
                     case CS_ARRAY_32:
-                    {
-                        size_t read = 0;
-                        ct = _msgpack_load32(uint32_t, n);
-                        cs = CS_HEADER;
-                        ++p;
-                        ret = msgpack_unserialize_array(
-                            return_value, p, pe - p, &read,
-                            ct, var_hash TSRMLS_CC);
-                        p += read;
-                        if (ret < 0)
-                        {
-                            goto _failed;
-                        }
-                        --p;
-                        goto _finish;
-                    }
+                        finish_zval_array(_msgpack_load32(uint32_t, n));
                     /* FIXME security guard */
                     case CS_MAP_16:
-                    {
-                        size_t read = 0;
-                        ct = _msgpack_load16(uint16_t, n);
-                        cs = CS_HEADER;
-                        ++p;
-                        ret = msgpack_unserialize_object(
-                            return_value, p, pe - p, &read,
-                            ct, var_hash TSRMLS_CC);
-                        p += read;
-                        if (ret < 0)
-                        {
-                            goto _failed;
-                        }
-                        --p;
-                        goto _finish;
-                    }
+                        finish_zval_object(_msgpack_load16(uint16_t, n));
                     case CS_MAP_32:
-                    {
-                        size_t read = 0;
-                        ct = _msgpack_load32(uint32_t, n);
-                        read = 0;
-                        cs = CS_HEADER;
-                        ++p;
-                        ret = msgpack_unserialize_object(
-                            return_value, p, pe - p, &read,
-                            ct, var_hash TSRMLS_CC);
-                        p += read;
-                        if (ret < 0)
-                        {
-                            goto _failed;
-                        }
-                        --p;
-                        goto _finish;
-                    }
+                        finish_zval_object(_msgpack_load32(uint32_t, n));
                     /* FIXME security guard */
                     default:
                         goto _failed;
                 }
         }
         cs = CS_HEADER;
-        ++p;
+        ++(mpsd->data);
     }
-    while (p != pe);
+    while (mpsd->data != pe);
     goto _out;
 
 _finish:
-    ++p;
+    ++(mpsd->data);
+_finish_end:
     ret = MSGPACK_UNPACK_EXTRA_BYTES;
     goto _end;
 
@@ -963,12 +767,25 @@ _out:
     goto _end;
 
 _end:
-    *off = p - (const unsigned char*)data;
+    mpsd->offset = mpsd->data - data;
+    mpsd->length = pe - mpsd->data;
 
-    if (ret == MSGPACK_UNPACK_EXTRA_BYTES && len == *off)
+    if (ret == MSGPACK_UNPACK_EXTRA_BYTES && mpsd->length == 0)
     {
         ret = MSGPACK_UNPACK_SUCCESS;
     }
 
     return ret;
 }
+
+#undef finish_zval_long
+#undef finish_zval_null
+#undef finish_zval_bool
+#undef finish_zval_double
+#undef finish_zval_string
+#undef finish_zval_array
+#undef finish_zval_object
+#undef again_fixed_trail
+#undef again_fixed_trail_if_zero
+
+#undef next_cs

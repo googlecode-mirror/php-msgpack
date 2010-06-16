@@ -12,8 +12,15 @@ typedef enum
     MSGPACK_UNPACK_PARSE_ERROR = -1,
 } msgpack_unpack_return;
 
+typedef struct
+{
+    unsigned char *data;
+    size_t length;
+    size_t offset;
+} msgpack_unserialize_data;
+
 PHP_MSGPACK_API int msgpack_unserialize_zval(
-    zval **return_value, const unsigned char *data,
-    size_t len, size_t *off, php_unserialize_data_t *var_hash TSRMLS_DC);
+    zval **return_value, msgpack_unserialize_data *mpsd,
+    php_unserialize_data_t *var_hash TSRMLS_DC);
 
 #endif
