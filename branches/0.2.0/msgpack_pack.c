@@ -124,6 +124,7 @@ inline static void msgpack_serialize_class(
                            "__sleep should return an array only "
                            "containing the names of "
                            "instance-variables to serialize.");
+
                 msgpack_pack_nil(buf);
                 continue;
             }
@@ -301,6 +302,7 @@ inline static void msgpack_serialize_array(
                     break;
                 default:
                     msgpack_serialize_string(buf, "", sizeof(""));
+
                     zend_error(E_WARNING, "[msgpack] (msgpack_serialize_array) "
                                "key is not string nor array");
                     break;
