@@ -1,5 +1,11 @@
 msgpack extension changelog
 
+Version 0.1.5
+-------------
+	* Add msgpack_pack.c
+	* Add msgpack_unpack.c
+	* Update msgpack.c
+
 Version 0.1.4
 -------------
 	* Change broken random data.
