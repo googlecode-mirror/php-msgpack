@@ -1,4 +1,5 @@
 #summary MessagePackUnpacker Class page.
+#labels Featured
 
 = The MessagePackUnpacker class methods =
 
