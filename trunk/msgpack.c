@@ -53,7 +53,7 @@ static ZEND_MINIT_FUNCTION(msgpack)
     return SUCCESS;
 }
 
-static PHP_MINFO_FUNCTION(msgpack)
+static ZEND_MINFO_FUNCTION(msgpack)
 {
     php_info_print_table_start();
     php_info_print_table_row(2, "msgpack support", "enabled");
