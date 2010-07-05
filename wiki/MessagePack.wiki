@@ -1,4 +1,5 @@
 #summary MessagePack Class page.
+#labels Featured
 
 = The MessagePack class methods =
 
