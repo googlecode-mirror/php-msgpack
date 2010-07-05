@@ -1,4 +1,5 @@
 #summary Alias function page.
+#labels Featured
 
 = Alias function =
 
