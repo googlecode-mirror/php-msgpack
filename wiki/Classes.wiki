@@ -1,0 +1,30 @@
+#summary Classed page.
+
+= Classes =
+
+Instances of this class are used to interact with a serializer. 
+
+  * MessagePack
+  * MessagePackUnpacker
+
+= Synopsis =
+== MessagePack ==
+{{{
+MessagePack   {
+    /* Methods */
+    public string pack ( mixed $value )
+    public mixed unpack ( string $str )
+    public MessagePackUnpacker unpacker ( void )
+}
+}}}
+
+== MessagePackUnpacker ==
+{{{
+MessagePackUnpacker {
+    /* Methods */
+    public boolean feed ( string $str )
+    public boolean execute ( [ string $str, int $offset ] )
+    public mixed data ( void )
+    public void reset ( void )
+}
+}}}
