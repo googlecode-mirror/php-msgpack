@@ -14,6 +14,7 @@
 #include "php_msgpack.h"
 #include "msgpack_pack.h"
 #include "msgpack_unpack.h"
+#include "msgpack_class.h"
 
 static ZEND_FUNCTION(msgpack_serialize);
 static ZEND_FUNCTION(msgpack_unserialize);
@@ -31,16 +32,24 @@ PS_SERIALIZER_FUNCS(msgpack);
 static const zend_function_entry msgpack_functions[] = {
     ZEND_FE(msgpack_serialize, arginfo_msgpack_serialize)
     ZEND_FE(msgpack_unserialize, arginfo_msgpack_unserialize)
+    ZEND_FALIAS(msgpack_pack, msgpack_serialize, arginfo_msgpack_serialize)
+    ZEND_FALIAS(msgpack_unpack, msgpack_unserialize,
+                arginfo_msgpack_unserialize)
     {NULL, NULL, NULL}
 };
 
 static ZEND_MINIT_FUNCTION(msgpack)
 {
+    MSGPACK_G(error_display) = 1;
+
 #if HAVE_PHP_SESSION
     php_session_register_serializer("msgpack",
                                     PS_SERIALIZER_ENCODE_NAME(msgpack),
                                     PS_SERIALIZER_DECODE_NAME(msgpack));
 #endif
+
+    msgpack_init_class(TSRMLS_CC);
+
     return SUCCESS;
 }
 

@@ -109,11 +109,14 @@ inline static int msgpack_unserialize_array(
         /* value */
         ALLOC_INIT_ZVAL(val);
 
-        if (msgpack_unserialize_zval(&val, mpsd, var_hash TSRMLS_CC) < 0)
+        if (msgpack_unserialize_zval(&val, mpsd, var_hash TSRMLS_CC) <= 0)
         {
-            zend_error(E_WARNING,
-                       "[msgpack] (msgpack_unserialize_array) Invalid value");
-
+            if (MSGPACK_G(error_display))
+            {
+                zend_error(E_WARNING,
+                           "[msgpack] (msgpack_unserialize_array) "
+                           "Invalid value");
+            }
             zval_ptr_dtor(&val);
 
             return MSGPACK_UNPACK_PARSE_ERROR;
@@ -135,7 +138,7 @@ inline static int msgpack_unserialize_object_type(
 
     ALLOC_INIT_ZVAL(key);
 
-    if (msgpack_unserialize_zval(&key, mpsd, NULL TSRMLS_CC) < 0)
+    if (msgpack_unserialize_zval(&key, mpsd, NULL TSRMLS_CC) <= 0)
     {
         zval_ptr_dtor(&key);
 
@@ -155,7 +158,7 @@ inline static int msgpack_unserialize_object_type(
         ret = msgpack_unserialize_zval(&val, mpsd, var_hash TSRMLS_CC);
     }
 
-    if (ret < 0)
+    if (ret <= 0)
     {
         zval_ptr_dtor(&val);
         zval_ptr_dtor(&key);
@@ -168,11 +171,13 @@ inline static int msgpack_unserialize_object_type(
     if (!var_hash ||
         msgpack_var_access(var_hash, Z_LVAL_P(val) - 1, &rval) != SUCCESS)
     {
-        zend_error(E_WARNING,
-                   "[msgpack] (msgpack_unserialize_object_key) "
-                   "Invalid references value: %ld",
-                   Z_LVAL_P(val) - 1);
-
+        if (MSGPACK_G(error_display))
+        {
+            zend_error(E_WARNING,
+                       "[msgpack] (msgpack_unserialize_object_key) "
+                       "Invalid references value: %ld",
+                       Z_LVAL_P(val) - 1);
+        }
         ret = MSGPACK_UNPACK_CONTINUE;
     }
     else
@@ -221,10 +226,14 @@ inline static int msgpack_unserialize_object(
     /* Get class */
     ALLOC_INIT_ZVAL(key);
 
-    if (msgpack_unserialize_zval(&key, mpsd, NULL TSRMLS_CC) < 0)
+    if (msgpack_unserialize_zval(&key, mpsd, NULL TSRMLS_CC) <= 0)
     {
-        zend_error(E_WARNING,
-                   "[msgpack] (msgpack_unserialize_object) Invalid sign key");
+        if (MSGPACK_G(error_display))
+        {
+            zend_error(E_WARNING,
+                       "[msgpack] (msgpack_unserialize_object) "
+                       "Invalid sign key");
+        }
 
         zval_ptr_dtor(&key);
 
@@ -239,11 +248,14 @@ inline static int msgpack_unserialize_object(
     {
         ALLOC_INIT_ZVAL(val);
 
-        if (msgpack_unserialize_zval(&val, mpsd, NULL TSRMLS_CC) < 0)
+        if (msgpack_unserialize_zval(&val, mpsd, NULL TSRMLS_CC) <= 0)
         {
-            zend_error(
-                E_WARNING,
-                "[msgpack] (msgpack_unserialize_object) Invalid sign value");
+            if (MSGPACK_G(error_display))
+            {
+                zend_error(E_WARNING,
+                           "[msgpack] (msgpack_unserialize_object) "
+                           "Invalid sign value");
+            }
 
             zval_ptr_dtor(&val);
             zval_ptr_dtor(&key);
@@ -280,7 +292,8 @@ inline static int msgpack_unserialize_object(
 
                     ALLOC_INIT_ZVAL(val);
 
-                    if (msgpack_unserialize_zval(&val, mpsd, NULL TSRMLS_CC) < 0)
+                    if (msgpack_unserialize_zval(
+                            &val, mpsd, NULL TSRMLS_CC) <= 0)
                     {
                         zval_ptr_dtor(&key);
                         zval_ptr_dtor(&val);
@@ -306,17 +319,23 @@ inline static int msgpack_unserialize_object(
 
         msgpack_var_push(var_hash, return_value);
 
-        array_init(*return_value);
+        if (Z_TYPE_PP(return_value) != IS_ARRAY)
+        {
+            array_init(*return_value);
+        }
 
         ht = HASH_OF(*return_value);
 
         ALLOC_INIT_ZVAL(val);
 
-        if (msgpack_unserialize_zval(&val, mpsd, var_hash TSRMLS_CC) < 0)
+        if (msgpack_unserialize_zval(&val, mpsd, var_hash TSRMLS_CC) <= 0)
         {
-            zend_error(
-                E_WARNING,
-                "[msgpack] (msgpack_unserialize_object) Invalid sign value");
+            if (MSGPACK_G(error_display))
+            {
+                zend_error(E_WARNING,
+                           "[msgpack] (msgpack_unserialize_object) "
+                           "Invalid sign value");
+            }
 
             zval_ptr_dtor(&val);
             zval_ptr_dtor(&key);
@@ -378,9 +397,12 @@ inline static int msgpack_unserialize_object(
                     CG(function_table), NULL, user_func, &retval_ptr,
                     1, args, 0, NULL TSRMLS_CC) != SUCCESS)
             {
-                zend_error(E_WARNING,
-                           "[msgpack] (msgpack_unserialize_object) "
-                           "defined (%s) but not found", Z_STRVAL_P(val));
+                if (MSGPACK_G(error_display))
+                {
+                    zend_error(E_WARNING,
+                               "[msgpack] (msgpack_unserialize_object) "
+                               "defined (%s) but not found", Z_STRVAL_P(val));
+                }
 
                 incomplete_class = 1;
                 ce = PHP_IC_ENTRY;
@@ -401,11 +423,13 @@ inline static int msgpack_unserialize_object(
             }
             else
             {
-                zend_error(
-                    E_WARNING,
-                    "[msgpack] (msgpack_unserialize_object) "
-                    "Function %s() hasn't defined the class"
-                    "it was called for", Z_STRVAL_P(val));
+                if (MSGPACK_G(error_display))
+                {
+                    zend_error(E_WARNING,
+                               "[msgpack] (msgpack_unserialize_object) "
+                               "Function %s() hasn't defined the class"
+                               "it was called for", Z_STRVAL_P(val));
+                }
 
                 incomplete_class = true;
                 ce = PHP_IC_ENTRY;
@@ -417,9 +441,12 @@ inline static int msgpack_unserialize_object(
 
         if (EG(exception))
         {
-            zend_error(
-                E_WARNING,
-                "[msgpack] (msgpack_unserialize_object) Exception error");
+            if (MSGPACK_G(error_display))
+            {
+                zend_error(E_WARNING,
+                           "[msgpack] (msgpack_unserialize_object) "
+                           "Exception error");
+            }
 
             zval_ptr_dtor(&val);
 
@@ -448,9 +475,12 @@ inline static int msgpack_unserialize_object(
 
             if (ce->unserialize == NULL)
             {
-                zend_error(E_WARNING,
-                           "[msgpack] (msgpack_unserialize_object) "
-                           "Class %s has no unserializer", ce->name);
+                if (MSGPACK_G(error_display))
+                {
+                    zend_error(E_WARNING,
+                               "[msgpack] (msgpack_unserialize_object) "
+                               "Class %s has no unserializer", ce->name);
+                }
 
                 return MSGPACK_UNPACK_PARSE_ERROR;
             }
@@ -458,7 +488,7 @@ inline static int msgpack_unserialize_object(
             /* value */
             ALLOC_INIT_ZVAL(rval);
 
-            if (msgpack_unserialize_zval(&rval, mpsd, var_hash TSRMLS_CC) < 0)
+            if (msgpack_unserialize_zval(&rval, mpsd, var_hash TSRMLS_CC) <= 0)
             {
                 zval_ptr_dtor(&rval);
 
@@ -487,7 +517,7 @@ inline static int msgpack_unserialize_object(
         /* key */
         ALLOC_INIT_ZVAL(key);
 
-        if (msgpack_unserialize_zval(&key, mpsd, NULL TSRMLS_CC) < 0)
+        if (msgpack_unserialize_zval(&key, mpsd, NULL TSRMLS_CC) <= 0)
         {
             zval_ptr_dtor(&key);
 
@@ -497,7 +527,7 @@ inline static int msgpack_unserialize_object(
         /* value */
         ALLOC_INIT_ZVAL(rval);
 
-        if (msgpack_unserialize_zval(&rval, mpsd, var_hash TSRMLS_CC) < 0)
+        if (msgpack_unserialize_zval(&rval, mpsd, var_hash TSRMLS_CC) <= 0)
         {
             zval_ptr_dtor(&rval);
             zval_ptr_dtor(&key);
@@ -600,7 +630,7 @@ int msgpack_unserialize_zval(
     cs = CS_HEADER; \
     ++(mpsd->data); \
     mpsd->length = (pe - mpsd->data); \
-    if (msgpack_unserialize_array(return_value, mpsd, ct, var_hash TSRMLS_CC) < 0) { goto _failed; } \
+    if (msgpack_unserialize_array(return_value, mpsd, ct, var_hash TSRMLS_CC) <= 0) { goto _failed; } \
     goto _finish_end
 
 #define finish_zval_object(count_) \
@@ -608,7 +638,7 @@ int msgpack_unserialize_zval(
     cs = CS_HEADER; \
     ++(mpsd->data); \
     mpsd->length = (pe - mpsd->data); \
-    if (msgpack_unserialize_object(return_value, mpsd, ct, var_hash TSRMLS_CC) < 0) { goto _failed; } \
+    if (msgpack_unserialize_object(return_value, mpsd, ct, var_hash TSRMLS_CC) <= 0) { goto _failed; } \
     goto _finish_end
 
 #define again_fixed_trail(_cs, trail_len) \

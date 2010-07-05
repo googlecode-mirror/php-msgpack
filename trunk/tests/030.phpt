@@ -187,7 +187,7 @@ array(4) {
   int(10)
 }
 output at 18:
-array(5) {
+array(4) {
   [0]=>
   int(1)
   [1]=>
@@ -196,11 +196,9 @@ array(5) {
   int(3)
   ["testing"]=>
   int(10)
-  [3]=>
-  NULL
 }
 output at 19:
-array(5) {
+array(4) {
   [0]=>
   int(1)
   [1]=>
@@ -209,72 +207,6 @@ array(5) {
   int(3)
   ["testing"]=>
   int(10)
-  [3]=>
-  NULL
-}
-output at 3:
-object(__PHP_Incomplete_Class)#2 (1) {
-  ["__PHP_Incomplete_Class_Name"]=>
-  string(0) ""
-}
-output at 4:
-object(__PHP_Incomplete_Class)#3 (1) {
-  ["__PHP_Incomplete_Class_Name"]=>
-  string(0) ""
-}
-output at 5:
-object(__PHP_Incomplete_Class)#2 (2) {
-  ["__PHP_Incomplete_Class_Name"]=>
-  string(0) ""
-  [115]=>
-  int(116)
-}
-output at 6:
-object(__PHP_Incomplete_Class)#3 (2) {
-  ["__PHP_Incomplete_Class_Name"]=>
-  string(0) ""
-  [115]=>
-  int(116)
-}
-output at 7:
-object(__PHP_Incomplete_Class)#2 (3) {
-  ["__PHP_Incomplete_Class_Name"]=>
-  string(0) ""
-  [115]=>
-  int(116)
-  [100]=>
-  int(67)
-}
-output at 8:
-object(__PHP_Incomplete_Class)#3 (3) {
-  ["__PHP_Incomplete_Class_Name"]=>
-  string(0) ""
-  [115]=>
-  int(116)
-  [100]=>
-  int(67)
-}
-output at 9:
-object(__PHP_Incomplete_Class)#%d (4) {
-  ["__PHP_Incomplete_Class_Name"]=>
-  string(0) ""
-  [115]=>
-  int(116)
-  [100]=>
-  int(67)
-  [108]=>
-  int(97)
-}
-output at 10:
-object(__PHP_Incomplete_Class)#%d (4) {
-  ["__PHP_Incomplete_Class_Name"]=>
-  string(0) ""
-  [115]=>
-  int(116)
-  [100]=>
-  int(67)
-  [108]=>
-  int(97)
 }
 output at 11:
 object(stdClass)#2 (0) {

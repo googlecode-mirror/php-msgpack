@@ -1,5 +1,11 @@
 msgpack extension changelog
 
+Version 0.2.0
+-------------
+	* Add stream serializer / class MessagePackUnpacker interface
+	* Add alias functions
+	* Add class MessagePack interface
+
 Version 0.1.5
 -------------
 	* Add msgpack_pack.c
