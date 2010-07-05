@@ -17,7 +17,7 @@ Returns a string containing a byte-stream representation of value that can be st
 
 
 == MessagePack::unpack ==
-Creates a value from a stored representation.
+Creates a PHP value from a stored representation.
 
 {{{
 public mixed MessagePack::unpack ( string $str )
