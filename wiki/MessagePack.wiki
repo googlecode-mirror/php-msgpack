@@ -1,0 +1,55 @@
+#summary MessagePack Class page.
+
+= The MessagePack class methods =
+
+== MessagePack::pack ==
+Generates a storable representation of a value.
+
+{{{
+public string MessagePack::pack ( mixed $value ) 
+}}}
+
+=== Parameters ===
+|| value || The value to be serialized ||
+
+=== Return Values ===
+Returns a string containing a byte-stream representation of value that can be stored anywhere. 
+
+
+== MessagePack::unpack ==
+Creates a value from a stored representation.
+
+{{{
+public mixed MessagePack::unpack ( string $str )
+}}}
+
+=== Parameters ===
+|| str || The serialized string ||
+
+=== Return Values ===
+The converted value is returned, and can be a boolean, integer, float, string, array or object.
+
+
+== MessagePack::unpacker ==
+Gets a MessagePackUnpacker object.
+
+{{{
+public MessagePackUnpacker MessagePack::unpacker ( void )
+}}}
+
+=== Return Values ===
+Returns the MessagePackUnpacker object.
+
+== Examples ==
+{{{
+$value = 'test';
+
+//gets instance
+$msgpack = new MessagePack();
+
+//pack
+$serialized = $msgpack->pack($value);
+
+//unpack
+$retval = $msgpack->pack($serialized);
+}}}
