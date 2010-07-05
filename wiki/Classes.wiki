@@ -1,4 +1,4 @@
-#summary Classed page.
+#summary Classes page.
 
 = Classes =
 
