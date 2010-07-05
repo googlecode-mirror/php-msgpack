@@ -67,7 +67,7 @@ if test "$PHP_MSGPACK" != "no"; then
 
   PHP_SUBST(MSGPACK_SHARED_LIBADD)
 
-  PHP_NEW_EXTENSION(msgpack, msgpack.c msgpack_pack.c msgpack_unpack.c, $ext_shared)
+  PHP_NEW_EXTENSION(msgpack, msgpack.c msgpack_pack.c msgpack_unpack.c msgpack_class.c, $ext_shared)
 
   PHP_INSTALL_HEADERS([ext/msgpack], [php_msgpack.h])
 fi
