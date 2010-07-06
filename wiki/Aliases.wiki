@@ -1,0 +1,18 @@
+#summary Aliases function page.
+#labels Featured
+
+= Alias functions =
+
+== msgmacp_pack ==
+This function is an alias of: msgpack_serialize(). 
+
+{{{
+string msgpack_pack ( mixed $value ) 
+}}}
+
+== msgmacp_unpack ==
+This function is an alias of: msgpack_unserialize(). 
+
+{{{
+mixed msgpack_unpack ( string $str )
+}}}
