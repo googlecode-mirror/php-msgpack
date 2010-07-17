@@ -186,7 +186,14 @@ static ZEND_METHOD(msgpack, __construct)
 
 static ZEND_METHOD(msgpack, __destruct)
 {
-    MSGPACK_METHOD(msgpack, reset, NULL, getThis());
+    MSGPACK_UNPACKER_OBJECT;
+
+    smart_str_free(&unpacker->buffer);
+
+    if (unpacker->retval != NULL)
+    {
+        zval_ptr_dtor(&unpacker->retval);
+    }
 }
 
 static ZEND_METHOD(msgpack, feed)
@@ -273,6 +280,7 @@ static ZEND_METHOD(msgpack, execute)
 
     switch (ret)
     {
+        case MSGPACK_UNPACK_EXTRA_BYTES:
         case MSGPACK_UNPACK_SUCCESS:
             RETURN_TRUE;
         default:
@@ -289,7 +297,14 @@ static ZEND_METHOD(msgpack, data)
 
 static ZEND_METHOD(msgpack, reset)
 {
+    smart_str buffer = {0};
     MSGPACK_UNPACKER_OBJECT;
+
+    if (unpacker->buffer.len > unpacker->offset)
+    {
+        smart_str_appendl(&buffer, unpacker->buffer.c + unpacker->offset,
+                          unpacker->buffer.len - unpacker->offset);
+    }
 
     smart_str_free(&unpacker->buffer);
 
@@ -297,6 +312,13 @@ static ZEND_METHOD(msgpack, reset)
     unpacker->buffer.len = 0;
     unpacker->buffer.a = 0;
     unpacker->offset = 0;
+
+    if (buffer.len > 0)
+    {
+        smart_str_appendl(&unpacker->buffer, buffer.c, buffer.len);
+    }
+
+    smart_str_free(&buffer);
 
     if (unpacker->retval != NULL)
     {
