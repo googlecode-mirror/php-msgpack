@@ -1,8 +1,12 @@
 msgpack extension changelog
 
+Version 0.2.1
+-------------
+	* Fix stream deserializer
+
 Version 0.2.0
 -------------
-	* Add stream serializer / class MessagePackUnpacker interface
+	* Add stream deserializer / class MessagePackUnpacker interface
 	* Add alias functions
 	* Add class MessagePack interface
 

@@ -98,7 +98,10 @@ inline static int msgpack_unserialize_array(
 
     msgpack_var_push(var_hash, return_value);
 
-    array_init(*return_value);
+    if (Z_TYPE_PP(return_value) != IS_ARRAY)
+    {
+        array_init(*return_value);
+    }
 
     ht = HASH_OF(*return_value);
 

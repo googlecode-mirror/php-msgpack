@@ -10,11 +10,11 @@
     <email>advect@gmail.com</email>
     <active>yes</active>
   </lead>
-  <date>2008-07-15</date>
-  <time>13:19:00</time>
+  <date>2010-07-17</date>
+  <time>18:38:51</time>
   <version>
-    <release>0.2.0</release>
-    <api>0.2.0</api>
+    <release>0.2.1</release>
+    <api>0.2.1</api>
   </version>
   <stability>
     <release>beta</release>
@@ -76,6 +76,8 @@
       <file md5sum="57478f4e95bd000bf73a8331e9e19cba" name="tests/050.phpt" role="test" />
       <file md5sum="7f4047750c52009c7ef369150d2907d6" name="tests/060.phpt" role="test" />
       <file md5sum="9ce6adb0492b97c8d7803090b4a08711" name="tests/061.phpt" role="test" />
+      <file md5sum="187689f3d1d8fe3636ea7d6188e7e559" name="tests/062.phpt" role="test" />
+      <file md5sum="9c91266595d01080b813fb2a056fca82" name="tests/063.phpt" role="test" />
       <file md5sum="29d00ba15f7017c35d08ba83187aaa69" name="tests/070.phpt" role="test" />
       <file md5sum="d3759148a10c87bdb5e7377ae7af5211" name="tests/071.phpt" role="test" />
       <file md5sum="9a3908df5a67606814dfa6651dfddcc8" name="tests/072.phpt" role="test" />
