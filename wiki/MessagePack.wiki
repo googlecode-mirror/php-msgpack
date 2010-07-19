@@ -52,5 +52,8 @@ $msgpack = new MessagePack();
 $serialized = $msgpack->pack($value);
 
 //unpack
-$retval = $msgpack->pack($serialized);
+$retval = $msgpack->unpack($serialized);
+
+//unpacker
+$unpacker = $msgpack->unpacker();
 }}}
