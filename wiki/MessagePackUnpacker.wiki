@@ -74,11 +74,10 @@ for ($i = 0; $i < $length;) {
     $str = substr($serialized, $i, $read);
 
     $unpacker->feed($str);
-    if ($unpacker->execute()) {
-         $unserialized = $unpacker->data();
-         var_dump($unserialized);
-
-         $unpacker->reset();
+    while ($unpacker->execute()) {
+        $unserialized = $unpacker->data();
+        var_dump($unserialized);
+        $unpacker->reset();
     }
 
     $i += $read;
@@ -92,13 +91,13 @@ for ($i = 0; $i < $length;) {
     $read = rand(1, 10);
     $str = $str . substr($serialized, $i, $read);
 
-    if ($unpacker->execute($str, $offset)) {
-         $unserialized = $unpacker->data();
-         var_dump($unserialized);
+    while ($unpacker->execute($str, $offset)) {
+        $unserialized = $unpacker->data();
+        var_dump($unserialized);
 
-         $unpacker->reset();
-         $str = "";
-         $offset = 0;
+        $unpacker->reset();
+        $str = substr($str, $offset);
+        $offset = 0;
     }
 
     $i += $read;
