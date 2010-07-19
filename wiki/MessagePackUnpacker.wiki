@@ -94,7 +94,6 @@ for ($i = 0; $i < $length;) {
     while ($unpacker->execute($str, $offset)) {
         $unserialized = $unpacker->data();
         var_dump($unserialized);
-
         $unpacker->reset();
         $str = substr($str, $offset);
         $offset = 0;
