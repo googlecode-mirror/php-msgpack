@@ -1,5 +1,5 @@
 --TEST--
-Check for class methods unpacker
+Check for class unpacker
 --SKIPIF--
 --FILE--
 <?php
@@ -11,7 +11,8 @@ function test($type, $variable, $test = null) {
     $msgpack = new MessagePack();
 
     $serialized = $msgpack->pack($variable);
-    $unpacker = $msgpack->unpacker();
+
+    $unpacker = new MessagePackUnpacker();
 
     $length = strlen($serialized);
 

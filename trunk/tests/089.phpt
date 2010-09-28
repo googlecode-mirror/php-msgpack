@@ -1,5 +1,5 @@
 --TEST--
-Check for class methods unpacker
+disabled php only for class unpacker (set option)
 --SKIPIF--
 --FILE--
 <?php
@@ -7,17 +7,22 @@ if(!extension_loaded('msgpack')) {
     dl('msgpack.' . PHP_SHLIB_SUFFIX);
 }
 
-function test($type, $variable, $test = null) {
+function test($type, $variable, $test = null)
+{
     $msgpack = new MessagePack();
+    $msgpack->setOption(MessagePack::OPT_PHPONLY, false);
 
     $serialized = $msgpack->pack($variable);
-    $unpacker = $msgpack->unpacker();
+
+    $unpacker = new MessagePackUnpacker();
+    $unpacker->setOption(MessagePack::OPT_PHPONLY, false);
 
     $length = strlen($serialized);
 
     if (rand(0, 1))
     {
-        for ($i = 0; $i < $length;) {
+        for ($i = 0; $i < $length;)
+        {
             $len = rand(1, 10);
             $str = substr($serialized, $i, $len);
 
@@ -37,7 +42,8 @@ function test($type, $variable, $test = null) {
         $str = "";
         $offset = 0;
 
-        for ($i = 0; $i < $length;) {
+        for ($i = 0; $i < $length;)
+        {
             $len = rand(1, 10);
             $str .= substr($serialized, $i, $len);
 
@@ -126,13 +132,13 @@ class Obj {
     }
 }
 
-test('object', new Obj(1, 2, 3), false);
+test('object', new Obj(1, 2, 3), true);
 
-test('object', array(new Obj(1, 2, 3), new Obj(4, 5, 6)), false);
+test('object', array(new Obj(1, 2, 3), new Obj(4, 5, 6)), true);
 
 $o = new Obj(1, 2, 3);
 
-test('object', array(&$o, &$o), false);
+test('object', array(&$o, &$o), true);
 --EXPECTF--
 NULL
 OK
@@ -245,12 +251,12 @@ array(2) {
 OK
 array(2) {
   [0]=>
-  &array(1) {
+  array(1) {
     [0]=>
     string(3) "foo"
   }
   [1]=>
-  &array(1) {
+  array(1) {
     [0]=>
     string(3) "foo"
   }
@@ -258,15 +264,15 @@ array(2) {
 OK
 array(1) {
   [0]=>
-  &array(1) {
+  array(1) {
     [0]=>
-    &array(1) {
+    array(1) {
       [0]=>
-      &array(1) {
+      array(1) {
         [0]=>
-        &array(1) {
+        array(1) {
           [0]=>
-          *RECURSION*
+          NULL
         }
       }
     }
@@ -288,53 +294,53 @@ array(2) {
   }
 }
 OK
-object(Obj)#%d (3) {
-  ["a"]=>
+array(3) {
+  [0]=>
   int(1)
-  [%r"?b"?:protected"?%r]=>
+  [1]=>
   int(2)
-  [%r"?c"?:("Obj":)?private"?%r]=>
+  [2]=>
   int(3)
 }
 OK
 array(2) {
   [0]=>
-  object(Obj)#%d (3) {
-    ["a"]=>
+  array(3) {
+    [0]=>
     int(1)
-    [%r"?b"?:protected"?%r]=>
+    [1]=>
     int(2)
-    [%r"?c"?:("Obj":)?private"?%r]=>
+    [2]=>
     int(3)
   }
   [1]=>
-  object(Obj)#%d (3) {
-    ["a"]=>
+  array(3) {
+    [0]=>
     int(4)
-    [%r"?b"?:protected"?%r]=>
+    [1]=>
     int(5)
-    [%r"?c"?:("Obj":)?private"?%r]=>
+    [2]=>
     int(6)
   }
 }
 OK
 array(2) {
   [0]=>
-  &object(Obj)#%d (3) {
-    ["a"]=>
+  array(3) {
+    [0]=>
     int(1)
-    [%r"?b"?:protected"?%r]=>
+    [1]=>
     int(2)
-    [%r"?c"?:("Obj":)?private"?%r]=>
+    [2]=>
     int(3)
   }
   [1]=>
-  &object(Obj)#%d (3) {
-    ["a"]=>
+  array(3) {
+    [0]=>
     int(1)
-    [%r"?b"?:protected"?%r]=>
+    [1]=>
     int(2)
-    [%r"?c"?:("Obj":)?private"?%r]=>
+    [2]=>
     int(3)
   }
 }
