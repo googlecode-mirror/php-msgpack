@@ -319,7 +319,7 @@ static ZEND_METHOD(msgpack, unpacker)
     zval temp, *opt;
     MSGPACK_BASE_OBJECT;
 
-    MAKE_STD_ZVAL(opt);
+    ALLOC_INIT_ZVAL(opt);
     ZVAL_BOOL(opt, base->php_only);
 
     object_init_ex(return_value, msgpack_unpacker_ce);
@@ -458,7 +458,7 @@ static ZEND_METHOD(msgpack_unpacker, execute)
 
     if (unpacker->retval == NULL)
     {
-        MAKE_STD_ZVAL(unpacker->retval);
+        ALLOC_INIT_ZVAL(unpacker->retval);
     }
     (&unpacker->mp)->user.retval = (zval *)unpacker->retval;
 
@@ -538,9 +538,10 @@ static ZEND_METHOD(msgpack_unpacker, reset)
     msgpack_unserialize_init(&((&unpacker->mp)->user));
 }
 
-void msgpack_init_class(TSRMLS_DC)
+void msgpack_init_class()
 {
     zend_class_entry ce;
+    TSRMLS_FETCH();
 
     /* base */
     INIT_CLASS_ENTRY(ce, "MessagePack", msgpack_base_methods);
