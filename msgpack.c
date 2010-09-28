@@ -15,6 +15,7 @@
 #include "msgpack_pack.h"
 #include "msgpack_unpack.h"
 #include "msgpack_class.h"
+#include "msgpack/version.h"
 
 static ZEND_FUNCTION(msgpack_serialize);
 static ZEND_FUNCTION(msgpack_unserialize);
@@ -48,6 +49,8 @@ static const zend_function_entry msgpack_functions[] = {
 
 static void msgpack_init_globals(zend_msgpack_globals *msgpack_globals)
 {
+    TSRMLS_FETCH();
+
     if (PG(display_errors))
     {
         msgpack_globals->error_display = 1;
@@ -72,7 +75,7 @@ static ZEND_MINIT_FUNCTION(msgpack)
                                     PS_SERIALIZER_DECODE_NAME(msgpack));
 #endif
 
-    msgpack_init_class(TSRMLS_CC);
+    msgpack_init_class();
 
     return SUCCESS;
 }
@@ -87,21 +90,15 @@ static ZEND_MSHUTDOWN_FUNCTION(msgpack)
 static ZEND_MINFO_FUNCTION(msgpack)
 {
     php_info_print_table_start();
-    php_info_print_table_row(2, "msgpack support", "enabled");
-    php_info_print_table_row(2, "msgpack version", MSGPACK_VERSION);
-    if (MSGPACK_G(php_only))
-    {
-        php_info_print_table_row(2, "msgpack PHP Only", "enabled" );
-    }
-    else
-    {
-        php_info_print_table_row(2, "msgpack PHP Only", "disabled" );
-    }
+    php_info_print_table_row(2, "MessagePack Support", "enabled");
 #if HAVE_PHP_SESSION
-    php_info_print_table_row(2, "msgpack Session Support", "enabled" );
+    php_info_print_table_row(2, "Session Support", "enabled" );
 #endif
-
+    php_info_print_table_row(2, "extension Version", MSGPACK_EXTENSION_VERSION);
+    php_info_print_table_row(2, "header Version", MSGPACK_VERSION);
     php_info_print_table_end();
+
+    DISPLAY_INI_ENTRIES();
 }
 
 zend_module_entry msgpack_module_entry = {
@@ -161,7 +158,7 @@ PS_SERIALIZER_DECODE_FUNC(msgpack)
     msgpack_unpack_t mp;
     php_unserialize_data_t var_hash;
 
-    MAKE_STD_ZVAL(tmp);
+    ALLOC_INIT_ZVAL(tmp);
 
     template_init(&mp);
 
