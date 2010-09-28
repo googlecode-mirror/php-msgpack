@@ -48,7 +48,7 @@ array(2) {
 }
 OK
 array(&$a, &$a)
-82008100a3666f6f0182c001c002
+820082c00100a3666f6f0182c0020002
 array(2) {
   [0]=>
   &array(1) {
@@ -63,16 +63,16 @@ array(2) {
 }
 OK
 cyclic
-81008100810082c001c002
+810082c0010082c0010082c0020002
 array(1) {
   [0]=>
   &array(1) {
     [0]=>
-    array(1) {
+    &array(1) {
       [0]=>
       &array(1) {
         [0]=>
-        array(1) {
+        &array(1) {
           [0]=>
           *RECURSION*
         }
@@ -101,11 +101,11 @@ array(1) {
   [0]=>
   &array(1) {
     [0]=>
-    array(1) {
+    &array(1) {
       [0]=>
       &array(1) {
         [0]=>
-        array(1) {
+        &array(1) {
           [0]=>
           *RECURSION*
         }

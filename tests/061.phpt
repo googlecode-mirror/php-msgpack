@@ -239,11 +239,11 @@ array(1) {
   [0]=>
   &array(1) {
     [0]=>
-    array(1) {
+    &array(1) {
       [0]=>
       &array(1) {
         [0]=>
-        array(1) {
+        &array(1) {
           [0]=>
           *RECURSION*
         }

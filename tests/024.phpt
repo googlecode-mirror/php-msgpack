@@ -151,7 +151,7 @@ object(Obj3)#%d (1) {
 }
 OK
 objectselfrec
-83c0a44f626a34a7004f626a34006164a9004f626a34006f626a82c002c001
+83c0a44f626a34a7004f626a34006164a9004f626a34006f626a82c0020001
 object(Obj4)#%d (2) {
   [%r"?a"?:("Obj4":)?private"?%r]=>
   int(100)

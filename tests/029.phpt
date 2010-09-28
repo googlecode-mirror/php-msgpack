@@ -17,4 +17,5 @@ echo implode("\n", $array), PHP_EOL;
 msgpack
 msgpack support => enabled
 msgpack version => %s
+msgpack PHP Only => %s
 msgpack Session Support => enabled
