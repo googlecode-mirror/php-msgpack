@@ -3,6 +3,40 @@
 
 = The MessagePack class methods =
 
+== MessagePack::__construct ==
+Creates a new MessagePack object
+
+{{{
+MessagePack::__construct ([ bool $value ]) 
+}}}
+
+=== Parameters ===
+|| value || _true_ || runtime MessagePack for PHP Only ||
+|| value || _false_ || runtime MessagePack for standard ( classes are serialized as an array) ||
+
+If no parameters are passed, specified in php.ini for msgpack.php_only.
+This is enabled by default. 
+
+=== Return Values ===
+Returns a new MessagePack object. 
+
+
+== MessagePack::setOption ==
+Set a MessagePack option.
+
+{{{
+public bool MessagePack::setOption ( int $option, mixed $value )
+}}}
+
+=== Parameters ===
+|| option || _MessagePack::OPT_PHPONLY_ ||
+|| value || _true_ || runtime MessagePack for PHP Only ||
+|| value || _false_ || runtime MessagePack for standard ( classes are serialized as an array) ||
+
+=== Return Values ===
+Returns TRUE if the option could be set; FALSE if not.
+
+
 == MessagePack::pack ==
 Generates a storable representation of a value.
 
@@ -35,8 +69,14 @@ The converted value is returned, and can be a boolean, integer, float, string, a
 Gets a MessagePackUnpacker object.
 
 {{{
-public MessagePackUnpacker MessagePack::unpacker ( void )
+public MessagePackUnpacker MessagePack::unpacker ([ bool $value ])
 }}}
+
+=== Parameters ===
+|| value || _true_ || runtime MessagePack for PHP Only ||
+|| value || _false_ || runtime MessagePack for standard ( classes are serialized as an array) ||
+
+If no parameters are passed, specified in MessagePack options.
 
 === Return Values ===
 Returns the MessagePackUnpacker object.

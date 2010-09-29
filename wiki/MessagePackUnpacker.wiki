@@ -3,6 +3,40 @@
 
 = The MessagePackUnpacker class methods =
 
+== MessagePackUnpacker::__construct ==
+Creates a new MessagePackUnpacker object
+
+{{{
+MessagePackUnpacker::__construct ([ bool $value ]) 
+}}}
+
+=== Parameters ===
+|| value || _true_ || runtime MessagePack for PHP Only ||
+|| value || _false_ || runtime MessagePack for standard ||
+
+If no parameters are passed, specified in php.ini for msgpack.php_only.
+This is enabled by default. 
+
+=== Return Values ===
+Returns a new MessagePackUnpacker object. 
+
+
+== MessagePackUnpacker::setOption ==
+Set a MessagePackUnpacker option.
+
+{{{
+public bool MessagePackUnpacker::setOption ( int $option, mixed $value )
+}}}
+
+=== Parameters ===
+|| option || _MessagePack::OPT_PHPONLY_ ||
+|| value || _true_ || runtime MessagePack for PHP Only ||
+|| value || _false_ || runtime MessagePack for standard ||
+
+=== Return Values ===
+Returns TRUE if the option could be set; FALSE if not.
+
+
 == MessagePackUnpacker::feed ==
 Fills the internal buffer with the specified buffer.
 

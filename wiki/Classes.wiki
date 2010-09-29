@@ -12,10 +12,15 @@ Instances of this class are used to interact with a serializer.
 == MessagePack ==
 {{{
 MessagePack   {
+    /* Constants */
+    const MessagePack::OPT_PHPONLY;
+
     /* Methods */
+    __construct  ([ bool $value ])
+    public bool MessagePackUnpacker::setOption ( int $option, mixed $value )
     public string pack ( mixed $value )
     public mixed unpack ( string $str )
-    public MessagePackUnpacker unpacker ( void )
+    public MessagePackUnpacker unpacker ([ bool $value ])
 }
 }}}
 
@@ -23,6 +28,7 @@ MessagePack   {
 {{{
 MessagePackUnpacker {
     /* Methods */
+    __construct  ([ bool $value ])
     public boolean feed ( string $str )
     public boolean execute ( [ string $str, int $offset ] )
     public mixed data ( void )
