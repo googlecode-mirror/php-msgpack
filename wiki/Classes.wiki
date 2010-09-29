@@ -17,7 +17,7 @@ MessagePack   {
 
     /* Methods */
     __construct  ([ bool $value ])
-    public bool MessagePackUnpacker::setOption ( int $option, mixed $value )
+    public bool setOption ( int $option, mixed $value )
     public string pack ( mixed $value )
     public mixed unpack ( string $str )
     public MessagePackUnpacker unpacker ([ bool $value ])
@@ -29,6 +29,7 @@ MessagePack   {
 MessagePackUnpacker {
     /* Methods */
     __construct  ([ bool $value ])
+    public bool setOption ( int $option, mixed $value )
     public boolean feed ( string $str )
     public boolean execute ( [ string $str, int $offset ] )
     public mixed data ( void )
