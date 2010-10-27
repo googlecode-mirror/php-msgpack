@@ -512,11 +512,16 @@ static ZEND_METHOD(msgpack_unpacker, data)
 {
     MSGPACK_UNPACKER_OBJECT;
 
-    ZVAL_ZVAL(return_value, unpacker->retval, 1, 1);
+    if (unpacker->retval != NULL)
+    {
+        ZVAL_ZVAL(return_value, unpacker->retval, 1, 1);
 
-    MSGPACK_METHOD(msgpack_unpacker, reset, NULL, getThis());
+        MSGPACK_METHOD(msgpack_unpacker, reset, NULL, getThis());
 
-    return;
+        return;
+    }
+
+    RETURN_FALSE;
 }
 
 static ZEND_METHOD(msgpack_unpacker, reset)
