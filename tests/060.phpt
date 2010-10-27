@@ -3,7 +3,7 @@ Check for buffered streaming unserialization
 --SKIPIF--
 <?php
 if (version_compare(PHP_VERSION, '5.3.3') >= 0) {
-    echo "skip tests in PHP 5.3.2 and lower";
+    echo "skip tests in PHP 5.3.2 or older";
 }
 --FILE--
 <?php
