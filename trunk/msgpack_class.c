@@ -514,7 +514,7 @@ static ZEND_METHOD(msgpack_unpacker, data)
 
     if (unpacker->retval != NULL)
     {
-        ZVAL_ZVAL(return_value, unpacker->retval, 1, 1);
+        ZVAL_ZVAL(return_value, unpacker->retval, 1, 0);
 
         MSGPACK_METHOD(msgpack_unpacker, reset, NULL, getThis());
 
