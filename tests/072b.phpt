@@ -2,8 +2,8 @@
 Check for class methods unpacker
 --SKIPIF--
 <?php
-if (version_compare(PHP_VERSION, '5.3.2') <= 0) {
-    echo "skip tests in PHP 5.3.3 or newer";
+if (version_compare(PHP_VERSION, '5.3.3') >= 0) {
+    echo "skip tests in PHP 5.3.2 or older";
 }
 --FILE--
 <?php
@@ -266,7 +266,13 @@ array(1) {
     [0]=>
     &array(1) {
       [0]=>
-      *RECURSION*
+      &array(1) {
+        [0]=>
+        &array(1) {
+          [0]=>
+          *RECURSION*
+        }
+      }
     }
   }
 }
