@@ -27,7 +27,7 @@
       <file md5sum="12b9d8867e5fde4af426c134283e2082" name="LICENSE" role="doc" />
       <file md5sum="8daeb22744f11b57da9d0966608e2fc1" name="README" role="doc" />
       <file md5sum="52329b794aab67446540c4c2b5537076" name="config.m4" role="src" />
-      <file md5sum="4f27f70df327b81e9392cdbb9ddcb03b" name="msgpack.c" role="src" />
+      <file md5sum="dc485aa81a31fc9f42b2b42b3554b41b" name="msgpack.c" role="src" />
       <file md5sum="2a27ea5a6c13c65802dcd715e00c4646" name="msgpack_class.c" role="src" />
       <file md5sum="f58d228c0b7ace35fc85178f1aa2fb22" name="msgpack_class.h" role="src" />
       <file md5sum="177fdfa077b5d23bc22553ad6e051ec2" name="msgpack_pack.c" role="src" />
