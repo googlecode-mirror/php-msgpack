@@ -24,6 +24,10 @@ MessagePack   {
 }
 }}}
 
+=== Warning ===
+MessagePack uses class constants since PHP 5.1.
+Prior releases use global constants in the form MESSAGEPACK_OPT_PHPONLY.
+
 == MessagePackUnpacker ==
 {{{
 MessagePackUnpacker {
