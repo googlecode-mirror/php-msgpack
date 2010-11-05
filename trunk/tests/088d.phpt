@@ -2,8 +2,8 @@
 disabled php only for class methods unpacker (set option)
 --SKIPIF--
 <?php
-if (version_compare(PHP_VERSION, '5.1.0') < 0) {
-    echo "skip tests in PHP 5.1 or newer";
+if (version_compare(PHP_VERSION, '5.1.0') >= 0) {
+    echo "skip tests in PHP 5.0 or older";
 }
 --FILE--
 <?php
@@ -14,7 +14,7 @@ if(!extension_loaded('msgpack')) {
 function test($type, $variable, $test = null)
 {
     $msgpack = new MessagePack();
-    $msgpack->setOption(MessagePack::OPT_PHPONLY, false);
+    $msgpack->setOption(MESSAGEPACK_OPT_PHPONLY, false);
 
     $serialized = $msgpack->pack($variable);
     $unpacker = $msgpack->unpacker();

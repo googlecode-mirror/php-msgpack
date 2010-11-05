@@ -77,6 +77,12 @@ static ZEND_MINIT_FUNCTION(msgpack)
 
     msgpack_init_class();
 
+#if (PHP_MAJOR_VERSION == 5 && PHP_MINOR_VERSION < 1)
+    REGISTER_LONG_CONSTANT(
+        "MESSAGEPACK_OPT_PHPONLY", MSGPACK_CLASS_OPT_PHPONLY,
+        CONST_CS | CONST_PERSISTENT);
+#endif
+
     return SUCCESS;
 }
 

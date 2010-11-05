@@ -1,9 +1,9 @@
 --TEST--
-Object Serializable interface
+Object test
 --SKIPIF--
 <?php
-if (version_compare(PHP_VERSION, '5.1.0') < 0) {
-    echo "skip tests in PHP 5.1 or newer";
+if (version_compare(PHP_VERSION, '5.2.0') >= 0) {
+    echo "skip tests in PHP 5.1 or older";
 }
 --FILE--
 <?php
@@ -21,36 +21,32 @@ function test($type, $variable, $test) {
     echo $test || $unserialized == $variable ? 'OK' : 'ERROR', PHP_EOL;
 }
 
-class Obj implements Serializable {
-    var $a;
-    var $b;
+class Obj {
+    public $a;
+    protected $b;
+    private $c;
 
-    function __construct($a, $b) {
+    function __construct($a, $b, $c) {
         $this->a = $a;
         $this->b = $b;
-    }
-
-    public function serialize() {
-        return pack('NN', $this->a, $this->b);
-    }
-
-    public function unserialize($serialized) {
-        $tmp = unpack('N*', $serialized);
-        $this->__construct($tmp[1], $tmp[2]);
+        $this->c = $c;
     }
 }
 
-$o = new Obj(1, 2);
+$o = new Obj(1, 2, 3);
+
 
 test('object', $o, false);
 ?>
 --EXPECTF--
 object
-82c003a34f626aa80000000100000002
-object(Obj)#%d (2) {
+84c0a34f626aa16101a4002a006202a6004f626a006303
+object(Obj)#%d (3) {
   ["a"]=>
   int(1)
-  ["b"]=>
+  ["b:protected"]=>
   int(2)
+  ["c:private"]=>
+  int(3)
 }
 OK

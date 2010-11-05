@@ -2,8 +2,8 @@
 Object test, __sleep
 --SKIPIF--
 <?php
-if (version_compare(PHP_VERSION, '5.2.0') < 0) {
-    echo "skip tests in PHP 5.2 or newer";
+if (version_compare(PHP_VERSION, '5.2.0') >= 0) {
+    echo "skip tests in PHP 5.1 or older";
 }
 --FILE--
 <?php
@@ -54,9 +54,9 @@ object
 object(Obj)#%d (4) {
   ["a"]=>
   int(1)
-  [%r"?b"?:protected"?%r]=>
+  ["b:protected"]=>
   int(2)
-  [%r"?c"?:("Obj":)?private"?%r]=>
+  ["c:private"]=>
   int(3)
   ["d"]=>
   NULL
