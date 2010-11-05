@@ -561,6 +561,7 @@ int msgpack_unserialize_map_item(
                 return 0;
             }
 
+#if (PHP_MAJOR_VERSION == 5 && PHP_MINOR_VERSION > 0)
             /* implementing Serializable */
             if (ce->unserialize == NULL)
             {
@@ -580,6 +581,7 @@ int msgpack_unserialize_map_item(
                 container, ce,
                 (const unsigned char *)Z_STRVAL_P(val), Z_STRLEN_P(val) + 1,
                 NULL TSRMLS_CC);
+#endif
 
             MSGPACK_UNSERIALIZE_FINISH_MAP_ITEM(unpack, key, val);
 

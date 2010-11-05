@@ -2,8 +2,8 @@
 Check for serialization handler
 --SKIPIF--
 <?php
-if (version_compare(PHP_VERSION, '5.1.0') < 0) {
-    echo "skip tests in PHP 5.1 or newer";
+if (version_compare(PHP_VERSION, '5.1.0') >= 0) {
+    echo "skip tests in PHP 5.0 or older";
 }
 --FILE--
 <?php
@@ -23,13 +23,11 @@ function close() {
 
 function read($id) {
     global $output;
-    $output .= "read" . PHP_EOL;
     return pack('H*', '81a3666f6f01');
 }
 
 function write($id, $data) {
     global $output;
-    $output .= "wrote: ";
     $output .= bin2hex($data). PHP_EOL;
     return true;
 }
@@ -42,23 +40,13 @@ function gc($time) {
     return true;
 }
 
-class Foo {
-}
-
-class Bar {
-}
-
 ini_set('session.serialize_handler', 'msgpack');
 
 session_set_save_handler('open', 'close', 'read', 'write', 'destroy', 'gc');
 
+session_start();
 
-$db_object = new Foo();
-$session_object = new Bar();
-
-$v = session_start();
-var_dump($v);
-$_SESSION['test'] = "foobar";
+echo ++$_SESSION['foo'], PHP_EOL;
 
 session_write_close();
 
@@ -66,12 +54,9 @@ echo $output;
 var_dump($_SESSION);
 ?>
 --EXPECT--
-bool(true)
-read
-wrote: 83c001a3666f6f01a474657374a6666f6f626172
-array(2) {
+2
+81a3666f6f02
+array(1) {
   ["foo"]=>
-  int(1)
-  ["test"]=>
-  string(6) "foobar"
+  int(2)
 }

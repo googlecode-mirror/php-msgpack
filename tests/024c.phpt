@@ -2,11 +2,8 @@
 Recursive objects
 --SKIPIF--
 <?php
-if (version_compare(PHP_VERSION, '5.3.3') >= 0) {
-    echo "skip tests in PHP 5.3.2 or older";
-}
-if (version_compare(PHP_VERSION, '5.2.0') < 0) {
-    echo "skip tests in PHP 5.2 or newer";
+if (version_compare(PHP_VERSION, '5.2.0') >= 0) {
+    echo "skip tests in PHP 5.1 or older";
 }
 --FILE--
 <?php
@@ -92,17 +89,17 @@ objectrec
 object(Obj2)#%d (7) {
   ["aa"]=>
   NULL
-  [%r"?bb"?:protected"?%r]=>
+  ["bb:protected"]=>
   NULL
-  [%r"?cc"?:("Obj2":)?private"?%r]=>
+  ["cc:private"]=>
   NULL
-  [%r"?obj"?:("Obj2":)?private"?%r]=>
+  ["obj:private"]=>
   object(Obj)#%d (3) {
     ["a"]=>
     int(1)
-    [%r"?b"?:protected"?%r]=>
+    ["b:protected"]=>
     int(2)
-    [%r"?c"?:("Obj":)?private"?%r]=>
+    ["c:private"]=>
     int(3)
   }
   ["a"]=>
@@ -116,42 +113,42 @@ OK
 objectrecarr
 82c0a44f626a33aa004f626a33006f626a73840084c0a34f626aa16100a4002a006200a6004f626a0063040184c0a34f626aa16100a4002a006201a6004f626a0063040284c0a34f626aa16100a4002a006202a6004f626a0063040384c0a34f626aa16100a4002a006203a6004f626a006304
 object(Obj3)#%d (1) {
-  [%r"?objs"?:("Obj3":)?private"?%r]=>
+  ["objs:private"]=>
   array(4) {
     [0]=>
     object(Obj)#%d (3) {
       ["a"]=>
       int(0)
-      [%r"?b"?:protected"?%r]=>
+      ["b:protected"]=>
       int(0)
-      [%r"?c"?:("Obj":)?private"?%r]=>
+      ["c:private"]=>
       int(4)
     }
     [1]=>
     object(Obj)#%d (3) {
       ["a"]=>
       int(0)
-      [%r"?b"?:protected"?%r]=>
+      ["b:protected"]=>
       int(1)
-      [%r"?c"?:("Obj":)?private"?%r]=>
+      ["c:private"]=>
       int(4)
     }
     [2]=>
     object(Obj)#%d (3) {
       ["a"]=>
       int(0)
-      [%r"?b"?:protected"?%r]=>
+      ["b:protected"]=>
       int(2)
-      [%r"?c"?:("Obj":)?private"?%r]=>
+      ["c:private"]=>
       int(4)
     }
     [3]=>
     object(Obj)#%d (3) {
       ["a"]=>
       int(0)
-      [%r"?b"?:protected"?%r]=>
+      ["b:protected"]=>
       int(3)
-      [%r"?c"?:("Obj":)?private"?%r]=>
+      ["c:private"]=>
       int(4)
     }
   }
@@ -160,13 +157,13 @@ OK
 objectselfrec
 83c0a44f626a34a7004f626a34006164a9004f626a34006f626a82c0020001
 object(Obj4)#%d (2) {
-  [%r"?a"?:("Obj4":)?private"?%r]=>
+  ["a:private"]=>
   int(100)
-  [%r"?obj"?:("Obj4":)?private"?%r]=>
+  ["obj:private"]=>
   object(Obj4)#%d (2) {
-    [%r"?a"?:("Obj4":)?private"?%r]=>
+    ["a:private"]=>
     int(100)
-    [%r"?obj"?:("Obj4":)?private"?%r]=>
+    ["obj:private"]=>
     *RECURSION*
   }
 }

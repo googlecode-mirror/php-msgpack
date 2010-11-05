@@ -1,9 +1,9 @@
 --TEST--
-disabled php only for class methods unpacker (set option)
+Check for buffered streaming unserialization (single)
 --SKIPIF--
 <?php
-if (version_compare(PHP_VERSION, '5.1.0') < 0) {
-    echo "skip tests in PHP 5.1 or newer";
+if (version_compare(PHP_VERSION, '5.2.0') >= 0) {
+    echo "skip tests in PHP 5.1 or older";
 }
 --FILE--
 <?php
@@ -11,56 +11,28 @@ if(!extension_loaded('msgpack')) {
     dl('msgpack.' . PHP_SHLIB_SUFFIX);
 }
 
-function test($type, $variable, $test = null)
-{
-    $msgpack = new MessagePack();
-    $msgpack->setOption(MessagePack::OPT_PHPONLY, false);
+$unpacker = new MessagePackUnpacker();
 
-    $serialized = $msgpack->pack($variable);
-    $unpacker = $msgpack->unpacker();
+function test($type, $variable, $test = null) {
+    $serialized = msgpack_serialize($variable);
+
+    global $unpacker;
 
     $length = strlen($serialized);
 
-    if (rand(0, 1))
-    {
-        for ($i = 0; $i < $length;)
+    for ($i = 0; $i < $length;) {
+        $len = rand(1, 10);
+        $str = substr($serialized, $i, $len);
+
+        $unpacker->feed($str);
+        if ($unpacker->execute())
         {
-            $len = rand(1, 10);
-            $str = substr($serialized, $i, $len);
-
-            $unpacker->feed($str);
-            if ($unpacker->execute())
-            {
-                $unserialized = $unpacker->data();
-                var_dump($unserialized);
-                $unpacker->reset();
-            }
-
-            $i += $len;
+            $unserialized = $unpacker->data();
+            var_dump($unserialized);
+            $unpacker->reset();
         }
-    }
-    else
-    {
-        $str = "";
-        $offset = 0;
 
-        for ($i = 0; $i < $length;)
-        {
-            $len = rand(1, 10);
-            $str .= substr($serialized, $i, $len);
-
-            if ($unpacker->execute($str, $offset))
-            {
-                $unserialized = $unpacker->data();
-                var_dump($unserialized);
-
-                $unpacker->reset();
-                $str = "";
-                $offset = 0;
-            }
-
-            $i += $len;
-        }
+        $i += $len;
     }
 
     if (!is_bool($test))
@@ -75,8 +47,8 @@ function test($type, $variable, $test = null)
 
 test('null', null);
 
-test('boo:l true', true);
-test('bool: true', false);
+test('bool: true', true);
+test('bool: false', false);
 
 test('zero: 0', 0);
 test('small: 1', 1);
@@ -91,9 +63,9 @@ test('double: 123.456', 123.456);
 test('empty: ""', "");
 test('string: "foobar"', "foobar");
 
-test('empty: array', array(), false);
-test('empty: array(1, 2, 3)', array(1, 2, 3), false);
-test('empty: array(array(1, 2, 3), arr...', array(array(1, 2, 3), array(4, 5, 6), array(7, 8, 9)), false);
+test('array', array(), false);
+test('array(1, 2, 3)', array(1, 2, 3), false);
+test('array(array(1, 2, 3), arr...', array(array(1, 2, 3), array(4, 5, 6), array(7, 8, 9)), false);
 
 test('array("foo", "foo", "foo")', array("foo", "foo", "foo"), false);
 test('array("one" => 1, "two" => 2))', array("one" => 1, "two" => 2), false);
@@ -134,13 +106,13 @@ class Obj {
     }
 }
 
-test('object', new Obj(1, 2, 3), true);
+test('object', new Obj(1, 2, 3), false);
 
-test('object', array(new Obj(1, 2, 3), new Obj(4, 5, 6)), true);
+test('object', array(new Obj(1, 2, 3), new Obj(4, 5, 6)), false);
 
 $o = new Obj(1, 2, 3);
 
-test('object', array(&$o, &$o), true);
+test('object', array(&$o, &$o), false);
 --EXPECTF--
 NULL
 OK
@@ -253,12 +225,12 @@ array(2) {
 OK
 array(2) {
   [0]=>
-  array(1) {
+  &array(1) {
     [0]=>
     string(3) "foo"
   }
   [1]=>
-  array(1) {
+  &array(1) {
     [0]=>
     string(3) "foo"
   }
@@ -266,15 +238,15 @@ array(2) {
 OK
 array(1) {
   [0]=>
-  array(1) {
+  &array(1) {
     [0]=>
-    array(1) {
+    &array(1) {
       [0]=>
-      array(1) {
+      &array(1) {
         [0]=>
-        array(1) {
+        &array(1) {
           [0]=>
-          NULL
+          *RECURSION*
         }
       }
     }
@@ -296,53 +268,53 @@ array(2) {
   }
 }
 OK
-array(3) {
-  [0]=>
+object(Obj)#%d (3) {
+  ["a"]=>
   int(1)
-  [1]=>
+  ["b:protected"]=>
   int(2)
-  [2]=>
+  ["c:private"]=>
   int(3)
 }
 OK
 array(2) {
   [0]=>
-  array(3) {
-    [0]=>
+  object(Obj)#%d (3) {
+    ["a"]=>
     int(1)
-    [1]=>
+    ["b:protected"]=>
     int(2)
-    [2]=>
+    ["c:private"]=>
     int(3)
   }
   [1]=>
-  array(3) {
-    [0]=>
+  object(Obj)#%d (3) {
+    ["a"]=>
     int(4)
-    [1]=>
+    ["b:protected"]=>
     int(5)
-    [2]=>
+    ["c:private"]=>
     int(6)
   }
 }
 OK
 array(2) {
   [0]=>
-  array(3) {
-    [0]=>
+  &object(Obj)#%d (3) {
+    ["a"]=>
     int(1)
-    [1]=>
+    ["b:protected"]=>
     int(2)
-    [2]=>
+    ["c:private"]=>
     int(3)
   }
   [1]=>
-  array(3) {
-    [0]=>
+  &object(Obj)#%d (3) {
+    ["a"]=>
     int(1)
-    [1]=>
+    ["b:protected"]=>
     int(2)
-    [2]=>
+    ["c:private"]=>
     int(3)
   }
 }

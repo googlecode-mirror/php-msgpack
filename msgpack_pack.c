@@ -386,6 +386,7 @@ inline static void msgpack_serialize_object(
         ce = Z_OBJCE_P(val);
     }
 
+#if (PHP_MAJOR_VERSION == 5 && PHP_MINOR_VERSION > 0)
     if (ce && ce->serialize != NULL)
     {
         unsigned char *serialized_data = NULL;
@@ -418,6 +419,7 @@ inline static void msgpack_serialize_object(
 
         return;
     }
+#endif
 
     if (ce && ce != PHP_IC_ENTRY &&
         zend_hash_exists(&ce->function_table, "__sleep", sizeof("__sleep")))

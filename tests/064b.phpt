@@ -5,6 +5,9 @@ Check for buffered streaming unserialization (single)
 if (version_compare(PHP_VERSION, '5.3.3') >= 0) {
     echo "skip tests in PHP 5.3.2 or older";
 }
+if (version_compare(PHP_VERSION, '5.2.0') < 0) {
+    echo "skip tests in PHP 5.2 or newer";
+}
 --FILE--
 <?php
 if(!extension_loaded('msgpack')) {

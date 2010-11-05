@@ -2,8 +2,8 @@
 Check for serialization handler
 --SKIPIF--
 <?php
-if (version_compare(PHP_VERSION, '5.1.0') < 0) {
-    echo "skip tests in PHP 5.1 or newer";
+if (version_compare(PHP_VERSION, '5.1.0') >= 0) {
+    echo "skip tests in PHP 5.0 or older";
 }
 --FILE--
 <?php
@@ -68,7 +68,7 @@ var_dump($_SESSION);
 --EXPECT--
 bool(true)
 read
-wrote: 83c001a3666f6f01a474657374a6666f6f626172
+wrote: 82a3666f6f01a474657374a6666f6f626172
 array(2) {
   ["foo"]=>
   int(1)

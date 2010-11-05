@@ -2,8 +2,8 @@
 Object test, array of objects with __sleep
 --SKIPIF--
 <?php
-if (version_compare(PHP_VERSION, '5.2.0') < 0) {
-    echo "skip tests in PHP 5.2 or newer";
+if (version_compare(PHP_VERSION, '5.2.0') >= 0) {
+    echo "skip tests in PHP 5.1 or older";
 }
 --FILE--
 <?php
@@ -56,9 +56,9 @@ array(3) {
   object(Obj)#1 (4) {
     ["a"]=>
     string(2) "aa"
-    [%r"?b"?:protected"?%r]=>
+    ["b:protected"]=>
     string(2) "bb"
-    [%r"?c"?:("Obj":)?private"?%r]=>
+    ["c:private"]=>
     string(2) "cc"
     ["d"]=>
     string(2) "dd"
@@ -67,9 +67,9 @@ array(3) {
   object(Obj)#2 (4) {
     ["a"]=>
     string(2) "ee"
-    [%r"?b"?:protected"?%r]=>
+    ["b:protected"]=>
     string(2) "ff"
-    [%r"?c"?:("Obj":)?private"?%r]=>
+    ["c:private"]=>
     string(2) "gg"
     ["d"]=>
     string(2) "hh"
@@ -78,9 +78,9 @@ array(3) {
   object(Obj)#3 (4) {
     ["a"]=>
     int(1)
-    [%r"?b"?:protected"?%r]=>
+    ["b:protected"]=>
     int(2)
-    [%r"?c"?:("Obj":)?private"?%r]=>
+    ["c:private"]=>
     int(3)
     ["d"]=>
     int(4)
@@ -91,9 +91,9 @@ array(3) {
   object(Obj)#4 (4) {
     ["a"]=>
     string(2) "aa"
-    [%r"?b"?:protected"?%r]=>
+    ["b:protected"]=>
     string(2) "bb"
-    [%r"?c"?:("Obj":)?private"?%r]=>
+    ["c:private"]=>
     string(2) "cc"
     ["d"]=>
     NULL
@@ -102,9 +102,9 @@ array(3) {
   object(Obj)#5 (4) {
     ["a"]=>
     string(2) "ee"
-    [%r"?b"?:protected"?%r]=>
+    ["b:protected"]=>
     string(2) "ff"
-    [%r"?c"?:("Obj":)?private"?%r]=>
+    ["c:private"]=>
     string(2) "gg"
     ["d"]=>
     NULL
@@ -113,9 +113,9 @@ array(3) {
   object(Obj)#6 (4) {
     ["a"]=>
     int(1)
-    [%r"?b"?:protected"?%r]=>
+    ["b:protected"]=>
     int(2)
-    [%r"?c"?:("Obj":)?private"?%r]=>
+    ["c:private"]=>
     int(3)
     ["d"]=>
     NULL
