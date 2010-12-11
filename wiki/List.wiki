@@ -3,7 +3,7 @@
 = Class =
   * [Classes About]
   * [MessagePack MessagePack]
-  * [MessagePackUnPacker MessagePackUnPacker]
+  * [MessagePackUnpacker MessagePackUnpacker]
 
 = Function =
   * [Functions Function]
