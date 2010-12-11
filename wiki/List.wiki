@@ -1,13 +1,13 @@
 #summary List page.
 
 = Class =
-  * [About Classes]
+  * [Classes About]
   * [MessagePack MessagePack]
   * [MessagePackUnPacker MessagePackUnPacker]
 
 = Function =
-  * [Function Functions]
-  * [Alias Aliases]
+  * [Functions Function]
+  * [Aliases Alias]
 
 = Using =
   * [Performance Performance]
