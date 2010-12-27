@@ -1,5 +1,5 @@
 --TEST--
-broken random data test
+broken random data test : MessagePackUnpacker::execute
 --SKIPIF--
 --FILE--
 <?php
@@ -19,7 +19,16 @@ function test() {
     }
 
     // if returned null everything is OK
-    if (($unserialized = msgpack_unserialize($serialized)) === null) {
+    $unpacker = new MessagePackUnpacker();
+    if ($unpacker->execute($serialized, $offset))
+    {
+        if (($unserialized = $unpacker->data()) === null) {
+            return true;
+        }
+        $unpacker->reset();
+    }
+    else
+    {
         return true;
     }
 

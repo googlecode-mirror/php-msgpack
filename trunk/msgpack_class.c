@@ -20,6 +20,7 @@ typedef struct {
     php_unserialize_data_t var_hash;
     long php_only;
     zend_bool finished;
+    int error;
 } php_msgpack_unpacker_t;
 
 #if ZEND_MODULE_API_NO >= 20060613
@@ -385,6 +386,7 @@ static ZEND_METHOD(msgpack_unpacker, __construct)
     unpacker->retval = NULL;
     unpacker->offset = 0;
     unpacker->finished = 0;
+    unpacker->error = 0;
 
     template_init(&unpacker->mp);
 
@@ -405,7 +407,7 @@ static ZEND_METHOD(msgpack_unpacker, __destruct)
         zval_ptr_dtor(&unpacker->retval);
     }
 
-    msgpack_unserialize_var_destroy(&unpacker->var_hash, 0);
+    msgpack_unserialize_var_destroy(&unpacker->var_hash, unpacker->error);
 }
 
 static ZEND_METHOD(msgpack_unpacker, setOption)
@@ -482,6 +484,17 @@ static ZEND_METHOD(msgpack_unpacker, execute)
 
     if (str != NULL)
     {
+        if (ZEND_NUM_ARGS() < 2)
+        {
+            if (MSGPACK_G(error_display))
+            {
+                zend_error(E_WARNING,
+                           "[msgpack] (MessagePackUnpacker::execute) "
+                           "expects exactly 2 parameters");
+            }
+            RETURN_FALSE;
+        }
+
         data = (char *)str;
         len = (size_t)str_len;
         off = Z_LVAL_P(offset);
@@ -501,7 +514,8 @@ static ZEND_METHOD(msgpack_unpacker, execute)
     {
         zval_ptr_dtor(&unpacker->retval);
 
-        msgpack_unserialize_var_destroy(&unpacker->var_hash, 0);
+        msgpack_unserialize_var_destroy(&unpacker->var_hash, unpacker->error);
+        unpacker->error = 0;
 
         ALLOC_INIT_ZVAL(unpacker->retval);
 
@@ -536,8 +550,10 @@ static ZEND_METHOD(msgpack_unpacker, execute)
         case MSGPACK_UNPACK_EXTRA_BYTES:
         case MSGPACK_UNPACK_SUCCESS:
             unpacker->finished = 1;
+            unpacker->error = 0;
             RETURN_TRUE;
         default:
+            unpacker->error = 1;
             RETURN_FALSE;
     }
 }
@@ -590,7 +606,8 @@ static ZEND_METHOD(msgpack_unpacker, reset)
         unpacker->retval = NULL;
     }
 
-    msgpack_unserialize_var_destroy(&unpacker->var_hash, 0);
+    msgpack_unserialize_var_destroy(&unpacker->var_hash, unpacker->error);
+    unpacker->error = 0;
 
 
     template_init(&unpacker->mp);
