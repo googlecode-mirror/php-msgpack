@@ -3,7 +3,7 @@ disabled php only for class methods unpacker (set option)
 --SKIPIF--
 <?php
 if (version_compare(PHP_VERSION, '5.1.0') >= 0) {
-    echo "skip tests in PHP 5.0 or older";
+    echo "skip tests in PHP 5.1.0 or older";
 }
 --FILE--
 <?php

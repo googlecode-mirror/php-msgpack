@@ -1,17 +1,17 @@
 --TEST--
-Check for serialization handler, ini-directive
+Check for serialization handler, broken
 --SKIPIF--
 <?php
-if (version_compare(PHP_VERSION, '5.2.0') < 0) {
-    echo "skip tests in PHP 5.2 or newer";
+if (version_compare(PHP_VERSION, '5.2.0') >= 0) {
+    echo "skip tests in PHP 5.2 or older";
 }
---INI--
-session.serialize_handler=msgpack
 --FILE--
 <?php
 if(!extension_loaded('msgpack')) {
     dl('msgpack.' . PHP_SHLIB_SUFFIX);
 }
+
+error_reporting(0);
 
 $output = '';
 
@@ -25,12 +25,13 @@ function close() {
 
 function read($id) {
     global $output;
-    return pack('H*', '81a3666f6f01');
+    //broken data
+    return pack('H*', '81a36');
 }
 
 function write($id, $data) {
     global $output;
-    $output .= bin2hex($data) . PHP_EOL;
+    $output .= bin2hex($data). PHP_EOL;
     return true;
 }
 
@@ -41,6 +42,8 @@ function destroy($id) {
 function gc($time) {
     return true;
 }
+
+ini_set('session.serialize_handler', 'msgpack');
 
 session_set_save_handler('open', 'close', 'read', 'write', 'destroy', 'gc');
 
@@ -54,9 +57,9 @@ echo $output;
 var_dump($_SESSION);
 ?>
 --EXPECT--
-2
-82c001a3666f6f02
+1
+81a3666f6f01
 array(1) {
   ["foo"]=>
-  int(2)
+  int(1)
 }
