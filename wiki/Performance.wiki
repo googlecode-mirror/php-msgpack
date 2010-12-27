@@ -5,6 +5,10 @@ In this test, it measured the elapsed time of serializing and deserializing.
 
 If the elapsed time will be performed 10,000 times.
 
+= Version =
+  * PHP 5.3.3 (DEBUG)
+  * Extension 0.3.3
+
 = Functions =
 ||               || *default*       || *json*          || *msgpack*               ||
 || *serialize*   || _serialize()_   || _json_encode()_ || _msgpack_serialize()_   ||
@@ -49,12 +53,12 @@ $values = rand();
 
 === Speed (sec) ===
 ||               || *default*       || *json*          || *msgpack*       ||
-|| *serialize*   || 0.0405 _(100%)_ || 0.0337 _(83%)_  || 0.0413 _(101%)_ ||
-|| *unserialize* || 0.0381 _(100%)_ || 0.0526 _(137%)_ || 0.0374 _(98%)_  ||
+|| *serialize*   || 0.0373 _(100%)_ || 0.0288 _(77%)_ || 0.0314 _( 84%)_ ||
+|| *unserialize* || 0.0323 _(100%)_ || 0.0640 _(198%)_ || 0.0340 _(105%)_ ||
 
 === Size (byte) ===
 || *default*   || *json*    || *msgpack* ||
-|| 10 _(100%)_ || 7 _(70%)_ || 5 _(50%)_ ||
+|| 12 _(100%)_ || 9 _(75%)_ || 5 _(41%)_ ||
 
 
 == Floating point number ==
@@ -65,8 +69,8 @@ $value = log(rand());
 
 === Speed (sec) ===
 ||               || *default*       || *json*         || *msgpack*      ||
-|| *serialize*   || 0.1238 _(100%)_ || 0.0483 _(39%)_ || 0.0425 _(34%)_ ||
-|| *unserialize* || 0.0934 _(100%)_ || 0.0593 _(63%)_ || 0.0399 _(42%)_ ||
+|| *serialize*   || 0.1975 _(100%)_ || 0.0404 _(20%)_ || 0.0293 _(14%)_ ||
+|| *unserialize* || 0.1193 _(100%)_ || 0.0560 _(46%)_ || 0.0312 _(26%)_ ||
 
 === Size (byte) ===
 || *default*   || *json*     || *msgpack* ||
@@ -81,8 +85,8 @@ $value = md5(rand());
 
 === Speed (sec) ===
 ||               || *default*       || *json*          || *msgpack*       ||
-|| *serialize*   || 0.0408 _(100%)_ || 0.0507 _(124%)_ || 0.0415 _(101%)_ ||
-|| *unserialize* || 0.0398 _(100%)_ || 0.0724 _(181%)_ || 0.0418 _(105%)_ ||
+|| *serialize*   || 0.0282 _(100%)_ || 0.0527 _(187%)_ || 0.0263 _(93%)_ ||
+|| *unserialize* || 0.0337 _(100%)_ || 0.0708 _(209%)_ || 0.0336 _(99%)_ ||
 
 === Size (byte) ===
 || *default*   || *json*     || *msgpack*  ||
@@ -101,8 +105,8 @@ $value = array(md5(rand()),
 
 === Speed (sec) ===
 ||               || *default*       || *json*          || *msgpack*      ||
-|| *serialize*   || 0.0767 _(100%)_ || 0.1290 _(168%)_ || 0.0732 _(95%)_ ||
-|| *unserialize* || 0.0944 _(100%)_ || 0.1820 _(192%)_ || 0.0913 _(96%)_ ||
+|| *serialize*   || 0.1130 _(100%)_ || 0.2403 _(212%)_ || 0.0635 _(56%)_ ||
+|| *unserialize* || 0.1372 _(100%)_ || 0.3507 _(255%)_ || 0.1682 _(122%)_ ||
 
 === Size (byte) ===
 || *default*    || *json*      || *msgpack*   ||
@@ -121,8 +125,8 @@ $value = array(md5(rand()) => md5(rand()),
 
 === Speed (sec) ===
 ||               || *default*       || *json*          || *msgpack*      ||
-|| *serialize*   || 0.0772 _(100%)_ || 0.2079 _(269%)_ || 0.0734 _(95%)_ ||
-|| *unserialize* || 0.1104 _(100%)_ || 0.2710 _(245%)_ || 0.1025 _(92%)_ ||
+|| *serialize*   || 0.1277 _(100%)_ || 0.4457 _(348%)_ || 0.0706 _(55%)_ ||
+|| *unserialize* || 0.2026 _(100%)_ || 0.6131 _(302%)_ || 0.2185 _(107%)_ ||
 
 === Size (byte) ===
 || *default*    || *json*      || *msgpack*  ||
@@ -142,8 +146,8 @@ $value->param5 = null;
 
 === Speed (sec) ===
 ||               || *default*       || *json* || *msgpack*      ||
-|| *serialize*   || 0.0972 _(100%)_ || -      || 0.0886 _(91%)_ ||
-|| *unserialize* || 0.1450 _(100%)_ || -      || 0.1369 _(94%)_ ||
+|| *serialize*   || 0.1788 _(100%)_ || - || 0.1114 _(62%)_ ||
+|| *unserialize* || 0.2862 _(100%)_ || - || 0.2980 _(104%)_ ||
 
 === Size (byte) ===
 || *default*    || *json* || *msgpack*   ||
