@@ -1,5 +1,10 @@
 msgpack extension changelog
 
+Version 0.3.3
+-------------
+	* Update msgpack header files.
+	* Fix unpack internal processing.
+
 Version 0.3.2
 -------------
 	* Version PHP 5 or newer.

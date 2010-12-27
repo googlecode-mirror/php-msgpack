@@ -405,7 +405,7 @@ static ZEND_METHOD(msgpack_unpacker, __destruct)
         zval_ptr_dtor(&unpacker->retval);
     }
 
-    msgpack_unserialize_var_destroy(&unpacker->var_hash);
+    msgpack_unserialize_var_destroy(&unpacker->var_hash, 0);
 }
 
 static ZEND_METHOD(msgpack_unpacker, setOption)
@@ -501,8 +501,7 @@ static ZEND_METHOD(msgpack_unpacker, execute)
     {
         zval_ptr_dtor(&unpacker->retval);
 
-        msgpack_unserialize_var_destroy(&unpacker->var_hash);
-
+        msgpack_unserialize_var_destroy(&unpacker->var_hash, 0);
 
         ALLOC_INIT_ZVAL(unpacker->retval);
 
@@ -591,7 +590,7 @@ static ZEND_METHOD(msgpack_unpacker, reset)
         unpacker->retval = NULL;
     }
 
-    msgpack_unserialize_var_destroy(&unpacker->var_hash);
+    msgpack_unserialize_var_destroy(&unpacker->var_hash, 0);
 
 
     template_init(&unpacker->mp);

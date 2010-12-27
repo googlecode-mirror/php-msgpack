@@ -2,8 +2,8 @@
 Check for serialization handler
 --SKIPIF--
 <?php
-if (version_compare(PHP_VERSION, '5.1.0') < 0) {
-    echo "skip tests in PHP 5.1 or newer";
+if (version_compare(PHP_VERSION, '5.2.0') < 0) {
+    echo "skip tests in PHP 5.2 or newer";
 }
 --FILE--
 <?php

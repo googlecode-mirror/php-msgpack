@@ -38,10 +38,14 @@ inline static int msgpack_var_add(
             + (long)Z_OBJ_HANDLE_P(var));
         len = id + sizeof(id) - 1 - p;
     }
-    else
+    else if (Z_TYPE_P(var) == IS_ARRAY)
     {
         p = smart_str_print_long(id + sizeof(id) - 1, (long)var);
         len = id + sizeof(id) - 1 - p;
+    }
+    else
+    {
+        return FAILURE;
     }
 
     if (var_old && zend_hash_find(var_hash, p, len, var_old) == SUCCESS)
@@ -122,10 +126,11 @@ inline static void msgpack_serialize_class(
                 if (MSGPACK_G(error_display))
                 {
                     zend_error(E_NOTICE,
-                               "[msgpack] (msgpack_serialize_class) "
+                               "[msgpack] (%s) "
                                "__sleep should return an array only "
                                "containing the names of "
-                               "instance-variables to serialize.");
+                               "instance-variables to serialize.",
+                               __FUNCTION__);
                 }
                 continue;
             }
@@ -199,10 +204,10 @@ inline static void msgpack_serialize_class(
                         if (MSGPACK_G(error_display))
                         {
                             zend_error(E_NOTICE,
-                                       "[msgpack] (msgpack_serialize_class) "
+                                       "[msgpack] (%s) "
                                        "\"%s\" returned as member variable from "
                                        "__sleep() but does not exist",
-                                       Z_STRVAL_PP(name));
+                                       __FUNCTION__, Z_STRVAL_PP(name));
                         }
 
                         msgpack_serialize_string(
@@ -339,8 +344,9 @@ inline static void msgpack_serialize_array(
                         if (MSGPACK_G(error_display))
                         {
                             zend_error(E_WARNING,
-                                       "[msgpack] (msgpack_serialize_array) "
-                                       "key is not string nor array");
+                                       "[msgpack] (%s) "
+                                       "key is not string nor array",
+                                       __FUNCTION__);
                         }
                         break;
                 }
@@ -360,6 +366,8 @@ inline static void msgpack_serialize_array(
                 {
                     Z_ARRVAL_PP(data)->nApplyCount++;
                 }
+
+                //php_var_dump(data, 1 TSRMLS_CC); //hoge
 
                 msgpack_serialize_zval(buf, *data, var_hash TSRMLS_CC);
 
@@ -443,10 +451,11 @@ inline static void msgpack_serialize_object(
                     if (MSGPACK_G(error_display))
                     {
                         zend_error(E_NOTICE,
-                                   "[msgpack] (msgpack_serialize_object) "
+                                   "[msgpack] (%s) "
                                    "__sleep should return an array only "
                                    "containing the names of instance-variables "
-                                   "to serialize");
+                                   "to serialize",
+                                   __FUNCTION__);
                     }
                     msgpack_pack_nil(buf);
                 }
@@ -550,8 +559,8 @@ void msgpack_serialize_zval(
             if (MSGPACK_G(error_display))
             {
                 zend_error(E_WARNING,
-                           "[msgpack] (php_msgpack_serialize) "
-                           "type is unsupported, encoded as null");
+                           "[msgpack] (%s) type is unsupported, encoded as null",
+                           __FUNCTION__);
             }
             msgpack_pack_nil(buf);
             break;
