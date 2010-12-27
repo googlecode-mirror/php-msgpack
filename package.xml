@@ -10,8 +10,8 @@
     <email>advect@gmail.com</email>
     <active>yes</active>
   </lead>
-  <date>2010-12-25</date>
-  <time>16:47:13</time>
+  <date>2010-12-27</date>
+  <time>10:30:54</time>
   <version>
     <release>0.3.3</release>
     <api>0.3.3</api>
@@ -32,7 +32,7 @@
       <file md5sum="8cc392f13f5a89d033cf73e612377b95" name="config.m4" role="src" />
       <file md5sum="712ddaf861db6e52a7cf4885c6eced70" name="config.w32" role="src" />
       <file md5sum="c9216741b72004ddf1a1347398220433" name="msgpack.c" role="src" />
-      <file md5sum="9bc7896a73749de0c409be85ca30db6d" name="msgpack_class.c" role="src" />
+      <file md5sum="55455423c25b0a13946809aa5345a160" name="msgpack_class.c" role="src" />
       <file md5sum="b8eadd32c3eafb67645bb4ffe16f687c" name="msgpack_class.h" role="src" />
       <file md5sum="20c46a37124113e6f6a45df46e5496ba" name="msgpack_pack.c" role="src" />
       <file md5sum="eae6797621ca53f8a7b0c2d9cb8a4d21" name="msgpack_pack.h" role="src" />
@@ -95,7 +95,10 @@
       <file md5sum="0e96b2ebf8c37c1c4c13de4d2d5dae95" name="tests/033.phpt" role="test" />
       <file md5sum="38a296986d384118800b03bb1a4f24a9" name="tests/034.phpt" role="test" />
       <file md5sum="661553a8ccd9b83c95772dd9ad68d82b" name="tests/035.phpt" role="test" />
-      <file md5sum="2418498403672bfce1087c4b4d277d1d" name="tests/040.phpt" role="test" />
+      <file md5sum="3914d56c32ca243221c8eecc767b3056" name="tests/040.phpt" role="test" />
+      <file md5sum="8b49472a24bf5fbe9e90276b5f4b076a" name="tests/040b.phpt" role="test" />
+      <file md5sum="f15fd3c44f570deb4e918b0e04ceb735" name="tests/040c.phpt" role="test" />
+      <file md5sum="d760724f22120bf81776b564c3bb69ab" name="tests/040d.phpt" role="test" />
       <file md5sum="011672f35987ed8e52b7c9afde98bb8d" name="tests/041.phpt" role="test" />
       <file md5sum="1073706e82b72a1c845d09273d95b256" name="tests/042.phpt" role="test" />
       <file md5sum="57478f4e95bd000bf73a8331e9e19cba" name="tests/050.phpt" role="test" />

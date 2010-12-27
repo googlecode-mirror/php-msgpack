@@ -1,5 +1,5 @@
 --TEST--
-broken random data test
+broken random data test : MessagePack class
 --SKIPIF--
 --FILE--
 <?php
@@ -19,7 +19,8 @@ function test() {
     }
 
     // if returned null everything is OK
-    if (($unserialized = msgpack_unserialize($serialized)) === null) {
+    $msgpack = new MessagePack();
+    if (($unserialized = $msgpack->unpack($serialized)) === null) {
         return true;
     }
 
