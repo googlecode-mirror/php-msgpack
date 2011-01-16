@@ -60,8 +60,8 @@ public boolean MessagePackUnpacker::execute ( [ string $str, int &$offset ] )
 
 === Parameters ===
 || str          || The serialized string ||
-|| offset [in]  || start of removed portion is at that offset from the beginning of the serialized string ||
-|| offset [out] || reading bytes of serialized string ||
+|| offset (in)  || start of removed portion is at that offset from the beginning of the serialized string ||
+|| offset (out) || reading bytes of serialized string ||
 
 === Return Values ===
 Returns true if an object is ready to get with data method.
