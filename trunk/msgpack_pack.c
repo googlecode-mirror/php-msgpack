@@ -18,7 +18,7 @@
     smart_str_appendl(user, (const void*)buf, len)
 #include "msgpack/pack_template.h"
 
-#if (PHP_MAJOR_VERSION == 5 && PHP_MINOR_VERSION < 3)
+#if ZEND_MODULE_API_NO < 20090626
 #   define Z_ISREF_P(pz) PZVAL_IS_REF(pz)
 #endif
 
@@ -291,26 +291,20 @@ inline static void msgpack_serialize_array(
         hash = 0;
         msgpack_pack_array(buf, n);
     }
+    else if (Z_ISREF_P(val) && MSGPACK_G(php_only))
+    {
+        msgpack_pack_map(buf, n + 1);
+        msgpack_pack_nil(buf);
+        msgpack_pack_long(buf, MSGPACK_SERIALIZE_TYPE_REFERENCE);
+    }
+    else if (ht->nNumOfElements == ht->nNextFreeElement)
+    {
+        hash = 0;
+        msgpack_pack_array(buf, n);
+    }
     else
     {
-        if (Z_ISREF_P(val) && MSGPACK_G(php_only))
-        {
-            msgpack_pack_map(buf, n + 1);
-            msgpack_pack_nil(buf);
-            msgpack_pack_long(buf, MSGPACK_SERIALIZE_TYPE_REFERENCE);
-        }
-        else
-        {
-            if (ht->nNumOfElements == ht->nNextFreeElement)
-            {
-                hash = 0;
-                msgpack_pack_array(buf, n);
-            }
-            else
-            {
-                msgpack_pack_map(buf, n);
-            }
-        }
+        msgpack_pack_map(buf, n);
     }
 
     if (n > 0)
@@ -491,24 +485,39 @@ void msgpack_serialize_zval(
         msgpack_var_add(
             var_hash, val, (void *)&var_already TSRMLS_CC) == FAILURE)
     {
-        if (Z_ISREF_P(val) && Z_TYPE_P(val) == IS_ARRAY)
+        if (Z_ISREF_P(val))
         {
-            msgpack_pack_map(buf, 2);
+            if (Z_TYPE_P(val) == IS_ARRAY)
+            {
+                msgpack_pack_map(buf, 2);
 
-            msgpack_pack_nil(buf);
-            msgpack_pack_long(buf, MSGPACK_SERIALIZE_TYPE_RECURSIVE);
+                msgpack_pack_nil(buf);
+                msgpack_pack_long(buf, MSGPACK_SERIALIZE_TYPE_RECURSIVE);
 
-            msgpack_pack_long(buf, 0);
-            msgpack_pack_long(buf, *var_already);
+                msgpack_pack_long(buf, 0);
+                msgpack_pack_long(buf, *var_already);
 
-            return;
+                return;
+            }
+            else if (Z_TYPE_P(val) == IS_OBJECT)
+            {
+                msgpack_pack_map(buf, 2);
+
+                msgpack_pack_nil(buf);
+                msgpack_pack_long(buf, MSGPACK_SERIALIZE_TYPE_OBJECT_REFERENCE);
+
+                msgpack_pack_long(buf, 0);
+                msgpack_pack_long(buf, *var_already);
+
+                return;
+            }
         }
         else if (Z_TYPE_P(val) == IS_OBJECT)
         {
             msgpack_pack_map(buf, 2);
 
             msgpack_pack_nil(buf);
-            msgpack_pack_long(buf, MSGPACK_SERIALIZE_TYPE_RECURSIVE);
+            msgpack_pack_long(buf, MSGPACK_SERIALIZE_TYPE_OBJECT);
 
             msgpack_pack_long(buf, 0);
             msgpack_pack_long(buf, *var_already);

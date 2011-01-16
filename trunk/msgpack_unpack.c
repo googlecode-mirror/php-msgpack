@@ -552,6 +552,12 @@ int msgpack_unserialize_map_item(
                     case MSGPACK_SERIALIZE_TYPE_CUSTOM_OBJECT:
                         unpack->type = MSGPACK_SERIALIZE_TYPE_CUSTOM_OBJECT;
                         break;
+                    case MSGPACK_SERIALIZE_TYPE_OBJECT_REFERENCE:
+                        unpack->type = MSGPACK_SERIALIZE_TYPE_OBJECT_REFERENCE;
+                        break;
+                    case MSGPACK_SERIALIZE_TYPE_OBJECT:
+                        unpack->type = MSGPACK_SERIALIZE_TYPE_OBJECT;
+                        break;
                     default:
                         break;
                 }
@@ -573,78 +579,96 @@ int msgpack_unserialize_map_item(
 
             return 0;
         }
-        else if (unpack->type == MSGPACK_SERIALIZE_TYPE_CUSTOM_OBJECT)
+        else
         {
-            unpack->type = MSGPACK_SERIALIZE_TYPE_NONE;
-
-            ce = msgpack_unserialize_class(
-                container, Z_STRVAL_P(key), Z_STRLEN_P(key));
-
-            if (ce == NULL)
+            switch (unpack->type)
             {
-                MSGPACK_UNSERIALIZE_FINISH_MAP_ITEM(unpack, key, val);
+                case MSGPACK_SERIALIZE_TYPE_CUSTOM_OBJECT:
+                    unpack->type = MSGPACK_SERIALIZE_TYPE_NONE;
 
-                return 0;
-            }
+                    ce = msgpack_unserialize_class(
+                        container, Z_STRVAL_P(key), Z_STRLEN_P(key));
+                    if (ce == NULL)
+                    {
+                        MSGPACK_UNSERIALIZE_FINISH_MAP_ITEM(unpack, key, val);
+
+                        return 0;
+                    }
 
 #if (PHP_MAJOR_VERSION == 5 && PHP_MINOR_VERSION > 0)
-            /* implementing Serializable */
-            if (ce->unserialize == NULL)
-            {
-                if (MSGPACK_G(error_display))
-                {
-                    zend_error(E_WARNING,
-                               "[msgpack] (%s) Class %s has no unserializer",
-                               __FUNCTION__, ce->name);
-                }
+                    /* implementing Serializable */
+                    if (ce->unserialize == NULL)
+                    {
+                        if (MSGPACK_G(error_display))
+                        {
+                            zend_error(E_WARNING,
+                                       "[msgpack] (%s) Class %s has "
+                                       "no unserializer",
+                                       __FUNCTION__, ce->name);
+                        }
 
-                MSGPACK_UNSERIALIZE_FINISH_MAP_ITEM(unpack, key, val);
+                        MSGPACK_UNSERIALIZE_FINISH_MAP_ITEM(unpack, key, val);
 
-                return 0;
-            }
+                        return 0;
+                    }
 
-            ce->unserialize(
-                container, ce,
-                (const unsigned char *)Z_STRVAL_P(val), Z_STRLEN_P(val) + 1,
-                NULL TSRMLS_CC);
+                    ce->unserialize(
+                        container, ce,
+                        (const unsigned char *)Z_STRVAL_P(val),
+                        Z_STRLEN_P(val) + 1, NULL TSRMLS_CC);
 #endif
 
-            MSGPACK_UNSERIALIZE_FINISH_MAP_ITEM(unpack, key, val);
+                    MSGPACK_UNSERIALIZE_FINISH_MAP_ITEM(unpack, key, val);
 
-            return 0;
-        }
-        else if (unpack->type == MSGPACK_SERIALIZE_TYPE_RECURSIVE)
-        {
-            zval **rval;
-
-            unpack->type = MSGPACK_SERIALIZE_TYPE_NONE;
-            if (msgpack_var_access(
-                    unpack->var_hash, Z_LVAL_P(val) - 1, &rval) != SUCCESS)
-            {
-                if (MSGPACK_G(error_display))
+                    return 0;
+                case MSGPACK_SERIALIZE_TYPE_RECURSIVE:
+                case MSGPACK_SERIALIZE_TYPE_OBJECT:
+                case MSGPACK_SERIALIZE_TYPE_OBJECT_REFERENCE:
                 {
-                    zend_error(E_WARNING,
-                               "[msgpack] (%s) Invalid references value: %ld",
-                               __FUNCTION__, Z_LVAL_P(val) - 1);
+                    zval **rval;
+                    int type = unpack->type;
+
+                    unpack->type = MSGPACK_SERIALIZE_TYPE_NONE;
+                    if (msgpack_var_access(
+                            unpack->var_hash,
+                            Z_LVAL_P(val) - 1, &rval) != SUCCESS)
+                    {
+                        if (MSGPACK_G(error_display))
+                        {
+                            zend_error(E_WARNING,
+                                       "[msgpack] (%s) "
+                                       "Invalid references value: %ld",
+                                       __FUNCTION__, Z_LVAL_P(val) - 1);
+                        }
+
+                        MSGPACK_UNSERIALIZE_FINISH_MAP_ITEM(unpack, key, val);
+
+                        return 0;
+                    }
+
+                    if (container != NULL)
+                    {
+                        zval_ptr_dtor(container);
+                    }
+
+                    *container = *rval;
+
+                    Z_ADDREF_PP(container);
+
+                    if (type == MSGPACK_SERIALIZE_TYPE_OBJECT)
+                    {
+                        Z_UNSET_ISREF_PP(container);
+                    }
+                    else if (type == MSGPACK_SERIALIZE_TYPE_OBJECT_REFERENCE)
+                    {
+                        Z_SET_ISREF_PP(container);
+                    }
+
+                    MSGPACK_UNSERIALIZE_FINISH_MAP_ITEM(unpack, key, val);
+
+                    return 0;
                 }
-
-                MSGPACK_UNSERIALIZE_FINISH_MAP_ITEM(unpack, key, val);
-
-                return 0;
             }
-
-            if (container != NULL)
-            {
-                zval_ptr_dtor(container);
-            }
-
-            *container = *rval;
-
-            Z_ADDREF_PP(container);
-
-            MSGPACK_UNSERIALIZE_FINISH_MAP_ITEM(unpack, key, val);
-
-            return 0;
         }
     }
 
