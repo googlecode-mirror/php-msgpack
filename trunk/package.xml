@@ -10,8 +10,8 @@
     <email>advect@gmail.com</email>
     <active>yes</active>
   </lead>
-  <date>2011-01-12</date>
-  <time>12:26:08</time>
+  <date>2011-01-16</date>
+  <time>16:05:34</time>
   <version>
     <release>0.4.0</release>
     <api>0.4.0</api>
@@ -31,15 +31,16 @@
       <file md5sum="d41d8cd98f00b204e9800998ecf8427e" name="EXPERIMENTAL" role="doc" />
       <file md5sum="6747376fed353e6bd2490c5c4b3a096c" name="config.m4" role="src" />
       <file md5sum="195040cca1f961b6356d296e60a532ce" name="config.w32" role="src" />
-      <file md5sum="20bb1b49f6e4b657fadddf08b91fd387" name="msgpack.c" role="src" />
       <file md5sum="8eadc10d9a8345f3ffa9614348cdb939" name="msgpack.php" role="src" />
-      <file md5sum="bc038632177559e8086416fc1a748944" name="msgpack_class.c" role="src" />
+      <file md5sum="3348110bba3168ea57f5ba973bf6fcb5" name="msgpack.c" role="src" />
+      <file md5sum="654f52c1edc96100c71190d072421f20" name="msgpack_class.c" role="src" />
       <file md5sum="b8eadd32c3eafb67645bb4ffe16f687c" name="msgpack_class.h" role="src" />
-      <file md5sum="bb6c537763427b74ebcb3773ebc1dd7a" name="msgpack_convert.c" role="src" />
+      <file md5sum="18951ba7ba70fe79fa551ea25fb11dd2" name="msgpack_convert.c" role="src" />
       <file md5sum="0958d54ea4a922746c7e72734a5a9b95" name="msgpack_convert.h" role="src" />
-      <file md5sum="5a6da79db655cfd9e8d91481d0bfdb0b" name="msgpack_pack.c" role="src" />
+      <file md5sum="7d25383ea3cff751ca993c98b1b5e57e" name="msgpack_errors.h" role="src" />
+      <file md5sum="ffaeb53d003a0961bcb6837545815877" name="msgpack_pack.c" role="src" />
       <file md5sum="06f85a181c2070272c0ecd0dc3161161" name="msgpack_pack.h" role="src" />
-      <file md5sum="564c546ed67822a4361f6aaf69f3d2db" name="msgpack_unpack.c" role="src" />
+      <file md5sum="d341e1a3b400b45f844a94ecd5198248" name="msgpack_unpack.c" role="src" />
       <file md5sum="1a31c49f353c8deec86affd1564909d1" name="msgpack_unpack.h" role="src" />
       <file md5sum="46846c8d7a2c9a3cb81564dd66357f20" name="php_msgpack.h" role="src" />
       <file md5sum="82079e9a298ecdda2122757ddfbf576e" name="msgpack/pack_define.h" role="src" />

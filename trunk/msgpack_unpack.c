@@ -6,6 +6,7 @@
 #include "php_msgpack.h"
 #include "msgpack_pack.h"
 #include "msgpack_unpack.h"
+#include "msgpack_errors.h"
 
 #if (PHP_MAJOR_VERSION == 5 && PHP_MINOR_VERSION < 3)
 #   define Z_ADDREF_PP(ppz)      ZVAL_ADDREF(*(ppz))
@@ -228,12 +229,8 @@ inline static zend_class_entry* msgpack_unserialize_class(
                 CG(function_table), NULL, user_func, &retval_ptr,
                 1, args, 0, NULL TSRMLS_CC) != SUCCESS)
         {
-            if (MSGPACK_G(error_display))
-            {
-                zend_error(E_WARNING,
-                           "[msgpack] (%s) defined (%s) but not found",
-                           __FUNCTION__, class_name);
-            }
+            MSGPACK_WARNING("[msgpack] (%s) defined (%s) but not found",
+                            __FUNCTION__, class_name);
 
             incomplete_class = 1;
             ce = PHP_IC_ENTRY;
@@ -253,13 +250,9 @@ inline static zend_class_entry* msgpack_unserialize_class(
         }
         else
         {
-            if (MSGPACK_G(error_display))
-            {
-                zend_error(E_WARNING,
-                           "[msgpack] (%s) "
-                           "Function %s() hasn't defined the class "
-                           "it was called for", __FUNCTION__, class_name);
-            }
+            MSGPACK_WARNING("[msgpack] (%s) Function %s() hasn't defined "
+                            "the class it was called for",
+                            __FUNCTION__, class_name);
 
             incomplete_class = 1;
             ce = PHP_IC_ENTRY;
@@ -272,12 +265,7 @@ inline static zend_class_entry* msgpack_unserialize_class(
 
     if (EG(exception))
     {
-        if (MSGPACK_G(error_display))
-        {
-            zend_error(E_WARNING,
-                       "[msgpack] (%s) Exception error", __FUNCTION__);
-        }
-
+        MSGPACK_WARNING("[msgpack] (%s) Exception error", __FUNCTION__);
         return NULL;
     }
 
@@ -599,13 +587,9 @@ int msgpack_unserialize_map_item(
                     /* implementing Serializable */
                     if (ce->unserialize == NULL)
                     {
-                        if (MSGPACK_G(error_display))
-                        {
-                            zend_error(E_WARNING,
-                                       "[msgpack] (%s) Class %s has "
-                                       "no unserializer",
-                                       __FUNCTION__, ce->name);
-                        }
+                        MSGPACK_WARNING(
+                            "[msgpack] (%s) Class %s has no unserializer",
+                            __FUNCTION__, ce->name);
 
                         MSGPACK_UNSERIALIZE_FINISH_MAP_ITEM(unpack, key, val);
 
@@ -633,13 +617,9 @@ int msgpack_unserialize_map_item(
                             unpack->var_hash,
                             Z_LVAL_P(val) - 1, &rval) != SUCCESS)
                     {
-                        if (MSGPACK_G(error_display))
-                        {
-                            zend_error(E_WARNING,
-                                       "[msgpack] (%s) "
-                                       "Invalid references value: %ld",
-                                       __FUNCTION__, Z_LVAL_P(val) - 1);
-                        }
+                        MSGPACK_WARNING(
+                            "[msgpack] (%s) Invalid references value: %ld",
+                            __FUNCTION__, Z_LVAL_P(val) - 1);
 
                         MSGPACK_UNSERIALIZE_FINISH_MAP_ITEM(unpack, key, val);
 
@@ -685,13 +665,9 @@ int msgpack_unserialize_map_item(
                     sizeof(val), NULL) == FAILURE)
             {
                 zval_ptr_dtor(&val);
-                if (MSGPACK_G(error_display))
-                {
-                    zend_error(E_WARNING,
-                               "[msgpack] (%s) "
-                               "illegal offset type, skip this decoding",
-                               __FUNCTION__);
-                }
+                MSGPACK_WARNING(
+                    "[msgpack] (%s) illegal offset type, skip this decoding",
+                    __FUNCTION__);
             }
             break;
         case IS_STRING:
@@ -700,24 +676,16 @@ int msgpack_unserialize_map_item(
                     &val, sizeof(val), NULL) == FAILURE)
             {
                 zval_ptr_dtor(&val);
-                if (MSGPACK_G(error_display))
-                {
-                    zend_error(E_WARNING,
-                               "[msgpack] (%s) "
-                               "illegal offset type, skip this decoding",
-                               __FUNCTION__);
-                }
+                MSGPACK_WARNING(
+                    "[msgpack] (%s) illegal offset type, skip this decoding",
+                    __FUNCTION__);
             }
             break;
         default:
             zval_ptr_dtor(&val);
-            if (MSGPACK_G(error_display))
-            {
-                zend_error(E_WARNING,
-                           "[msgpack] (%s) "
-                           "illegal offset type, skip this decoding",
-                           __FUNCTION__);
-            }
+            MSGPACK_WARNING(
+                "[msgpack] (%s) illegal offset type, skip this decoding",
+                __FUNCTION__);
             break;
     }
 

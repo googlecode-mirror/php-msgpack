@@ -16,6 +16,7 @@
 #include "msgpack_unpack.h"
 #include "msgpack_class.h"
 #include "msgpack_convert.h"
+#include "msgpack_errors.h"
 #include "msgpack/version.h"
 
 static ZEND_FUNCTION(msgpack_serialize);
@@ -251,37 +252,25 @@ PHP_MSGPACK_API void php_msgpack_unserialize(
     {
         case MSGPACK_UNPACK_PARSE_ERROR:
             msgpack_unserialize_var_destroy(&var_hash, 1);
-            if (MSGPACK_G(error_display))
-            {
-                zend_error(E_WARNING,
-                           "[msgpack] (%s) Parse error", __FUNCTION__);
-            }
+            MSGPACK_WARNING("[msgpack] (%s) Parse error", __FUNCTION__);
             break;
         case MSGPACK_UNPACK_CONTINUE:
             msgpack_unserialize_var_destroy(&var_hash, 1);
-            if (MSGPACK_G(error_display))
-            {
-                zend_error(E_WARNING,
-                           "[msgpack] (%s) Insufficient data for unserializing",
-                           __FUNCTION__);
-            }
+            MSGPACK_WARNING(
+                "[msgpack] (%s) Insufficient data for unserializing",
+                __FUNCTION__);
             break;
         case MSGPACK_UNPACK_EXTRA_BYTES:
         case MSGPACK_UNPACK_SUCCESS:
             msgpack_unserialize_var_destroy(&var_hash, 0);
-            if (off < (size_t)str_len && MSGPACK_G(error_display))
+            if (off < (size_t)str_len)
             {
-                zend_error(E_WARNING,
-                           "[msgpack] (%s) Extra bytes", __FUNCTION__);
+                MSGPACK_WARNING("[msgpack] (%s) Extra bytes", __FUNCTION__);
             }
             break;
         default:
             msgpack_unserialize_var_destroy(&var_hash, 0);
-            if (MSGPACK_G(error_display))
-            {
-                zend_error(E_WARNING,
-                           "[msgpack] (%s) Unknown result", __FUNCTION__);
-            }
+            MSGPACK_WARNING("[msgpack] (%s) Unknown result", __FUNCTION__);
             break;
     }
 }
