@@ -55,11 +55,12 @@ Returns a string containing a byte-stream representation of value that can be st
 Creates a PHP value from a stored representation.
 
 {{{
-public mixed MessagePack::unpack ( string $str )
+public mixed MessagePack::unpack ( string $str [, mixed $object ] )
 }}}
 
 === Parameters ===
 || str || The serialized string ||
+|| object || Class name or object ||
 
 === Return Values ===
 The converted value is returned, and can be a boolean, integer, float, string, array or object.
