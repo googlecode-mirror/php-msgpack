@@ -6,6 +6,7 @@
 #include "msgpack_unpack.h"
 #include "msgpack_class.h"
 #include "msgpack_convert.h"
+#include "msgpack_errors.h"
 
 typedef struct {
     zend_object object;
@@ -292,12 +293,8 @@ static ZEND_METHOD(msgpack, setOption)
             base->php_only = Z_BVAL_P(value);
             break;
         default:
-            if (MSGPACK_G(error_display))
-            {
-                zend_error(E_WARNING,
-                           "[msgpack] (MessagePack::setOption) "
-                           "error setting msgpack option");
-            }
+            MSGPACK_WARNING("[msgpack] (MessagePack::setOption) "
+                            "error setting msgpack option");
             RETURN_FALSE;
             break;
     }
@@ -449,12 +446,8 @@ static ZEND_METHOD(msgpack_unpacker, setOption)
             unpacker->php_only = Z_BVAL_P(value);
             break;
         default:
-            if (MSGPACK_G(error_display))
-            {
-                zend_error(E_WARNING,
-                           "[msgpack] (MessagePackUnpacker::setOption) "
-                           "error setting msgpack option");
-            }
+            MSGPACK_WARNING("[msgpack] (MessagePackUnpacker::setOption) "
+                            "error setting msgpack option");
             RETURN_FALSE;
             break;
     }

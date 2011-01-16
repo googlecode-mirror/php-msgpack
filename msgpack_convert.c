@@ -3,6 +3,7 @@
 
 #include "php_msgpack.h"
 #include "msgpack_convert.h"
+#include "msgpack_errors.h"
 
 #if (PHP_MAJOR_VERSION == 5 && PHP_MINOR_VERSION < 3)
 #   define Z_REFCOUNT_P(pz)    ((pz)->refcount)
@@ -121,9 +122,8 @@ int msgpack_convert_object(zval *return_value, zval *object, zval **value)
                     Z_STRVAL_P(object), Z_STRLEN_P(object),
                     &pce TSRMLS_CC) != SUCCESS)
             {
-                zend_error(E_ERROR,
-                           "[msgpack] (%s) Class '%s' not found",
-                           __FUNCTION__, Z_STRVAL_P(object));
+                MSGPACK_ERROR("[msgpack] (%s) Class '%s' not found",
+                              __FUNCTION__, Z_STRVAL_P(object));
                 return FAILURE;
             }
             ce = *pce;
@@ -132,9 +132,8 @@ int msgpack_convert_object(zval *return_value, zval *object, zval **value)
             ce = zend_get_class_entry(object TSRMLS_CC);
             break;
         default:
-            zend_error(E_ERROR,
-                       "[msgpack] (%s) Object type is unsupported",
-                       __FUNCTION__);
+            MSGPACK_ERROR("[msgpack] (%s) Object type is unsupported",
+                          __FUNCTION__);
             return FAILURE;
     }
 
@@ -216,13 +215,10 @@ int msgpack_convert_object(zval *return_value, zval *object, zval **value)
                                 return_value, key, key_len, val, var) != SUCCESS)
                         {
                             zval_ptr_dtor(&val);
-                            if (MSGPACK_G(error_display))
-                            {
-                                zend_error(
-                                    E_WARNING, "[msgpack] (%s) "
-                                    "illegal offset type, skip this decoding",
-                                    __FUNCTION__);
-                            }
+                            MSGPACK_WARNING(
+                                "[msgpack] (%s) "
+                                "illegal offset type, skip this decoding",
+                                __FUNCTION__);
                         }
                     }
                 }
@@ -257,21 +253,17 @@ int msgpack_convert_object(zval *return_value, zval *object, zval **value)
                                 key_index, val, var) != SUCCESS)
                         {
                             zval_ptr_dtor(&val);
-                            if (MSGPACK_G(error_display))
-                            {
-                                zend_error(
-                                    E_WARNING, "[msgpack] (%s) "
-                                    "illegal offset type, skip this decoding",
-                                    __FUNCTION__);
-                            }
+                            MSGPACK_WARNING(
+                                "[msgpack] (%s) "
+                                "illegal offset type, skip this decoding",
+                                __FUNCTION__);
                         }
                         break;
                     }
                     case HASH_KEY_IS_STRING:
                         break;
                     default:
-                        zend_error(
-                            E_WARNING,
+                        MSGPACK_WARNING(
                             "[msgpack] (%s) key is not string nor array",
                             __FUNCTION__);
                         break;
@@ -289,13 +281,9 @@ int msgpack_convert_object(zval *return_value, zval *object, zval **value)
                     HASH_OF(return_value), &properties, &prop_pos,
                     0, *value, NULL) != SUCCESS)
             {
-                if (MSGPACK_G(error_display))
-                {
-                    zend_error(
-                        E_WARNING,
-                        "[msgpack] (%s) illegal offset type, skip this decoding",
-                        __FUNCTION__);
-                }
+                MSGPACK_WARNING(
+                    "[msgpack] (%s) illegal offset type, skip this decoding",
+                    __FUNCTION__);
             }
             break;
     }

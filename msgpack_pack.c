@@ -7,6 +7,7 @@
 
 #include "php_msgpack.h"
 #include "msgpack_pack.h"
+#include "msgpack_errors.h"
 
 #include "msgpack/pack_define.h"
 #define msgpack_pack_user smart_str*
@@ -123,15 +124,10 @@ inline static void msgpack_serialize_class(
 
             if (Z_TYPE_PP(name) != IS_STRING)
             {
-                if (MSGPACK_G(error_display))
-                {
-                    zend_error(E_NOTICE,
-                               "[msgpack] (%s) "
-                               "__sleep should return an array only "
-                               "containing the names of "
-                               "instance-variables to serialize.",
-                               __FUNCTION__);
-                }
+                MSGPACK_NOTICE(
+                    "[msgpack] (%s) __sleep should return an array only "
+                    "containing the names of instance-variables to serialize",
+                    __FUNCTION__);
                 continue;
             }
 
@@ -201,14 +197,10 @@ inline static void msgpack_serialize_class(
 
                         pefree(prot_name, ce->type & ZEND_INTERNAL_CLASS);
 
-                        if (MSGPACK_G(error_display))
-                        {
-                            zend_error(E_NOTICE,
-                                       "[msgpack] (%s) "
-                                       "\"%s\" returned as member variable from "
-                                       "__sleep() but does not exist",
-                                       __FUNCTION__, Z_STRVAL_PP(name));
-                        }
+                        MSGPACK_NOTICE(
+                            "[msgpack] (%s) \"%s\" returned as member "
+                            "variable from __sleep() but does not exist",
+                            __FUNCTION__, Z_STRVAL_PP(name));
 
                         msgpack_serialize_string(
                             buf, Z_STRVAL_PP(name), Z_STRLEN_PP(name));
@@ -343,13 +335,9 @@ inline static void msgpack_serialize_array(
                         break;
                     default:
                         msgpack_serialize_string(buf, "", sizeof(""));
-                        if (MSGPACK_G(error_display))
-                        {
-                            zend_error(E_WARNING,
-                                       "[msgpack] (%s) "
-                                       "key is not string nor array",
-                                       __FUNCTION__);
-                        }
+                        MSGPACK_WARNING(
+                            "[msgpack] (%s) key is not string nor array",
+                            __FUNCTION__);
                         break;
                 }
             }
@@ -448,15 +436,10 @@ inline static void msgpack_serialize_object(
                 }
                 else
                 {
-                    if (MSGPACK_G(error_display))
-                    {
-                        zend_error(E_NOTICE,
-                                   "[msgpack] (%s) "
-                                   "__sleep should return an array only "
-                                   "containing the names of instance-variables "
-                                   "to serialize",
-                                   __FUNCTION__);
-                    }
+                    MSGPACK_NOTICE(
+                        "[msgpack] (%s) __sleep should return an array only "
+                        "containing the names of instance-variables "
+                        "to serialize", __FUNCTION__);
                     msgpack_pack_nil(buf);
                 }
                 zval_ptr_dtor(&retval_ptr);
@@ -571,12 +554,9 @@ void msgpack_serialize_zval(
             }
             break;
         default:
-            if (MSGPACK_G(error_display))
-            {
-                zend_error(E_WARNING,
-                           "[msgpack] (%s) type is unsupported, encoded as null",
-                           __FUNCTION__);
-            }
+            MSGPACK_WARNING(
+                "[msgpack] (%s) type is unsupported, encoded as null",
+                __FUNCTION__);
             msgpack_pack_nil(buf);
             break;
     }
