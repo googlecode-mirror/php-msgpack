@@ -1,5 +1,9 @@
 msgpack extension changelog
 
+Version ---
+-------------
+	* Fix array pack.
+
 Version 0.3.4
 -------------
 	* Support PHP 5.3.x version on Windows.
