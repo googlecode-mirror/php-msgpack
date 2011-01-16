@@ -14,5 +14,5 @@ string msgpack_pack ( mixed $value )
 This function is an alias of: msgpack_unserialize(). 
 
 {{{
-mixed msgpack_unpack ( string $str )
+mixed msgpack_unpack ( string $str [, mixed $object ] )
 }}}
