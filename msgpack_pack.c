@@ -301,7 +301,15 @@ inline static void msgpack_serialize_array(
         }
         else
         {
-            msgpack_pack_map(buf, n);
+            if (ht->nNumOfElements == ht->nNextFreeElement)
+            {
+                hash = 0;
+                msgpack_pack_array(buf, n);
+            }
+            else
+            {
+                msgpack_pack_map(buf, n);
+            }
         }
     }
 
