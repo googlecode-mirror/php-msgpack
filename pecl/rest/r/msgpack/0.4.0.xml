@@ -4,7 +4,7 @@
     xmlns:xlink="http://www.w3.org/1999/xlink"
     xsi:schemaLocation="http://pear.php.net/dtd/rest.release
     http://pear.php.net/dtd/rest.release.xsd">
- <p xlink:href="/rest/p/xhprof">xhprof</p>
+ <p xlink:href="/rest/p/msgpack">msgpack</p>
  <c>php-msgpack.googlecode.com</c>
  <v>0.4.0</v>
  <st>beta</st>
