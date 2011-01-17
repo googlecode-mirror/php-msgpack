@@ -2,7 +2,7 @@
 <p xmlns="http://pear.php.net/dtd/rest.package"    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:xlink="http://www.w3.org/1999/xlink"    xsi:schemaLocation="http://pear.php.net/dtd/rest.package    http://pear.php.net/dtd/rest.package.xsd">
  <n>msgpack</n>
- <c>php-msgpack.googlecode.com</c>
+ <c>php-msgpack.googlecode.com/svn/pecl</c>
  <ca xlink:href="/rest/c/Tools+and+Utilities">Tools and Utilities</ca>
  <l>New BSD</l>
  <s>PHP extension for interfacing with MessagePack</s>

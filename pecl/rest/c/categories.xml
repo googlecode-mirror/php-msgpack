@@ -4,6 +4,6 @@
     xmlns:xlink="http://www.w3.org/1999/xlink"
     xsi:schemaLocation="http://pear.php.net/dtd/rest.allcategories
     http://pear.php.net/dtd/rest.allcategories.xsd">
-<ch>php-msgpack.googlecode.com</ch>
+<ch>php-msgpack.googlecode.com/svn/pecl</ch>
  <c xlink:href="/rest/c/Tools%2Band%2BUtilities/info.xml">Tools and Utilities</c>
 </a>

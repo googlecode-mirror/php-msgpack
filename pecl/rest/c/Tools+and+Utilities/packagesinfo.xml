@@ -6,7 +6,7 @@
     http://pear.php.net/dtd/rest.categorypackageinfo.xsd">
 <pi>
 <p><n>msgpack</n>
- <c>php-msgpack.googlecode.com</c>
+ <c>php-msgpack.googlecode.com/svn/pecl</c>
  <ca xlink:href="/rest/c/Tools+and+Utilities">Tools and Utilities</ca>
  <l>New BSD</l>
  <s>PHP extension for interfacing with MessagePack</s>

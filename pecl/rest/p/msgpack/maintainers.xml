@@ -5,6 +5,6 @@
     xsi:schemaLocation="http://pear.php.net/dtd/rest.packagemaintainers
     http://pear.php.net/dtd/rest.packagemaintainers.xsd">
  <p>msgpack</p>
- <c>php-msgpack.googlecode.com</c>
+ <c>php-msgpack.googlecode.com/svn/pecl</c>
  <m><h>advect</h><a>1</a></m>
 </m>

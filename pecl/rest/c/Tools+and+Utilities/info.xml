@@ -5,7 +5,7 @@
     xsi:schemaLocation="http://pear.php.net/dtd/rest.category
     http://pear.php.net/dtd/rest.category.xsd">
  <n>Tools and Utilities</n>
- <c>php-msgpack.googlecode.com</c>
+ <c>php-msgpack.googlecode.com/svn/pecl</c>
  <a>Tools and Utilities</a>
  <d>Tools and Utilities for PHP or written in PHP</d>
 </c>

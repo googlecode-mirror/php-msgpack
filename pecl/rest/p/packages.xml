@@ -4,6 +4,6 @@
     xmlns:xlink="http://www.w3.org/1999/xlink"
     xsi:schemaLocation="http://pear.php.net/dtd/rest.allpackages
     http://pear.php.net/dtd/rest.allpackages.xsd">
-<c>php-msgpack.googlecode.com</c>
+<c>php-msgpack.googlecode.com/svn/pecl</c>
  <p>msgpack</p>
 </a>
