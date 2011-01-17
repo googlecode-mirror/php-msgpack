@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<f xmlns="http://pear.php.net/dtd/rest.categorypackageinfo"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:xlink="http://www.w3.org/1999/xlink"
+    xsi:schemaLocation="http://pear.php.net/dtd/rest.categorypackageinfo
+    http://pear.php.net/dtd/rest.categorypackageinfo.xsd">
+<pi>
+<p><n>msgpack</n>
+ <c>php-msgpack.googlecode.com</c>
+ <ca xlink:href="/rest/c/Tools+and+Utilities">Tools and Utilities</ca>
+ <l>New BSD</l>
+ <s>PHP extension for interfacing with MessagePack</s>
+ <d>This extension provide API for communicating with MessagePack serialization.</d>
+ <r xlink:href="/rest/r/msgpack"/>
+</p>
+<a>
+ <r><v>0.4.0</v><s>beta</s></r>
+</a>
+<deps>
+ <v>0.4.0</v>
+ <d>a:1:{s:8:&quot;required&quot;;a:2:{s:3:&quot;php&quot;;a:1:{s:3:&quot;min&quot;;s:5:&quot;5.0.0&quot;;}s:13:&quot;pearinstaller&quot;;a:1:{s:3:&quot;min&quot;;s:5:&quot;1.4.3&quot;;}}}</d>
+</deps>
+</pi>
+</f>
