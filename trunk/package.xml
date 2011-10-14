@@ -10,11 +10,11 @@
     <email>advect@gmail.com</email>
     <active>yes</active>
   </lead>
-  <date>2011-07-27</date>
-  <time>12:39:33</time>
+  <date>2011-08-16</date>
+  <time>20:27:30</time>
   <version>
-    <release>0.5.0</release>
-    <api>0.5.0</api>
+    <release>0.5.1</release>
+    <api>0.5.1</api>
   </version>
   <stability>
     <release>beta</release>
@@ -29,7 +29,7 @@
       <file md5sum="c40d516627022a54003ac2b74a82688a" name="CREDITS" role="doc" />
       <file md5sum="4175fc9f98d3c3755abc4ed9f8340f98" name="ChangeLog" role="doc" />
       <file md5sum="d41d8cd98f00b204e9800998ecf8427e" name="EXPERIMENTAL" role="doc" />
-      <file md5sum="6747376fed353e6bd2490c5c4b3a096c" name="config.m4" role="src" />
+      <file md5sum="7a9c1c19767e701398b85a2f884d5d41" name="config.m4" role="src" />
       <file md5sum="195040cca1f961b6356d296e60a532ce" name="config.w32" role="src" />
       <file md5sum="8eadc10d9a8345f3ffa9614348cdb939" name="msgpack.php" role="src" />
       <file md5sum="a8f42021390a4c9f8ad1690a7543262e" name="msgpack.c" role="src" />
@@ -42,7 +42,7 @@
       <file md5sum="06f85a181c2070272c0ecd0dc3161161" name="msgpack_pack.h" role="src" />
       <file md5sum="d341e1a3b400b45f844a94ecd5198248" name="msgpack_unpack.c" role="src" />
       <file md5sum="1a31c49f353c8deec86affd1564909d1" name="msgpack_unpack.h" role="src" />
-      <file md5sum="7a558da9034ccda806990aff0b212c90" name="php_msgpack.h" role="src" />
+      <file md5sum="f11272964a55994c2318e967fe305333" name="php_msgpack.h" role="src" />
       <file md5sum="82079e9a298ecdda2122757ddfbf576e" name="msgpack/pack_define.h" role="src" />
       <file md5sum="af3f5ca341be55d866fe151c45186d22" name="msgpack/pack_template.h" role="src" />
       <file md5sum="09510085da29090ea0f3919c2e708f46" name="msgpack/unpack_define.h" role="src" />
