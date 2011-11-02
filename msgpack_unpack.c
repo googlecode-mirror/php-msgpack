@@ -505,6 +505,7 @@ int msgpack_unserialize_array_item(
 int msgpack_unserialize_map(
     msgpack_unserialize_data *unpack, unsigned int count, zval **obj)
 {
+    TSRMLS_FETCH();
     MSGPACK_UNSERIALIZE_ALLOC_VALUE(unpack);
 
     unpack->stack[unpack->deps++] = count;
