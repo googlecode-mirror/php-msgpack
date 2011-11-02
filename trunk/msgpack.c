@@ -40,6 +40,9 @@ STD_PHP_INI_BOOLEAN(
 STD_PHP_INI_BOOLEAN(
     "msgpack.php_only", "1", PHP_INI_ALL, OnUpdateBool,
     php_only, zend_msgpack_globals, msgpack_globals)
+STD_PHP_INI_BOOLEAN(
+    "msgpack.illegal_key_insert", "0", PHP_INI_ALL, OnUpdateBool,
+    illegal_key_insert, zend_msgpack_globals, msgpack_globals)
 PHP_INI_END()
 
 PS_SERIALIZER_FUNCS(msgpack);
@@ -66,6 +69,8 @@ static void msgpack_init_globals(zend_msgpack_globals *msgpack_globals)
     }
 
     msgpack_globals->php_only = 1;
+
+    msgpack_globals->illegal_key_insert = 0;
 }
 
 static ZEND_MINIT_FUNCTION(msgpack)

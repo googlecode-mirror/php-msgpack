@@ -10,8 +10,8 @@
     <email>advect@gmail.com</email>
     <active>yes</active>
   </lead>
-  <date>2011-10-14</date>
-  <time>19:33:40</time>
+  <date>2011-11-02</date>
+  <time>04:06:43</time>
   <version>
     <release>0.5.2</release>
     <api>0.5.2</api>
@@ -21,28 +21,28 @@
     <api>beta</api>
   </stability>
   <license filesource="LICENSE">New BSD</license>
-  <notes>Release 0.5.2.</notes>
+  <notes>Release 0.5.3.</notes>
   <contents>
     <dir name="/">
       <file md5sum="12b9d8867e5fde4af426c134283e2082" name="LICENSE" role="doc" />
       <file md5sum="8daeb22744f11b57da9d0966608e2fc1" name="README" role="doc" />
       <file md5sum="c40d516627022a54003ac2b74a82688a" name="CREDITS" role="doc" />
-      <file md5sum="4ada6d3d11e775f1cdad1fd868684006" name="ChangeLog" role="doc" />
+      <file md5sum="7379cdceaba35de5abd68e01c3410caf" name="ChangeLog" role="doc" />
       <file md5sum="d41d8cd98f00b204e9800998ecf8427e" name="EXPERIMENTAL" role="doc" />
       <file md5sum="7a9c1c19767e701398b85a2f884d5d41" name="config.m4" role="src" />
       <file md5sum="195040cca1f961b6356d296e60a532ce" name="config.w32" role="src" />
       <file md5sum="8eadc10d9a8345f3ffa9614348cdb939" name="msgpack.php" role="src" />
-      <file md5sum="a8f42021390a4c9f8ad1690a7543262e" name="msgpack.c" role="src" />
+      <file md5sum="d4ef5844e3584a778ba3759b9a8a90bb" name="msgpack.c" role="src" />
       <file md5sum="c6cdb4c0a9e44f2259fdbd3be79d0b6b" name="msgpack_class.c" role="src" />
       <file md5sum="b8eadd32c3eafb67645bb4ffe16f687c" name="msgpack_class.h" role="src" />
       <file md5sum="7b9adaae675371038f8774a1eb3b831b" name="msgpack_convert.c" role="src" />
       <file md5sum="36e55e18e2a3c53f2929558fb6cdd7ed" name="msgpack_convert.h" role="src" />
       <file md5sum="7d25383ea3cff751ca993c98b1b5e57e" name="msgpack_errors.h" role="src" />
-      <file md5sum="06f85a181c2070272c0ecd0dc3161161" name="msgpack_pack.c" role="src" />
+      <file md5sum="dffa06e38f3111e5c3363b59bada9caa" name="msgpack_pack.c" role="src" />
       <file md5sum="06f85a181c2070272c0ecd0dc3161161" name="msgpack_pack.h" role="src" />
-      <file md5sum="d341e1a3b400b45f844a94ecd5198248" name="msgpack_unpack.c" role="src" />
+      <file md5sum="d1d3c92b92566d522a9cbfc84f728990" name="msgpack_unpack.c" role="src" />
       <file md5sum="1a31c49f353c8deec86affd1564909d1" name="msgpack_unpack.h" role="src" />
-      <file md5sum="45ca7a078285328f5d8551ae7cc27701" name="php_msgpack.h" role="src" />
+      <file md5sum="733e6f717c2741682a91da05118fa03" name="php_msgpack.h" role="src" />
       <file md5sum="82079e9a298ecdda2122757ddfbf576e" name="msgpack/pack_define.h" role="src" />
       <file md5sum="af3f5ca341be55d866fe151c45186d22" name="msgpack/pack_template.h" role="src" />
       <file md5sum="09510085da29090ea0f3919c2e708f46" name="msgpack/unpack_define.h" role="src" />
@@ -92,7 +92,7 @@
       <file md5sum="831e1e3e3d74ff6090966f91d8715c7b" name="tests/028b.phpt" role="test" />
       <file md5sum="c93199e139706ed79f77b8fe99b5c57d" name="tests/028c.phpt" role="test" />
       <file md5sum="19d5993e30880056145dae4ac140961a" name="tests/028d.phpt" role="test" />
-      <file md5sum="f380a42cf429a8fb72c50f9d38228109" name="tests/029.phpt" role="test" />
+      <file md5sum="bce295635841b5e31d77c74f7a40422c" name="tests/029.phpt" role="test" />
       <file md5sum="7de90bedec2c170da12144bb3399dfe5" name="tests/030.phpt" role="test" />
       <file md5sum="3f37b5f1f4da46a1afeafea516d56490" name="tests/031.phpt" role="test" />
       <file md5sum="170dfcb82fd1e097fffc6b57a7e9764a" name="tests/032.phpt" role="test" />
@@ -239,6 +239,9 @@
       <file md5sum="78f1d56b752d8ce366d4b1ab9bb2b6d3" name="tests/136.phpt" role="test" />
       <file md5sum="11e31f9cc6f60546b85dfd292240af89" name="tests/136b.phpt" role="test" />
       <file md5sum="bc84bf1a6ff652be57fd5ee6ae208838" name="tests/137.phpt" role="test" />
+      <file md5sum="ff265067b5cfcf4671c520fd652b48d1" name="tests/138.phpt" role="test" />
+      <file md5sum="ebf448fea05dde91891b6853e781978e" name="tests/139.phpt" role="test" />
+      <file md5sum="6ad53c3dd64ece711f60742a9b311968" name="tests/140.phpt" role="test" />
     </dir>
   </contents>
   <dependencies>
