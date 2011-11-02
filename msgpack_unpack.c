@@ -511,6 +511,18 @@ int msgpack_unserialize_map(
 
     unpack->type = MSGPACK_SERIALIZE_TYPE_NONE;
 
+    if (count == 0)
+    {
+        if (MSGPACK_G(php_only))
+        {
+            object_init(*obj);
+        }
+        else
+        {
+            array_init(*obj);
+        }
+    }
+
     return 0;
 }
 
@@ -669,6 +681,7 @@ int msgpack_unserialize_map_item(
                     "[msgpack] (%s) illegal offset type, skip this decoding",
                     __FUNCTION__);
             }
+            zval_ptr_dtor(&key);
             break;
         case IS_STRING:
             if (zend_symtable_update(
@@ -680,16 +693,39 @@ int msgpack_unserialize_map_item(
                     "[msgpack] (%s) illegal offset type, skip this decoding",
                     __FUNCTION__);
             }
+            zval_ptr_dtor(&key);
             break;
         default:
-            zval_ptr_dtor(&val);
-            MSGPACK_WARNING(
-                "[msgpack] (%s) illegal offset type, skip this decoding",
-                __FUNCTION__);
+            MSGPACK_WARNING("[msgpack] (%s) illegal key type", __FUNCTION__);
+
+            if (MSGPACK_G(illegal_key_insert))
+            {
+                if (zend_hash_next_index_insert(
+                        HASH_OF(*container), &key, sizeof(key), NULL) == FAILURE)
+                {
+                    zval_ptr_dtor(&val);
+                }
+                if (zend_hash_next_index_insert(
+                        HASH_OF(*container), &val, sizeof(val), NULL) == FAILURE)
+                {
+                    zval_ptr_dtor(&val);
+                }
+            }
+            else
+            {
+                convert_to_string(key);
+                if (zend_symtable_update(
+                        HASH_OF(*container),
+                        Z_STRVAL_P(key), Z_STRLEN_P(key) + 1,
+                        &val, sizeof(val), NULL) == FAILURE)
+                {
+                    zval_ptr_dtor(&val);
+                }
+                zval_ptr_dtor(&key);
+            }
             break;
     }
 
-    zval_ptr_dtor(&key);
     msgpack_stack_pop(unpack->var_hash, 2);
 
     deps = unpack->deps - 1;
