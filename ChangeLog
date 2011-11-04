@@ -1,5 +1,8 @@
 msgpack extension changelog
 
+Version 0.5.4
+	* Supported PHP 5.4.0 beta2 version.
+
 Version 0.5.3
 -------------
 	* Fixed pack empty map (stdClass).
